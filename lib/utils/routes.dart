@@ -14,5 +14,5 @@ final Map<String, WidgetBuilder> routes = {
   ConfirmThisUser.routeName: (context) => ConfirmThisUser(),
   RegisterNewUser.routeName: (context) => RegisterNewUser(),
   HomeScreen.routeName: (context) => HomeScreen(),
-  FileUpload.routeName: (context) => HomeScreen(),
+  FileUpload.routeName: (context) => FileUpload(),
 };

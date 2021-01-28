@@ -41,6 +41,8 @@ class MyApp extends StatelessWidget {
   Widget build(context) {
     // TODO: implement build
     return new MaterialApp(
-        theme: lightTheme(), initialRoute: Intro.routeName, routes: routes);
+        theme: lightTheme(),
+        initialRoute: FileUpload.routeName,
+        routes: routes);
   }
 }
