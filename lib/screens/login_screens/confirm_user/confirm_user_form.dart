@@ -1,4 +1,3 @@
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +9,8 @@ import 'package:winch_app/services/api_services.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/form_error.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
+
+import '../../home_screen/nav_bar/home.dart';
 
 class ConfirmUserForm extends StatefulWidget {
   String otpResponse_FName;

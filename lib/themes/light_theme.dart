@@ -4,16 +4,18 @@ ThemeData lightTheme() {
   TextTheme _basicTextTheme(TextTheme base) {
     return base.copyWith(
       headline1: base.headline1.copyWith(
-        fontSize: 30.0,
+        fontSize: 35.0,
         fontWeight: FontWeight.bold,
         fontFamily: 'Lato',
-        color: Color(0xFFBD4242),
+        color: Color(0xFF564FCC),
       ),
       headline2: base.headline2.copyWith(
           fontSize: 25.0,
           fontWeight: FontWeight.bold,
           fontFamily: 'Lato',
-          color: Colors.black54),
+        color: Color(0xFF636780)
+          //color: Colors.black54
+           ),
       headline3: base.headline3.copyWith(
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
@@ -23,7 +25,7 @@ ThemeData lightTheme() {
       headline4: base.headline4.copyWith(
         fontSize: 18.0,
         fontFamily: 'Lato',
-        color: Color(0xFF42BDBD),
+        color: Color(0xFFFF718D),
       ),
       headline5: base.headline4.copyWith(
         fontSize: 17.0,
@@ -36,14 +38,16 @@ ThemeData lightTheme() {
         fontFamily: 'Lato',
       ),
       bodyText1: base.bodyText1.copyWith(
-        color: Colors.grey[800],
+        color: Color(0xFF4F5266),
+        //color: Colors.grey[800],
         fontSize: 15,
       ),
       bodyText2: base.bodyText2.copyWith(
         fontSize: 16.0,
         fontFamily: 'Lato',
         fontWeight: FontWeight.w800,
-        color: Colors.grey[900],
+        color: Color(0xFF4F5266)
+        //color: Colors.grey[900],
       ),
       button: base.button.copyWith(
           fontSize: 20.0,
@@ -58,19 +62,25 @@ ThemeData lightTheme() {
         fontSize: 15.0,
         fontFamily: 'Lato',
         fontWeight: FontWeight.w900,
-        color: Color(0xFFBD4242),
+        color: Color(0xFF564FCC),
       ),
+      subtitle2: base.subtitle1.copyWith(
+
+      ),
+      overline:  base.subtitle1.copyWith(
+
+        ),
     );
   }
 
   final ThemeData base = ThemeData.light();
   return base.copyWith(
     textTheme: _basicTextTheme(base.textTheme),
-    primaryColor: Color(0xFFBD4242),
-    primaryColorLight: Color(0xFFC45555),
-    primaryColorDark: Color(0xFF470000),
+    primaryColor: Color(0xFF564FCC),
+    primaryColorLight: Color(0xFF6C63FF),
+    primaryColorDark: Color(0xFF413B99),
     accentColor: Colors.white,
-    hintColor: Color(0xFF42BDBD),
+    hintColor: Color(0xFFFF718D),
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
     canvasColor: Colors.transparent,
@@ -90,18 +100,18 @@ ThemeData lightTheme() {
       ),
     ),
     iconTheme: IconThemeData(
-      color: Color(0xFFBD4242),
+      color: Color(0xFF564FCC),
       size: 20.0,
     ),
     buttonTheme: ButtonThemeData(
-      buttonColor: Color(0xFFBD4242),
+      buttonColor: Color(0xFF564FCC),
       shape: RoundedRectangleBorder(),
       textTheme: ButtonTextTheme.primary,
     ),
     sliderTheme: SliderThemeData(
-      activeTrackColor: Color(0xFFBD4242),
-      overlayColor: Color(0xFFBD4242).withAlpha(32),
-      thumbColor: Color(0xFFBD4242),
+      activeTrackColor: Color(0xFF564FCC),
+      overlayColor: Color(0xFF564FCC).withAlpha(32),
+      thumbColor: Color(0xFF564FCC),
     ),
     inputDecorationTheme: inputDecorationTheme(base),
     appBarTheme: AppBarTheme(
@@ -134,7 +144,7 @@ InputDecorationTheme inputDecorationTheme(ThemeData base) {
 
   OutlineInputBorder ErrorInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
-      borderSide: BorderSide(color: Color(0xFFBD4242)));
+      borderSide: BorderSide(color: Color(0xFF564FCC)));
 
   return InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(

@@ -39,7 +39,7 @@ class _IntroBodyState extends State<IntroBody> {
                 ),*/
               ),
             ),
-            Text("Mechanic App ,Let's Start",
+            Text("Winch App ,Let's Start",
                 style: Theme.of(context).textTheme.headline2),
             Expanded(
               flex: 4,
