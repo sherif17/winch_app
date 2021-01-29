@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/utils/size_config.dart';
@@ -31,7 +32,7 @@ class _IntroBodyState extends State<IntroBody> {
             Padding(
               padding: EdgeInsets.only(top: size.height * 0.05),
               child: Text(
-                "Rescue My Car\n",
+                getTranslated(context, "overAllProjectName"),
                 style: Theme.of(context).textTheme.headline1,
                 /*style: TextStyle(
                   fontSize: getProportionateScreenWidth(30),
@@ -42,7 +43,7 @@ class _IntroBodyState extends State<IntroBody> {
             Text("Winch App ,Let's Start",
                 style: Theme.of(context).textTheme.headline2),
             Expanded(
-              flex: 4,
+              flex: 5,
               child: PageView.builder(
                 onPageChanged: (value) {
                   setState(() {
