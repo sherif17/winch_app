@@ -11,6 +11,8 @@ import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/form_error.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
 
+import '../../home_screen/nav_bar/home.dart';
+
 class ConfirmUserForm extends StatefulWidget {
   String otpResponse_FName;
   String otpResponse_LName;
