@@ -1,9 +1,9 @@
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/customer_app_1/lib/screens/home_screen/nav_bar/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/screens/home_screen/nav_bar/home.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/services/api_services.dart';
