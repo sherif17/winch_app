@@ -101,8 +101,8 @@ class _StepperBodyState extends State<StepperBody> {
               flex: 2,
               child: RoundedButton(
                 text: "Next",
-                color: Colors.indigoAccent,
-                textColor: Colors.white,
+                color: Theme.of(context).primaryColor,
+                textColor: Theme.of(context).accentColor,
                 press: () {
                   setState(() {
                     if (this._currentstep < _stepper().length - 1) {
@@ -126,11 +126,8 @@ class _StepperBodyState extends State<StepperBody> {
         title: Text(""),
         subtitle: Center(
           child: Text(
-            "CaptionType",
-            style: TextStyle(
-                color: Colors.blue,
-                fontSize: 10.0,
-                fontWeight: FontWeight.bold),
+            "Join as",
+            style: Theme.of(context).textTheme.headline4,
           ),
         ),
         content: Column(
@@ -141,21 +138,19 @@ class _StepperBodyState extends State<StepperBody> {
                 right: 5.0,
               ),
               child: Text(
-                'Please Choose The Way you\nwant to join us :',
-                style: TextStyle(
-                  fontSize: 29.0,
-                  color: Colors.blue,
+                'Please Choose The Way you want to join us :',
+                style: Theme.of(context).textTheme.headline1,
                 ),
               ),
-            ),
+
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
               child: Container(
                 width: 380.0,
                 height: 150.0,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
-                    color: Colors.white,
+                    border: Border.all(color: Theme.of(context).primaryColorDark),
+                    color: Theme.of(context).accentColor,
                     borderRadius: BorderRadius.all(Radius.circular(7))),
                 child: Column(
                   children: <Widget>[
@@ -166,10 +161,8 @@ class _StepperBodyState extends State<StepperBody> {
                         bottom: 10.0,
                       ),
                       child: Text('Join us as individual',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 28.0,
-                          )),
+                          style: Theme.of(context).textTheme.headline2
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -177,11 +170,9 @@ class _StepperBodyState extends State<StepperBody> {
                         left: 10.0,
                         right: 140.0,
                       ),
-                      child: Text('if you have your own\npersonal winch',
-                          style: TextStyle(
-                            color: Colors.blue.withOpacity(0.3),
-                            fontSize: 25.0,
-                          )),
+                      child: Text('if you have your own personal winch',
+                          style: Theme.of(context).textTheme.bodyText1
+                      ),
                     ),
                   ],
                 ),
@@ -193,8 +184,8 @@ class _StepperBodyState extends State<StepperBody> {
                 width: 380.0,
                 height: 150.0,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
-                    color: Colors.white,
+                    border: Border.all(color: Theme.of(context).primaryColorDark),
+                    color: Theme.of(context).accentColor,
                     borderRadius: BorderRadius.all(Radius.circular(7))),
                 child: Column(
                   children: <Widget>[
@@ -205,10 +196,8 @@ class _StepperBodyState extends State<StepperBody> {
                         bottom: 10.0,
                       ),
                       child: Text('Join us as office work',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 27.0,
-                          )),
+                          style: Theme.of(context).textTheme.headline2
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -217,11 +206,9 @@ class _StepperBodyState extends State<StepperBody> {
                         right: 130.0,
                       ),
                       child: Text(
-                          'if you have an office which\nown a group of winches',
-                          style: TextStyle(
-                            color: Colors.blue.withOpacity(0.3),
-                            fontSize: 20.0,
-                          )),
+                          'if you have an office which own a group of winches',
+                          style: Theme.of(context).textTheme.bodyText1
+                      ),
                     ),
                   ],
                 ),
@@ -233,8 +220,8 @@ class _StepperBodyState extends State<StepperBody> {
                 width: 380.0,
                 height: 150.0,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
-                    color: Colors.white,
+                    border: Border.all(color: Theme.of(context).primaryColorDark),
+                    color: Theme.of(context).accentColor,
                     borderRadius: BorderRadius.all(Radius.circular(7))),
                 child: Column(
                   children: <Widget>[
@@ -245,10 +232,8 @@ class _StepperBodyState extends State<StepperBody> {
                         bottom: 10.0,
                       ),
                       child: Text('Help Request',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 28.0,
-                          )),
+                          style: Theme.of(context).textTheme.headline2
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -257,11 +242,9 @@ class _StepperBodyState extends State<StepperBody> {
                         right: 130.0,
                       ),
                       child: Text(
-                          'if you have any questions\nyou can contact us her',
-                          style: TextStyle(
-                            color: Colors.blue.withOpacity(0.3),
-                            fontSize: 21.0,
-                          )),
+                          'if you have any questions you can contact us her',
+                          style: Theme.of(context).textTheme.bodyText1
+                      ),
                     ),
                   ],
                 ),
@@ -276,8 +259,7 @@ class _StepperBodyState extends State<StepperBody> {
         title: Text(""),
         subtitle: Text(
           "Required Files",
-          style: TextStyle(
-              color: Colors.blue, fontSize: 10.0, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.headline4,
         ),
         content: Column(
           children: <Widget>[
@@ -329,10 +311,8 @@ class _StepperBodyState extends State<StepperBody> {
       Step(
         title: Text(""),
         subtitle: Text("Confirmation Code",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-                fontSize: 10.0)),
+            style: Theme.of(context).textTheme.headline4,
+        ),
         content: Column(
           children: <Widget>[
             Padding(
@@ -342,21 +322,15 @@ class _StepperBodyState extends State<StepperBody> {
                 bottom: 20.0,
               ),
               child: Text(
-                'Please Enter Your Confirmation Code\nProvided by the administration',
-                style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.blue,
-                ),
+                'Please Enter Your Confirmation Code Provided by the administration',
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 0.5),
               child: Text(
-                'These process of confirmation may take\nfrom 1 to 3 weeks to check your files',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.blue.withOpacity(0.4),
-                ),
+                'These process of confirmation may take from 1 to 3 weeks to check your files',
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             confirmationcode(),
@@ -365,22 +339,22 @@ class _StepperBodyState extends State<StepperBody> {
                 top: 100.0,
                 left: 10.0,
               ),
-              child: FlatButton(
-                onPressed: () {
-                  /*...*/
-                },
-                child: Text(
-                  "Confirm ->",
-                  style: TextStyle(fontSize: 25),
-                ),
-                color: Colors.blue,
-                textColor: Colors.white,
-                height: 55.0,
-                minWidth: 390.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    side: BorderSide(color: Colors.blue)),
-              ),
+              //child: FlatButton(
+                //onPressed: () {
+                  //*...*/
+                //},
+                //child: Text(
+                  //"Confirm ->",
+                  //style: TextStyle(fontSize: 25),
+                //),
+                //color: Theme.of(context).primaryColor,
+               // textColor: Theme.of(context).accentColor,
+                //height: 55.0,
+                //minWidth: 390.0,
+                //shape: RoundedRectangleBorder(
+                  //  borderRadius: BorderRadius.circular(20.0),
+                    //side: BorderSide(color: Theme.of(context).primaryColorDark)),
+             // ),
             )
           ],
         ),
@@ -391,11 +365,7 @@ class _StepperBodyState extends State<StepperBody> {
           title: Text(""),
           subtitle: Text(
             "Get Started",
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 6.0,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.headline4,
           ),
           content: Column(
             children: <Widget>[
@@ -403,11 +373,8 @@ class _StepperBodyState extends State<StepperBody> {
                 padding:
                     const EdgeInsets.only(top: 60.0, left: 10.0, bottom: 10.0),
                 child: Text(
-                  'Please Watch this Tutorial How to\nuse our App to start Earring Money',
-                  style: TextStyle(
-                    fontSize: 23.0,
-                    color: Colors.blue,
-                  ),
+                  'Please Watch this Tutorial How to use our App to start Earring Money',
+                  style: Theme.of(context).textTheme.headline1,
                 ),
               ),
               Padding(
@@ -419,8 +386,8 @@ class _StepperBodyState extends State<StepperBody> {
                   height: 250.0,
                   width: 380.0,
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue),
-                      color: Colors.white,
+                      border: Border.all(color: Theme.of(context).primaryColorDark),
+                      color: Theme.of(context).accentColor,
                       borderRadius: BorderRadius.all(
                         Radius.circular(20),
                       )),
@@ -441,22 +408,22 @@ class _StepperBodyState extends State<StepperBody> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 140.0, left: 10.0),
-                child: FlatButton(
-                  onPressed: () {
+                //child: FlatButton(
+                  //onPressed: () {
                     /*...*/
-                  },
-                  child: Text(
-                    "Get started",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  height: 45.0,
-                  minWidth: 360.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: Colors.blue)),
-                ),
+                  //},
+                  //child: Text(
+                    //"Get started",
+                    //style: TextStyle(fontSize: 20),
+                  //),
+                  //color: Theme.of(context).primaryColor,
+                  //textColor: Theme.of(context).accentColor,
+                  //height: 45.0,
+                  //minWidth: 360.0,
+                  //shape: RoundedRectangleBorder(
+                    //  borderRadius: BorderRadius.circular(20.0),
+                      //side: BorderSide(color: Theme.of(context).primaryColorDark)),
+               // ),
               ),
             ],
           ),
@@ -473,7 +440,7 @@ class _StepperBodyState extends State<StepperBody> {
       semanticContainer: true,
       shape: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          borderSide: BorderSide(color: Colors.indigo),
+          borderSide: BorderSide(color: Theme.of(context).primaryColorDark),
           gapPadding: 100),
       borderOnForeground: true,
       margin: EdgeInsets.only(
@@ -481,11 +448,11 @@ class _StepperBodyState extends State<StepperBody> {
       ),
       child: ExpansionTile(
         title: Text(title, style: Theme.of(context).textTheme.headline2),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).accentColor,
         //trailing: Icon(x ? Icons.copyright_rounded : Icons.height),
         children: [
           Container(
-            color: Colors.indigo[100],
+            color: Theme.of(context).accentColor,
             child: Column(
               children: [
                 Row(
@@ -513,7 +480,7 @@ class _StepperBodyState extends State<StepperBody> {
                   child: FlatButton(
                     height: MediaQuery.of(context).size.height *
                         0.05, //minWidth: MediaQuery.of(context).size.width * 0.05,
-                    color: Colors.indigo,
+                    color: Theme.of(context).primaryColorDark,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -522,7 +489,7 @@ class _StepperBodyState extends State<StepperBody> {
                             width: MediaQuery.of(context).size.width * 0.03),
                         SvgPicture.asset(
                           "assets/icons/upload-cloud.svg",
-                          color: Colors.white,
+                          color: Theme.of(context).accentColor,
                           width: MediaQuery.of(context).size.width * 0.035,
                           height: MediaQuery.of(context).size.height * 0.03,
                         )
