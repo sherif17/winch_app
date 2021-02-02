@@ -274,15 +274,15 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         print("Something wrong");
                         showRegisterModalBottomSheet(
-                            context, size.height * 0.3, false," ", "");
+                            context, size.height * 0.3, false, " ", "");
                       }
                     } else {
                       print(value.error);
                       setState(() {
                         isApiCallProcess = false;
                       });
-                      showRegisterModalBottomSheet(
-                          context, size.height * 0.4, false,"InvalidUserToken", "");
+                      showRegisterModalBottomSheet(context, size.height * 0.4,
+                          false, "InvalidUserToken", "");
                     }
                   });
                 }
@@ -332,52 +332,56 @@ _showModalBottomSheet(context, container_size, otpcode, errorCousal) {
     context: context,
     isScrollControlled: false,
     enableDrag: true,
-    builder: (context) => Container(
-      height: container_size,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+    backgroundColor: Colors.transparent,
+    builder: (context) => Theme(
+      data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+      child: Container(
+        height: container_size,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: size.height * 0.02),
-            child: SvgPicture.asset(
-              'assets/icons/error_large.svg',
-              height: size.height * 0.12,
-              width: size.width * 0.12,
-              color: Theme.of(context).primaryColor,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: size.height * 0.02),
+              child: SvgPicture.asset(
+                'assets/icons/error_large.svg',
+                height: size.height * 0.12,
+                width: size.width * 0.12,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
-          ),
-          SizedBox(height: size.height * 0.015),
-          Text(x ? "Invalid OTP" : "Empty Fields",
-              style: Theme.of(context).textTheme.headline3),
-          SizedBox(height: size.height * 0.015),
-          Text(
-            x
-                ? "This Code ${otpcode} doesn't match with the code we sent to you"
-                : "Please Enter the Received code",
-            style: Theme.of(context).textTheme.caption,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: size.height * 0.015),
-          Text(
-            errorCousal,
-            style: Theme.of(context).textTheme.caption,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: size.height * 0.005),
-          RoundedButton(
-            text: "Try Again",
-            color: Theme.of(context).primaryColor,
-            press: () {
-              Navigator.pop(context);
-            },
-          )
-        ],
+            SizedBox(height: size.height * 0.015),
+            Text(x ? "Invalid OTP" : "Empty Fields",
+                style: Theme.of(context).textTheme.headline3),
+            SizedBox(height: size.height * 0.015),
+            Text(
+              x
+                  ? "This Code ${otpcode} doesn't match with the code we sent to you"
+                  : "Please Enter the Received code",
+              style: Theme.of(context).textTheme.caption,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: size.height * 0.015),
+            Text(
+              errorCousal,
+              style: Theme.of(context).textTheme.caption,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: size.height * 0.005),
+            RoundedButton(
+              text: "Try Again",
+              color: Theme.of(context).primaryColor,
+              press: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
       ),
     ),
   );

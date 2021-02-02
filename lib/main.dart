@@ -11,7 +11,7 @@ import 'themes/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences.setMockInitialValues({});
+  //SharedPreferences.setMockInitialValues({});
   //Firebase.initializeApp();
   runApp(App());
 }
@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
       return new MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
-        initialRoute: Intro.routeName,
+        initialRoute: FileUpload.routeName,
         routes: routes,
         locale: _locale,
         supportedLocales: [

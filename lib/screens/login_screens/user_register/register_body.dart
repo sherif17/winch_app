@@ -15,7 +15,7 @@ import '../../../widgets/borderd_buttons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+//import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as JSON;
 
@@ -64,7 +64,7 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-    final facebookLogin = FacebookLogin();
+    //final facebookLogin = FacebookLogin();
     Map userProfile;
     return Background(
       child: SingleChildScrollView(
@@ -91,7 +91,7 @@ class _BodyState extends State<Body> {
               iconSrc: 'assets/icons/facebook.svg',
               CornerRadius: 29,
               press: () async {
-                final result = await facebookLogin.logIn(['email']);
+                /*final result = await facebookLogin.logIn(['email']);
                 final token = result.accessToken.token;
                 final graphResponse = await http.get(
                     'https://graph.facebook.com/v2.12/me?fields=name,picture,email&access_token=${token}');
@@ -161,7 +161,7 @@ class _BodyState extends State<Body> {
                   });
                   showRegisterModalBottomSheet(
                       context, size.height * 0.4, false, "byFacebookError", "");
-                }
+                }*/
               },
             ),
 

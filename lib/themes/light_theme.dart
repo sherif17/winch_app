@@ -13,9 +13,9 @@ ThemeData lightTheme() {
           fontSize: 25.0,
           fontWeight: FontWeight.bold,
           fontFamily: 'Lato',
-        color: Color(0xFF636780)
+          color: Color(0xFF636780)
           //color: Colors.black54
-           ),
+          ),
       headline3: base.headline3.copyWith(
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
@@ -43,12 +43,12 @@ ThemeData lightTheme() {
         fontSize: 15,
       ),
       bodyText2: base.bodyText2.copyWith(
-        fontSize: 16.0,
-        fontFamily: 'Lato',
-        fontWeight: FontWeight.w800,
-        color: Color(0xFF4F5266)
-        //color: Colors.grey[900],
-      ),
+          fontSize: 16.0,
+          fontFamily: 'Lato',
+          fontWeight: FontWeight.w800,
+          color: Color(0xFF4F5266)
+          //color: Colors.grey[900],
+          ),
       button: base.button.copyWith(
           fontSize: 20.0,
           fontFamily: 'Lato',
@@ -64,12 +64,8 @@ ThemeData lightTheme() {
         fontWeight: FontWeight.w900,
         color: Color(0xFF564FCC),
       ),
-      subtitle2: base.subtitle1.copyWith(
-
-      ),
-      overline:  base.subtitle1.copyWith(
-
-        ),
+      subtitle2: base.subtitle1.copyWith(),
+      overline: base.subtitle1.copyWith(),
     );
   }
 
@@ -83,7 +79,7 @@ ThemeData lightTheme() {
     hintColor: Color(0xFFFF718D),
     scaffoldBackgroundColor: Colors.white,
     errorColor: Colors.redAccent[700],
-    canvasColor: Colors.transparent,
+    //canvasColor: Colors.transparent,
     backgroundColor: Colors.white,
     primaryTextTheme: TextTheme(
       headline2: TextStyle(

@@ -29,12 +29,15 @@ dependencies:
   firebase_auth: ^0.20.0+1
   firebase_core: "^0.7.0"
   google_sign_in: ^4.5.9
-  flutter_facebook_login: ^3.0.0
   http: ^0.12.2
   jwt_decoder: ^1.0.3
   shared_preferences: ^0.5.12+2
-  flutter_localizations: # Add this line
+  flutter_localizations:
     sdk: flutter
+  mask_text_input_formatter: ^1.2.1
+  flutter_masked_text: ^0.8.0
+  image_picker: ^0.6.7+14
+  #flutter_facebook_login: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

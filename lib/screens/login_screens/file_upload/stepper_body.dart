@@ -1,6 +1,14 @@
+import 'dart:io';
+import 'dart:ui';
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:winch_app/screens/login_screens/file_upload/confirmationcode.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
 
@@ -10,73 +18,101 @@ class StepperBody extends StatefulWidget {
 }
 
 class _StepperBodyState extends State<StepperBody> {
+  final _firstStepFormKey = GlobalKey<FormState>();
+  final charPlatController = TextEditingController();
+  final numPlatController = TextEditingController();
+  File file;
   String title = 'Stepper';
   int _currentstep = 0;
-  /*List<Item> _data = generateItems(10);
 
-  Widget _BuildListPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-            headerBuilder: (BuildContext, bool isExpanded) {
-              return ListTile(
-                title: Text("sherif"),
-              );
-            },
-            body: ListTile(
-              title: Text(item.expandedValue),
-              trailing: Icon(Icons.keyboard_arrow_down_rounded),
-              subtitle: Text("hi hi"),
-              onTap: () {
-                setState(() {});
-              },
-            ),
-            isExpanded: item.isExpanded);
-      }).toList(),
-      dividerColor: Colors.indigo,
-    );
+  Future pickCamera() async {
+    final myfile = await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      if (myfile != null) {
+        file = File(file.path);
+      } else {
+        print('No image selected.');
+      }
+    });
   }
-*/
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    charPlatController.dispose();
+    numPlatController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 5),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 17,
-              child: Container(
-                child: Stepper(
-                  steps: _stepper(),
-                  type: StepperType.horizontal,
-                  //  physics: ClampingScrollPhysics(),
-                  currentStep: this._currentstep,
-                  onStepTapped: (step) {
-                    setState(() {
-                      _currentstep = step;
-                    });
-                  },
-                  controlsBuilder: (BuildContext context,
-                      {VoidCallback onStepContinue,
-                      VoidCallback onStepCancel}) {
-                    return Row(
-                      children: <Widget>[
-                        Container(
-                          child: null,
-                        ),
-                        Container(
-                          child: null,
-                        ),
-                      ],
-                    );
-                  },
-                  /* onStepContinue: () {
+    Size size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Container(
+        height: size.height,
+        width: size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 5),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 17,
+                child: Container(
+                  child: Stepper(
+                    steps: _stepper(),
+                    type: StepperType.horizontal,
+                    //  physics: ClampingScrollPhysics(),
+                    currentStep: this._currentstep,
+                    onStepTapped: (step) {
+                      setState(() {
+                        _currentstep = step;
+                      });
+                    },
+                    controlsBuilder: (BuildContext context,
+                        {VoidCallback onStepContinue,
+                        VoidCallback onStepCancel}) {
+                      return Row(
+                        children: <Widget>[
+                          Container(
+                            child: null,
+                          ),
+                          Container(
+                            child: null,
+                          ),
+                        ],
+                      );
+                    },
+                    /* onStepContinue: () {
+                      setState(() {
+                        if (this._currentstep < _stepper().length - 1) {
+                          this._currentstep = this._currentstep + 1;
+                        } else {
+                          print('complete');
+                        }
+                      });
+                    },*/
+                    /* onStepCancel: () {
+                      setState(() {
+                        if (this._currentstep > 0) {
+                          this._currentstep = this._currentstep - 1;
+                        } else {
+                          this._currentstep = 0;
+                        }
+                      });
+                    },*/
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: RoundedButton(
+                  text: "Next",
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).accentColor,
+                  press: () {
+                    print(_currentstep + 1);
+
                     setState(() {
                       if (this._currentstep < _stepper().length - 1) {
                         this._currentstep = this._currentstep + 1;
@@ -84,37 +120,11 @@ class _StepperBodyState extends State<StepperBody> {
                         print('complete');
                       }
                     });
-                  },*/
-                  /* onStepCancel: () {
-                    setState(() {
-                      if (this._currentstep > 0) {
-                        this._currentstep = this._currentstep - 1;
-                      } else {
-                        this._currentstep = 0;
-                      }
-                    });
-                  },*/
+                  },
                 ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: RoundedButton(
-                text: "Next",
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).accentColor,
-                press: () {
-                  setState(() {
-                    if (this._currentstep < _stepper().length - 1) {
-                      this._currentstep = this._currentstep + 1;
-                    } else {
-                      print('complete');
-                    }
-                  });
-                },
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -124,130 +134,30 @@ class _StepperBodyState extends State<StepperBody> {
     List<Step> _steps = [
       Step(
         title: Text(""),
-        subtitle: Center(
-          child: Text(
-            "Join as",
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ),
         content: Column(
-          children: <Widget>[
+          children: [
             Padding(
-              padding: const EdgeInsets.only(
-                top: 40.0,
-                right: 5.0,
-              ),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.01,
+                  bottom: MediaQuery.of(context).size.height * 0.03),
               child: Text(
-                'Please Choose The Way you want to join us :',
-                style: Theme.of(context).textTheme.headline1,
-                ),
-              ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: Container(
-                width: 380.0,
-                height: 150.0,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColorDark),
-                    color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.all(Radius.circular(7))),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        right: 120.0,
-                        bottom: 10.0,
-                      ),
-                      child: Text('Join us as individual',
-                          style: Theme.of(context).textTheme.headline2
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        left: 10.0,
-                        right: 140.0,
-                      ),
-                      child: Text('if you have your own personal winch',
-                          style: Theme.of(context).textTheme.bodyText1
-                      ),
-                    ),
-                  ],
-                ),
+                "Complete Your Profile",
+                style: Theme.of(context).textTheme.headline2,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Container(
-                width: 380.0,
-                height: 150.0,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColorDark),
-                    color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.all(Radius.circular(7))),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        right: 110.0,
-                        bottom: 10.0,
+            Form(
+              key: _firstStepFormKey,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: BuildCharPlateTextFormField(),
                       ),
-                      child: Text('Join us as office work',
-                          style: Theme.of(context).textTheme.headline2
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        left: 10.0,
-                        right: 130.0,
-                      ),
-                      child: Text(
-                          'if you have an office which own a group of winches',
-                          style: Theme.of(context).textTheme.bodyText1
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Container(
-                width: 380.0,
-                height: 150.0,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColorDark),
-                    color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.all(Radius.circular(7))),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        right: 190.0,
-                        bottom: 10.0,
-                      ),
-                      child: Text('Help Request',
-                          style: Theme.of(context).textTheme.headline2
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        left: 10.0,
-                        right: 130.0,
-                      ),
-                      child: Text(
-                          'if you have any questions you can contact us her',
-                          style: Theme.of(context).textTheme.bodyText1
-                      ),
-                    ),
-                  ],
-                ),
+                      Expanded(child: BuildNumPlateTextFormField()),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -257,10 +167,6 @@ class _StepperBodyState extends State<StepperBody> {
       ),
       Step(
         title: Text(""),
-        subtitle: Text(
-          "Required Files",
-          style: Theme.of(context).textTheme.headline4,
-        ),
         content: Column(
           children: <Widget>[
             SingleChildScrollView(
@@ -268,6 +174,15 @@ class _StepperBodyState extends State<StepperBody> {
                   //_BuildListPanel(),
                   child: Column(
                 children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.01,
+                        bottom: MediaQuery.of(context).size.height * 0.03),
+                    child: Text(
+                      "Upload Required Files",
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
                   BuildFileUpload('Personal Photo', "Please upload clear photo",
                       "assets/icons/profile.png", true),
                   BuildFileUpload(
@@ -310,9 +225,6 @@ class _StepperBodyState extends State<StepperBody> {
       ),
       Step(
         title: Text(""),
-        subtitle: Text("Confirmation Code",
-            style: Theme.of(context).textTheme.headline4,
-        ),
         content: Column(
           children: <Widget>[
             Padding(
@@ -334,28 +246,6 @@ class _StepperBodyState extends State<StepperBody> {
               ),
             ),
             confirmationcode(),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 100.0,
-                left: 10.0,
-              ),
-              //child: FlatButton(
-                //onPressed: () {
-                  //*...*/
-                //},
-                //child: Text(
-                  //"Confirm ->",
-                  //style: TextStyle(fontSize: 25),
-                //),
-                //color: Theme.of(context).primaryColor,
-               // textColor: Theme.of(context).accentColor,
-                //height: 55.0,
-                //minWidth: 390.0,
-                //shape: RoundedRectangleBorder(
-                  //  borderRadius: BorderRadius.circular(20.0),
-                    //side: BorderSide(color: Theme.of(context).primaryColorDark)),
-             // ),
-            )
           ],
         ),
         isActive: _currentstep >= 3,
@@ -363,10 +253,6 @@ class _StepperBodyState extends State<StepperBody> {
       ),
       Step(
           title: Text(""),
-          subtitle: Text(
-            "Get Started",
-            style: Theme.of(context).textTheme.headline4,
-          ),
           content: Column(
             children: <Widget>[
               Padding(
@@ -386,7 +272,8 @@ class _StepperBodyState extends State<StepperBody> {
                   height: 250.0,
                   width: 380.0,
                   decoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).primaryColorDark),
+                      border:
+                          Border.all(color: Theme.of(context).primaryColorDark),
                       color: Theme.of(context).accentColor,
                       borderRadius: BorderRadius.all(
                         Radius.circular(20),
@@ -406,31 +293,82 @@ class _StepperBodyState extends State<StepperBody> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 140.0, left: 10.0),
-                //child: FlatButton(
-                  //onPressed: () {
-                    /*...*/
-                  //},
-                  //child: Text(
-                    //"Get started",
-                    //style: TextStyle(fontSize: 20),
-                  //),
-                  //color: Theme.of(context).primaryColor,
-                  //textColor: Theme.of(context).accentColor,
-                  //height: 45.0,
-                  //minWidth: 360.0,
-                  //shape: RoundedRectangleBorder(
-                    //  borderRadius: BorderRadius.circular(20.0),
-                      //side: BorderSide(color: Theme.of(context).primaryColorDark)),
-               // ),
-              ),
             ],
           ),
           isActive: _currentstep >= 4,
           state: StepState.indexed),
     ];
     return _steps;
+  }
+
+  static final translators = {'#': new RegExp(r'(?<!^)(\B|b)(?!$)')};
+  var maskFormatter = new MaskTextInputFormatter(
+      filter: {'A': new RegExp(r'(?<!^)(\B|b)(?!$)')});
+  var controller =
+      new MaskedTextController(mask: '000.000.000-00', translator: translators);
+
+  TextFormField BuildCharPlateTextFormField() {
+    return TextFormField(
+      //maxLength: 3,
+      controller: charPlatController,
+      inputFormatters: [
+        FilteringTextInputFormatter.deny(new RegExp(r'(?<!^)(\B|b)(?!$)'))
+      ],
+      keyboardType: TextInputType.name,
+      decoration: InputDecoration(
+        labelText: "Characters",
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10), topLeft: Radius.circular(10)),
+        ),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blueAccent,
+            ),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10), topLeft: Radius.circular(10))),
+        /* errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.red,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),*/
+      ),
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          setState(() {
+            value = value + "";
+          });
+        }
+      },
+    );
+  }
+
+  TextFormField BuildNumPlateTextFormField() {
+    return TextFormField(
+      maxLength: 4,
+      controller: numPlatController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: "Numbers",
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.blueAccent,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+        ),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.blueAccent,
+            ),
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(10),
+                topRight: Radius.circular(10))),
+      ),
+    );
   }
 
   Card BuildFileUpload(title, content, imgSrc, isExpanded) {
@@ -478,27 +416,24 @@ class _StepperBodyState extends State<StepperBody> {
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * 0.25),
                   child: FlatButton(
-                    height: MediaQuery.of(context).size.height *
-                        0.05, //minWidth: MediaQuery.of(context).size.width * 0.05,
-                    color: Theme.of(context).primaryColorDark,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Upload"),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.03),
-                        SvgPicture.asset(
-                          "assets/icons/upload-cloud.svg",
-                          color: Theme.of(context).accentColor,
-                          width: MediaQuery.of(context).size.width * 0.035,
-                          height: MediaQuery.of(context).size.height * 0.03,
-                        )
-                      ],
-                    ),
-                    onPressed: () {
-                      x = true;
-                    },
-                  ),
+                      height: MediaQuery.of(context).size.height *
+                          0.05, //minWidth: MediaQuery.of(context).size.width * 0.05,
+                      color: Theme.of(context).primaryColorDark,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Upload"),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.03),
+                          SvgPicture.asset(
+                            "assets/icons/upload-cloud.svg",
+                            color: Theme.of(context).accentColor,
+                            width: MediaQuery.of(context).size.width * 0.035,
+                            height: MediaQuery.of(context).size.height * 0.03,
+                          )
+                        ],
+                      ),
+                      onPressed: pickCamera),
                 ),
               ],
             ),
