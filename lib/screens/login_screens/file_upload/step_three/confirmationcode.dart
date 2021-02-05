@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:winch_app/widgets/rounded_button.dart';
 
 class confirmationcode extends StatefulWidget {
-  const confirmationcode({
+  int currentStep;
+  int stepperLength;
+  confirmationcode({
+    this.currentStep,
+    this.stepperLength,
     Key key,
   }) : super(key: key);
 
@@ -139,6 +144,35 @@ class _confirmationcode extends State<confirmationcode> {
             ),
           ),
           SizedBox(height: size.height * 0.13),
+          /* Expanded(
+            flex: 2,
+            child: RoundedButton(
+              text: "Next",
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).accentColor,
+              press: () {
+                print(widget.currentStep + 1);
+                setState(() {
+                  if (widget.currentStep < widget.stepperLength) {
+                    widget.currentStep = widget.currentStep + 1;
+                    /*print(filesList.length);
+                    for (int i = 0; i < filesList.length; i++) {
+                      if (i == 0) print('personalPhoto : ${filesList[i]}');
+                      if (i == 1) print('driverLicense : ${filesList[i]}');
+                      if (i == 2)
+                        print('winchLicenseFront : ${filesList[i]}');
+                      if (i == 3)
+                        print('winchLicenseBack : ${filesList[i]}');
+                      if (i == 4) print('criminalRecord : ${filesList[i]}');
+                      if (i == 5) print('drugsAnalysis : ${filesList[i]}');
+                      if (i == 6)
+                        print('winchCheckReport : ${filesList[i]}');
+                    }*/
+                  } else {}
+                });
+              },
+            ),
+          )*/
         ],
       ),
     );

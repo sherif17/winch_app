@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'confirmationcode.dart';
 
-class Body extends StatelessWidget {
+class ConfirmationBody extends StatelessWidget {
   final bool islogin = false;
   final otpInput = InputDecoration(
       contentPadding: const EdgeInsets.symmetric(vertical: 40),
@@ -15,8 +15,26 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          buildTimer(),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 80.0,
+              left: 10.0,
+              bottom: 20.0,
+            ),
+            child: Text(
+              'Please Enter Your Confirmation Code Provided by the administration',
+              style: Theme.of(context).textTheme.headline1,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 0.5),
+            child: Text(
+              'These process of confirmation may take from 1 to 3 weeks to check your files',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
           confirmationcode(),
+          buildTimer(),
         ],
       ),
     );
