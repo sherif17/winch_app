@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:winch_app/models/files_upload_model.dart';
 import 'dart:convert';
 
 import 'package:winch_app/models/phone_num_model.dart';
@@ -28,5 +30,22 @@ class ApiService {
       return UserRegisterResponseModel.fromJson(json.decode(response.body));
     } else if (response.statusCode == 400)
       return UserRegisterResponseModel.fromJson(json.decode(response.body));
+  }
+
+  Future<FilesUploadResponseModel> uploadImage(
+      {dynamic data, Options options, token}) async {
+    Dio dio = new Dio();
+    dio.options.headers['content-Type'] = 'application/json';
+    dio.options.headers["x-auth-token"] = "$token";
+    String url = ' http://.    /api/winchDriver/me/UploadImages';
+    Response response = await dio.post(url, data: data /*, options: options*/,
+        onSendProgress: (int sent, int total) {
+      print("$sent $total");
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      return FilesUploadResponseModel.fromJson(json.decode(response.data));
+    } else {
+      throw Exception("failed to load Data");
+    }
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/screens/login_screens/file_upload/file_upload.dart';
+import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:winch_app/utils/routes.dart';
 import 'localization/demo_localization.dart';
@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
       return new MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
-        initialRoute: FileUpload.routeName,
+        initialRoute: Intro.routeName,
         routes: routes,
         locale: _locale,
         supportedLocales: [
