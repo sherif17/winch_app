@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:winch_app/lang/language_list.dart';
 import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/size_config.dart';
 
 import '../../../main.dart';
@@ -42,8 +43,9 @@ class _IntroState extends State<Intro> {
         Icons.language,
         color: Colors.redAccent,
       ),
-      onChanged: (Language language) {
+      onChanged: (Language language) async {
         _changeLanguage(language);
+        print("current lang: ${await getPrefCurrentLang()}");
       },
       items: Language.languageList()
           .map<DropdownMenuItem<Language>>(
