@@ -1,43 +1,52 @@
 import 'dart:convert';
 
-UserRegisterRequestModel userRegisterRequestModelFromJson(String str) =>
-    UserRegisterRequestModel.fromJson(json.decode(str));
+WinchRegisterRequestModel winchRegisterRequestModelFromJson(String str) =>
+    WinchRegisterRequestModel.fromJson(json.decode(str));
 
-String userRegisterRequestModelToJson(UserRegisterRequestModel data) =>
+String winchRegisterRequestModelToJson(WinchRegisterRequestModel data) =>
     json.encode(data.toJson());
 
-class UserRegisterRequestModel {
-  UserRegisterRequestModel({
+class WinchRegisterRequestModel {
+  WinchRegisterRequestModel({
     this.firstName,
     this.lastName,
+    this.winchPlates,
+    this.governorate,
   });
 
   String firstName;
   String lastName;
+  String winchPlates;
+  String governorate;
 
-  factory UserRegisterRequestModel.fromJson(Map<String, dynamic> json) =>
-      UserRegisterRequestModel(
+  factory WinchRegisterRequestModel.fromJson(Map<String, dynamic> json) =>
+      WinchRegisterRequestModel(
         firstName: json["firstName"],
         lastName: json["lastName"],
+        winchPlates: json["winchPlates"],
+        governorate: json["governorate"],
       );
 
   Map<String, dynamic> toJson() => {
         "firstName": firstName,
         "lastName": lastName,
+        "winchPlates": winchPlates,
+        "governorate": governorate,
       };
 }
+
 // To parse this JSON data, do
 //
 //     final userRegisterResponseModel = userRegisterResponseModelFromJson(jsonString);
 
-UserRegisterResponseModel userRegisterResponseModelFromJson(String str) =>
-    UserRegisterResponseModel.fromJson(json.decode(str));
+WinchRegisterResponseModel winchRegisterResponseModelFromJson(String str) =>
+    WinchRegisterResponseModel.fromJson(json.decode(str));
 
-String userRegisterResponseModelToJson(UserRegisterResponseModel data) =>
+String winchRegisterResponseModelToJson(WinchRegisterResponseModel data) =>
     json.encode(data.toJson());
 
-class UserRegisterResponseModel {
-  UserRegisterResponseModel({
+class WinchRegisterResponseModel {
+  WinchRegisterResponseModel({
     this.token,
     this.error,
   });
@@ -45,8 +54,8 @@ class UserRegisterResponseModel {
   String token;
   String error;
 
-  factory UserRegisterResponseModel.fromJson(Map<String, dynamic> json) =>
-      UserRegisterResponseModel(
+  factory WinchRegisterResponseModel.fromJson(Map<String, dynamic> json) =>
+      WinchRegisterResponseModel(
         token: json["token"],
         error: json["error"],
       );

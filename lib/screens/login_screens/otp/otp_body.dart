@@ -65,14 +65,14 @@ class Otp_Body extends StatelessWidget {
               phoneRequestModel: response.phoneRequestModel,
               phone_num: response.phoneNumber,
               scafoldKey: response.scafoldKey),
-          buildTimer(),
+          buildTimer(context),
           SizedBox(height: size.height * 0.06),
         ],
       ),
     );
   }
 
-  Row buildTimer() {
+  Row buildTimer(context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

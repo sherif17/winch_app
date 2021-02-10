@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/models/user_register_model.dart';
-import 'package:winch_app/screens/home_screen/nav_bar/home.dart';
+import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/screens/login_screens/user_register/register_body.dart';
 import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
 
@@ -22,7 +23,7 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  UserRegisterRequestModel userRegisterRequestModel;
+  WinchRegisterRequestModel winchRegisterRequestModel;
 
   String jwtToken;
   String responseID;
@@ -34,7 +35,7 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   void initState() {
     super.initState();
-    userRegisterRequestModel = new UserRegisterRequestModel();
+    winchRegisterRequestModel = new WinchRegisterRequestModel();
   }
 
   void addError({String error}) {
@@ -93,16 +94,22 @@ class _RegisterFormState extends State<RegisterForm> {
         RoundedButton(
           text: 'Create Account',
           color: Theme.of(context).primaryColor,
-          press: () {
+          press: () async {
             if (registerValidateAndSave()) {
-              print("Request body: ${userRegisterRequestModel.toJson()}.");
-              setState(() {
+              print("Request body: ${winchRegisterRequestModel.toJson()}.");
+              Navigator.pushNamed(context, MainStepper.routeName);
+              print(await getPrefJwtToken());
+              print(await getPrefPhoneNumber());
+              print(await getPrefLastName());
+              print(await getPrefFirstName());
+              print(await getPrefFirebaseID());
+              /* setState(() {
                 isApiCallProcess = true;
               });
               ApiService apiService = new ApiService();
               apiService
                   .registerUser(
-                      userRegisterRequestModel, widget.otpResponse_jwt)
+                      winchRegisterRequestModel, widget.otpResponse_jwt)
                   .then((value) {
                 if (value.error == null) {
                   jwtToken = value.token;
@@ -120,9 +127,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   setState(() {
                     isApiCallProcess = false;
                   });
-                  Navigator.pushNamed(context, HomeScreen.routeName,
-                      arguments: otpNavData(
-                          jwtToken: jwtToken, Phone: widget.otpResponse_phone));
                 } else {
                   setState(() {
                     isApiCallProcess = false;
@@ -131,7 +135,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   showRegisterModalBottomSheet(
                       context, size.height * 0.4, false, "byNameError", "");
                 }
-              });
+              });*/
             } else
               print("Error on Saving Data");
           },
@@ -159,7 +163,8 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       onSaved: (newValue) {
         //firstName = newValue;
-        userRegisterRequestModel.firstName = newValue;
+        winchRegisterRequestModel.firstName = newValue;
+        setPrefFirstName(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -196,7 +201,8 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       onSaved: (newValue) {
         //lastName = newValue;
-        userRegisterRequestModel.lastName = newValue;
+        winchRegisterRequestModel.lastName = newValue;
+        setPrefLastName(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {

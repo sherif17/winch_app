@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/models/user_register_model.dart';
-import 'package:winch_app/screens/home_screen/nav_bar/home.dart';
+import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/form_error.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
 
-import '../../home_screen/nav_bar/home.dart';
 
 class ConfirmUserForm extends StatefulWidget {
   String otpResponse_FName;
@@ -31,7 +31,7 @@ class ConfirmUserForm extends StatefulWidget {
 
 class _ConfirmUserFormState extends State<ConfirmUserForm> {
   final _formKey = GlobalKey<FormState>();
-  UserRegisterRequestModel userRegisterRequestModel;
+  WinchRegisterRequestModel winchRegisterRequestModel;
   bool isApiCallProcess = false;
 
   String jwtToken;
@@ -46,7 +46,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
   @override
   void initState() {
     super.initState();
-    userRegisterRequestModel = new UserRegisterRequestModel();
+    winchRegisterRequestModel = new WinchRegisterRequestModel();
   }
 
   void addError({String error}) {
@@ -128,11 +128,11 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             RoundedButton(
                 text: "Edit my info",
                 color: Theme.of(context).primaryColor,
-                press: () {
+                press: () async {
                   if (confirmValidateAndSave()) {
                     if (FName_Changed == true || LName_changed == true) {
                       print(
-                          "Request body: ${userRegisterRequestModel.toJson()}.");
+                          "Request body: ${winchRegisterRequestModel.toJson()}.");
                       print("hii${widget.otpResponse_JWT}");
                       setState(() {
                         isApiCallProcess = true;
@@ -140,7 +140,9 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                       ApiService apiService = new ApiService();
                       apiService
                           .registerUser(
-                              userRegisterRequestModel, widget.otpResponse_JWT)
+                              winchRegisterRequestModel,
+                              widget.otpResponse_JWT,
+                              await getPrefCurrentLang())
                           .then(
                         (value) {
                           if (value.error == null) {
@@ -160,7 +162,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                             setState(() {
                               isApiCallProcess = false;
                             });
-                            Navigator.pushNamed(context, HomeScreen.routeName,
+                            Navigator.pushNamed(context, DashBoard.routeName,
                                 arguments: otpNavData(
                                     jwtToken: jwtToken,
                                     Phone: widget.otpResponse_Phone,
@@ -204,7 +206,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       ),
       onSaved: (newValue) {
         if (newValue != widget.otpResponse_FName) FName_Changed = true;
-        userRegisterRequestModel.firstName = newValue;
+        winchRegisterRequestModel.firstName = newValue;
       },
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -242,7 +244,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       ),
       onSaved: (newValue) {
         if (newValue != widget.otpResponse_LName) LName_changed = true;
-        userRegisterRequestModel.lastName = newValue;
+        winchRegisterRequestModel.lastName = newValue;
       },
       onChanged: (value) {
         if (value.isNotEmpty) {

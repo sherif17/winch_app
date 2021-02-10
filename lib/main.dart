@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/screens/dash_board/dash_board.dart';
+import 'package:winch_app/screens/dash_board/home/home_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/onboarding_screens/intro_screens/intro.dart';
 import 'package:winch_app/utils/routes.dart';

@@ -1,11 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 
-class WatchTutorial extends StatelessWidget {
+class WatchTutorial extends StatefulWidget {
+  @override
+  _WatchTutorialState createState() => _WatchTutorialState();
+}
+
+class _WatchTutorialState extends State<WatchTutorial> {
+  String CurrentWinchUserFname;
+  @override
+  void initState() {
+    getCurrentPref();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
         Padding(
+            padding: EdgeInsets.only(top: size.height * 0),
+            child: SvgPicture.asset(
+              "assets/icons/checkmark.svg",
+              height: size.height * 0.4,
+              color: Colors.greenAccent,
+            )),
+        SizedBox(height: size.height * 0.05),
+        Text(
+          "Congratulations $CurrentWinchUserFname",
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        SizedBox(height: size.height * 0.04),
+        Text(
+          "You Have Successfully Registered as Winch Driver In Our App",
+          style: Theme.of(context).textTheme.bodyText1,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: size.height * 0.03),
+        Text(
+          "Let's Start Your Mission With Us",
+          style: Theme.of(context).textTheme.bodyText2,
+          textAlign: TextAlign.center,
+        ),
+
+        /*Padding(
           padding:
           const EdgeInsets.only(top: 60.0, left: 10.0, bottom: 10.0),
           child: Text(
@@ -42,8 +83,12 @@ class WatchTutorial extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ),*/
       ],
     );
+  }
+
+  getCurrentPref() async {
+    CurrentWinchUserFname = await getPrefFirstName();
   }
 }

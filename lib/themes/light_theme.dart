@@ -153,7 +153,7 @@ InputDecorationTheme inputDecorationTheme(ThemeData base) {
     errorBorder: ErrorInputBorder,
     border: EnabledInputBorder,
     hintStyle: TextStyle(),
-    labelStyle: TextStyle(color: Colors.red),
+    labelStyle: TextStyle(color: Color(0xFFFF718D)),
   );
 }
 ////link url fot this method :https://codeburst.io/managing-multiple-themes-in-flutter-application-37411adeb04c

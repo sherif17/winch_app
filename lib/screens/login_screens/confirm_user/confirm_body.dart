@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:winch_app/screens/home_screen/nav_bar/home.dart';
+import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/login_screens/common_widgets/background.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/widgets/borderd_buttons.dart';
@@ -34,7 +34,7 @@ class Body extends StatelessWidget {
               text: 'Yes, its Me',
               color: Theme.of(context).primaryColor,
               press: () {
-                Navigator.pushNamed(context, HomeScreen.routeName,
+                Navigator.pushNamed(context, DashBoard.routeName,
                     arguments: otpNavData(
                         jwtToken: otpResponse.jwtToken,
                         Phone: otpResponse.Phone,

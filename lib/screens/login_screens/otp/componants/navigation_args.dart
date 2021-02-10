@@ -7,7 +7,7 @@ class otpNavData {
   dynamic socialPhoto;
   dynamic socialEmail;
   String loginType;
-  int iAt;
+  String iAt;
 
   otpNavData(
       {this.jwtToken,

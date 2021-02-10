@@ -1,16 +1,17 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 const String _CURRENT_LANGUAGE = 'currentLanguage';
-const String _JWT_TOKEN='jwtToken';
-const String _FIREBASE_ID='fireBaseId';
-const String _BACKEND_ID='ID';
-const String _FIRST_NAME='firstName';
-const String _LAST_NAME='lastName';
-const String _PHONE_NUMBER='phoneNumber';
-const String _WINCH_PLATES='winchPlates';
-const String _WORKING_CITY='workingCity';
-
+const String _JWT_TOKEN = 'jwtToken';
+const String _FIREBASE_ID = 'fireBaseId';
+const String _BACKEND_ID = 'ID';
+const String _FIRST_NAME = 'firstName';
+const String _LAST_NAME = 'lastName';
+const String _PHONE_NUMBER = 'phoneNumber';
+const String _WINCH_PLATES = 'winchPlates';
+const String _WINCH_PLATES_CHARS = 'winchPlatesChars';
+const String _WINCH_PLATES_NUM = 'winchPlatesNum';
+const String _WORKING_CITY = 'workingCity';
+const String _IAT = 'iat';
 
 ///////////////////////////////////////////////////////
 Future<String> getPrefCurrentLang() async {
@@ -33,6 +34,7 @@ Future<String> setPrefJwtToken(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_JWT_TOKEN, value);
 }
+
 //////////////////////////////////////////////////////////////
 Future<String> getPrefFirebaseID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -43,6 +45,7 @@ Future<String> setPrefFirebaseID(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_FIREBASE_ID, value);
 }
+
 ////////////////////////////////////////////////////////////////////
 Future<String> getPrefBackendID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -53,6 +56,7 @@ Future<String> setPrefBackendID(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_BACKEND_ID, value);
 }
+
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefFirstName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -63,6 +67,7 @@ Future<String> setPrefFirstName(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_FIRST_NAME, value);
 }
+
 //////////////////////////////////////////////////////////////////////
 Future<String> getPrefLastName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -73,6 +78,7 @@ Future<String> setPrefLastName(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_LAST_NAME, value);
 }
+
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefPhoneNumber() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -83,6 +89,7 @@ Future<String> setPrefPhoneNumber(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_PHONE_NUMBER, value);
 }
+
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlates() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -93,6 +100,29 @@ Future<String> setPrefWinchPlates(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_WINCH_PLATES, value);
 }
+
+/////////////////////////////////////////////////////////////////////
+Future<String> getPrefWinchPlatesChars() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_WINCH_PLATES_CHARS) ?? null;
+}
+
+Future<String> setPrefWinchPlatesChars(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_WINCH_PLATES_CHARS, value);
+}
+
+/////////////////////////////////////////////////////////////////////
+Future<String> getPrefWinchPlatesNum() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_WINCH_PLATES_NUM) ?? null;
+}
+
+Future<String> setPrefWinchPlatesNum(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_WINCH_PLATES_NUM, value);
+}
+
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWorkingCity() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -102,4 +132,15 @@ Future<String> getPrefWorkingCity() async {
 Future<String> setPrefWorkingCity(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_WORKING_CITY, value);
+}
+
+/////////////////////////////////////////////////////////////////////
+Future<String> getPrefIAT() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_IAT) ?? null;
+}
+
+Future<String> setPrefIAT(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_IAT, value);
 }

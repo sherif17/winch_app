@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/models/user_register_model.dart';
-import 'package:winch_app/screens/home_screen/nav_bar/home.dart';
+import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
 import '../common_widgets/background.dart';
 import '../../../widgets/form_error.dart';
@@ -27,7 +28,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  UserRegisterRequestModel registerRequestModel;
+  WinchRegisterRequestModel winchRegisterRequestModel;
   dynamic googleName;
   dynamic googleImage;
   dynamic googleEmail;
@@ -48,7 +49,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    registerRequestModel = new UserRegisterRequestModel();
+    winchRegisterRequestModel = new WinchRegisterRequestModel();
   }
 
   Widget build(BuildContext context) {
@@ -81,8 +82,9 @@ class _BodyState extends State<Body> {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: RegisterForm(
-                    otpResponse_jwt: otpResponse.jwtToken,
-                    otpResponse_phone: otpResponse.Phone)),
+                    /*otpResponse_jwt: otpResponse.jwtToken,
+                    otpResponse_phone: otpResponse.Phone*/
+                    )),
             SizedBox(height: size.height * 0.02),
             OrDivider(),
             SizedBox(height: size.height * 0.02),
@@ -187,15 +189,16 @@ class _BodyState extends State<Body> {
                     googleEmail != null) {
                   Gdecode = googleName.split(new RegExp('\\s+'));
                   print(Gdecode);
-                  registerRequestModel.firstName = Gdecode[0];
-                  registerRequestModel.lastName = Gdecode[1];
-                  print("Request body: ${registerRequestModel.toJson()}.");
+                  winchRegisterRequestModel.firstName = Gdecode[0];
+                  winchRegisterRequestModel.lastName = Gdecode[1];
+                  print("Request body: ${winchRegisterRequestModel.toJson()}.");
                   setState(() {
                     isApiCallProcess = true;
                   });
                   ApiService apiService = new ApiService();
                   apiService
-                      .registerUser(registerRequestModel, otpResponse.jwtToken)
+                      .registerUser(winchRegisterRequestModel,
+                          otpResponse.jwtToken, await getPrefCurrentLang())
                       .then((value) {
                     if (value.error == null) {
                       jwtToken = value.token;
@@ -313,6 +316,7 @@ showRegisterModalBottomSheet(
     context: context,
     isScrollControlled: false,
     enableDrag: true,
+    backgroundColor: Colors.transparent,
     builder: (context) => Container(
       height: container_size,
       decoration: BoxDecoration(
@@ -358,7 +362,7 @@ showRegisterModalBottomSheet(
             color: Theme.of(context).primaryColorLight,
             press: () {
               state
-                  ? Navigator.pushNamed(context, HomeScreen.routeName,
+                  ? Navigator.pushNamed(context, MainStepper.routeName,
                       arguments: arguments)
                   : Navigator.pop(context);
             },

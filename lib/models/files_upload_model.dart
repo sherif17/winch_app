@@ -12,21 +12,21 @@ String filesUploadResponseModelToJson(FilesUploadResponseModel data) =>
 
 class FilesUploadResponseModel {
   FilesUploadResponseModel({
-    this.newToken,
+    this.token,
     this.error,
   });
 
-  String newToken;
+  String token;
   String error;
 
   factory FilesUploadResponseModel.fromJson(Map<String, dynamic> json) =>
       FilesUploadResponseModel(
-        newToken: json["New Token"],
+        token: json["token"],
         error: json["error"],
       );
 
   Map<String, dynamic> toJson() => {
-        "New Token": newToken,
+        "token": token,
         "error": error,
       };
 }

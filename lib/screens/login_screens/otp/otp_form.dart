@@ -11,6 +11,7 @@ import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart
 import 'package:winch_app/screens/login_screens/user_register/register_body.dart';
 import 'package:winch_app/screens/login_screens/user_register/register_new_user.dart';
 import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/utils/size_config.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
@@ -40,7 +41,7 @@ class _OtpFormState extends State<OtpForm> {
   String responseID;
   String responseFName;
   String responseLName;
-  int responseIat;
+  String responseIat;
 
   String pin1;
   String pin2;
@@ -213,6 +214,7 @@ class _OtpFormState extends State<OtpForm> {
                       .then((value) async {
                     if (value.user != null) {
                       fireToken = FirebaseAuth.instance.currentUser.uid;
+                      setPrefFirebaseID(fireToken);
                       checkFirebase = true;
                       print(checkFirebase);
                       print("Firebase Token:${fireToken}");
@@ -235,39 +237,36 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.error == null) {
                       print("Response:");
                       jwtToken = value.token;
+                      setPrefJwtToken(jwtToken);
                       print(jwtToken);
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
                       responseID = decodedToken["_id"];
                       responseFName = decodedToken["firstName"];
                       responseLName = decodedToken["lastName"];
-                      responseIat = decodedToken["iat"];
+                      // responseIat = decodedToken["iat"];
                       print(responseID);
                       print(responseLName);
                       print(responseFName);
-                      print(responseIat);
+                      //print(responseIat);
                       if (responseFName != null && responseLName != null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        Navigator.pushNamed(context, ConfirmThisUser.routeName,
-                            arguments: otpNavData(
-                              jwtToken: jwtToken,
-                              uID: responseID,
-                              FName: responseFName,
-                              LName: responseLName,
-                              iAt: responseIat,
-                              Phone: "+20${widget.phone_num}",
-                            ));
+                        setPrefBackendID(responseID);
+                        setPrefFirstName(responseFName);
+                        setPrefLastName(responseLName);
+                        setPrefIAT(responseIat);
+                        Navigator.pushNamed(
+                          context,
+                          ConfirmThisUser.routeName,
+                        );
                       } else if (responseFName == null &&
                           responseLName == null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        Navigator.pushNamed(context, RegisterNewUser.routeName,
-                            arguments: otpNavData(
-                                jwtToken: jwtToken,
-                                Phone: "+20${widget.phone_num}"));
+                        Navigator.pushNamed(context, RegisterNewUser.routeName);
                       } else {
                         setState(() {
                           isApiCallProcess = false;
