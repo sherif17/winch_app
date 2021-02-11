@@ -63,7 +63,7 @@ class _BodyState extends State<Body> {
   @override
   Widget social_build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
+    // otpNavData otpResponse = ModalRoute.of(context).settings.arguments;
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
     //final facebookLogin = FacebookLogin();
     Map userProfile;
@@ -169,36 +169,40 @@ class _BodyState extends State<Body> {
 
             SizedBox(height: size.height * 0.02),
             borderedRoundedButton(
-              text: 'Continue with Google',
-              iconSrc: 'assets/icons/google_logo.svg',
-              CornerRadius: 29,
-              press: () async {
-                try {
-                  await _googleSignIn.signIn();
-                  googleName = _googleSignIn.currentUser.displayName;
-                  googleImage = _googleSignIn.currentUser.photoUrl;
-                  googleEmail = _googleSignIn.currentUser.email;
-                  print(googleName);
-                  print(googleImage);
-                } catch (err) {
-                  print(err);
-                }
-                List Gdecode;
-                if (googleName != null &&
-                    googleImage != null &&
-                    googleEmail != null) {
-                  Gdecode = googleName.split(new RegExp('\\s+'));
-                  print(Gdecode);
-                  winchRegisterRequestModel.firstName = Gdecode[0];
-                  winchRegisterRequestModel.lastName = Gdecode[1];
-                  print("Request body: ${winchRegisterRequestModel.toJson()}.");
+                text: 'Continue with Google',
+                iconSrc: 'assets/icons/google_logo.svg',
+                CornerRadius: 29,
+                press: () async {
+                  try {
+                    await _googleSignIn.signIn();
+                    googleName = _googleSignIn.currentUser.displayName;
+                    googleImage = _googleSignIn.currentUser.photoUrl;
+                    googleEmail = _googleSignIn.currentUser.email;
+                    setPrefSocialEmail(googleEmail);
+                    setPrefSocialImage(googleImage);
+                    print(googleName);
+                    print(googleImage);
+                  } catch (err) {
+                    print(err);
+                  }
+                  List Gdecode;
+                  if (googleName != null &&
+                      googleImage != null &&
+                      googleEmail != null) {
+                    Gdecode = googleName.split(new RegExp('\\s+'));
+                    print(Gdecode);
+                    setPrefFirstName(Gdecode[0]);
+                    setPrefLastName(Gdecode[1]);
+                    Navigator.pushNamed(context, MainStepper.routeName);
+                    printAllWinchUserCurrentData();
+                    /* print("Request body: ${winchRegisterRequestModel.toJson()}.");
                   setState(() {
                     isApiCallProcess = true;
                   });
                   ApiService apiService = new ApiService();
                   apiService
                       .registerUser(winchRegisterRequestModel,
-                          otpResponse.jwtToken, await getPrefCurrentLang())
+                          await getPrefJwtToken(), await getPrefCurrentLang())
                       .then((value) {
                     if (value.error == null) {
                       jwtToken = value.token;
@@ -236,16 +240,16 @@ class _BodyState extends State<Body> {
                           context, size.height * 0.4, false, " ", "");
                     }
                   });
-                } else {
-                  //failing in loading data from google
-                  setState(() {
-                    isApiCallProcess = false;
-                  });
-                  showRegisterModalBottomSheet(
-                      context, size.height * 0.4, false, "byGoogleError", "");
-                }
-              },
-            ),
+                } */
+                  } else {
+                    //failing in loading data from google
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    showRegisterModalBottomSheet(
+                        context, size.height * 0.4, false, "byGoogleError", "");
+                  }
+                }),
 
             SizedBox(height: size.height * 0.02),
             borderedRoundedButton(

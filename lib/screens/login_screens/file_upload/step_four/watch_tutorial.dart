@@ -11,7 +11,7 @@ class _WatchTutorialState extends State<WatchTutorial> {
   String CurrentWinchUserFname;
   @override
   void initState() {
-    getCurrentPref();
+    getWinchUserData();
     // TODO: implement initState
     super.initState();
   }
@@ -88,7 +88,11 @@ class _WatchTutorialState extends State<WatchTutorial> {
     );
   }
 
-  getCurrentPref() async {
-    CurrentWinchUserFname = await getPrefFirstName();
+  getWinchUserData() async {
+    getPrefFirstName().then((value) {
+      setState(() {
+        CurrentWinchUserFname=value;
+      });
+    });
   }
 }

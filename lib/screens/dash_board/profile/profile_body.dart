@@ -2,14 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/screens/login_screens/confirm_user/confirm_body.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 
 class ProfileBody extends StatefulWidget {
   @override
   _ProfileBodyState createState() => _ProfileBodyState();
 }
 
+String token;
+String ID;
+String Fname;
+String Lname;
+String Phone;
+String WinchPlates;
+String currentLang;
+String WorkingCity;
+String profilePhoto;
+String email;
+String iat;
+
 class _ProfileBodyState extends State<ProfileBody> {
+  @override
+  void initState() {
+    // getCurrentPrefData();
+    super.initState();
+    loadAllWinchUserData();
+  }
+
   Widget _greenColors() {
     return Positioned(
       top: 0,
@@ -31,7 +52,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       top: 75,
       child: Container(
         margin: const EdgeInsets.all(20),
-        height: 250,
+        height: 500,
         width: MediaQuery.of(context).size.width * 0.90,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -43,7 +64,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("User information",
+              Text("Winch Driver information",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   textAlign: TextAlign.end),
               SizedBox(
@@ -90,6 +111,57 @@ class _ProfileBodyState extends State<ProfileBody> {
                   Text(Phone)
                 ],
               ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text("Working City",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.red,
+                          fontSize: 15)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(workingCity)
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text("Winch Plates",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.red,
+                          fontSize: 15)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(WinchPlates),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text("Current Language",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.red,
+                          fontSize: 15)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(currentLang),
+                ],
+              ),
             ],
           ),
         ),
@@ -104,10 +176,10 @@ class _ProfileBodyState extends State<ProfileBody> {
     else
       exist = false;
     return Positioned(
-      top: 300,
+      top: 400,
       child: Container(
         margin: EdgeInsets.all(20),
-        height: 400,
+        height: 1000,
         width: MediaQuery.of(context).size.width * 0.90,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(20)),
@@ -117,7 +189,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Your Detailed Info",
+                "Detailed Info",
                 style: Theme.of(context).textTheme.headline1,
               ),
               SizedBox(
@@ -228,18 +300,6 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    otpNavData finalResponse = ModalRoute.of(context).settings.arguments;
-    Map<String, dynamic> decodedToken =
-        JwtDecoder.decode(finalResponse.jwtToken);
-    String token = finalResponse.jwtToken;
-    String ID = decodedToken['_id'];
-    String Fname = decodedToken['firstName'];
-    String Lname = decodedToken['lastName'];
-    String Phone = finalResponse.Phone;
-    dynamic profilePhoto = finalResponse.socialPhoto;
-    dynamic email = finalResponse.socialEmail;
-    String iat = decodedToken['iat'].toString();
-
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -276,5 +336,63 @@ class _ProfileBodyState extends State<ProfileBody> {
         ),
       ),
     );
+  }
+
+  loadAllWinchUserData() {
+    getPrefBackendID().then((value) {
+      setState(() {
+        ID = value;
+      });
+    });
+    getPrefFirstName().then((value) {
+      setState(() {
+        Fname = value;
+      });
+    });
+    getPrefLastName().then((value) {
+      setState(() {
+        Lname = value;
+      });
+    });
+    getPrefPhoneNumber().then((value) {
+      setState(() {
+        Phone = value;
+      });
+    });
+    getPrefWinchPlates().then((value) {
+      setState(() {
+        WinchPlates = value;
+      });
+    });
+    getPrefJwtToken().then((value) {
+      setState(() {
+        token = value;
+      });
+    });
+    getPrefIAT().then((value) {
+      setState(() {
+        iat = value;
+      });
+    });
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
+    getPrefWorkingCity().then((value) {
+      setState(() {
+        workingCity = value;
+      });
+    });
+    getPrefSocialImage().then((value) {
+      setState(() {
+        profilePhoto = value;
+      });
+    });
+    getPrefSocialEmail().then((value) {
+      setState(() {
+        email = value;
+      });
+    });
   }
 }

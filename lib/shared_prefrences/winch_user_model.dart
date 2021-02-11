@@ -12,6 +12,8 @@ const String _WINCH_PLATES_CHARS = 'winchPlatesChars';
 const String _WINCH_PLATES_NUM = 'winchPlatesNum';
 const String _WORKING_CITY = 'workingCity';
 const String _IAT = 'iat';
+const String _SOCIAL_IMAGE = 'socialImage';
+const String _SOCIAL_EMAIL = 'socialEmail';
 
 ///////////////////////////////////////////////////////
 Future<String> getPrefCurrentLang() async {
@@ -22,6 +24,10 @@ Future<String> getPrefCurrentLang() async {
 Future<String> setPrefCurrentLang(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_CURRENT_LANGUAGE, value);
+}
+
+loadPrefCurrentLang() async {
+  return getPrefCurrentLang();
 }
 
 //////////////////////////////////////////////////////////////////
@@ -35,6 +41,10 @@ Future<String> setPrefJwtToken(String value) async {
   await _prefs.setString(_JWT_TOKEN, value);
 }
 
+loadPrefJwtToken() async {
+  return getPrefJwtToken();
+}
+
 //////////////////////////////////////////////////////////////
 Future<String> getPrefFirebaseID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -44,6 +54,10 @@ Future<String> getPrefFirebaseID() async {
 Future<String> setPrefFirebaseID(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_FIREBASE_ID, value);
+}
+
+loadPrefFirebaseID() async {
+  return getPrefFirebaseID();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -57,10 +71,15 @@ Future<String> setPrefBackendID(String value) async {
   await _prefs.setString(_BACKEND_ID, value);
 }
 
+loadPrefBackendID() async {
+  return getPrefBackendID();
+}
+
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefFirstName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_FIRST_NAME) ?? null;
+  String value = _prefs.getString(_FIRST_NAME) ?? null;
+  return value;
 }
 
 Future<String> setPrefFirstName(String value) async {
@@ -68,6 +87,12 @@ Future<String> setPrefFirstName(String value) async {
   await _prefs.setString(_FIRST_NAME, value);
 }
 
+/*
+loadPrefFirstName() {
+  String Fname = getPrefFirstName();
+  return Fname;
+}
+*/
 //////////////////////////////////////////////////////////////////////
 Future<String> getPrefLastName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -77,6 +102,10 @@ Future<String> getPrefLastName() async {
 Future<String> setPrefLastName(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_LAST_NAME, value);
+}
+
+loadPrefLastName() async {
+  return getPrefLastName();
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -90,6 +119,10 @@ Future<String> setPrefPhoneNumber(String value) async {
   await _prefs.setString(_PHONE_NUMBER, value);
 }
 
+loadPrefPhoneNumber() async {
+  return getPrefPhoneNumber();
+}
+
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlates() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -99,6 +132,10 @@ Future<String> getPrefWinchPlates() async {
 Future<String> setPrefWinchPlates(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_WINCH_PLATES, value);
+}
+
+loadPrefWinchPlates() async {
+  return getPrefWinchPlates();
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -112,6 +149,10 @@ Future<String> setPrefWinchPlatesChars(String value) async {
   await _prefs.setString(_WINCH_PLATES_CHARS, value);
 }
 
+loadPrefWinchPlatesChars() async {
+  return getPrefWinchPlatesChars();
+}
+
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlatesNum() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -121,6 +162,10 @@ Future<String> getPrefWinchPlatesNum() async {
 Future<String> setPrefWinchPlatesNum(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_WINCH_PLATES_NUM, value);
+}
+
+loadPrefWinchPlatesNum() async {
+  return getPrefWinchPlatesNum();
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -134,6 +179,10 @@ Future<String> setPrefWorkingCity(String value) async {
   await _prefs.setString(_WORKING_CITY, value);
 }
 
+loadPrefWorkingCity() async {
+  return getPrefWorkingCity();
+}
+
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefIAT() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -143,4 +192,54 @@ Future<String> getPrefIAT() async {
 Future<String> setPrefIAT(String value) async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(_IAT, value);
+}
+
+loadPrefIAT() async {
+  return getPrefIAT();
+}
+
+///////////////////////////////////////////////////////
+Future<String> getPrefSocialImage() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_SOCIAL_IMAGE) ?? "";
+}
+
+Future<String> setPrefSocialImage(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_SOCIAL_IMAGE, value);
+}
+
+loadPrefGoogleImage() async {
+  return getPrefSocialImage();
+}
+
+///////////////////////////////////////////////////////
+Future<String> getPrefSocialEmail() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  return _prefs.getString(_SOCIAL_EMAIL) ?? "";
+}
+
+Future<String> setPrefSocialEmail(String value) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  await _prefs.setString(_SOCIAL_EMAIL, value);
+}
+
+loadPrefGoogleEmail() async {
+  return getPrefSocialEmail();
+}
+
+/////////////////////////////////////////////////////////////////
+printAllWinchUserCurrentData() async {
+  print("_CURRENT_LANGUAGE : ${await getPrefCurrentLang()}");
+  print("_JWT_TOKEN : ${await getPrefJwtToken()}");
+  print("_FIREBASE_ID : ${await getPrefFirebaseID()}");
+  print("_BACKEND_ID : ${await getPrefBackendID()}");
+  print("_FIRST_NAME : ${await getPrefFirstName()}");
+  print("_LAST_NAME : ${await getPrefLastName()}");
+  print("_PHONE_NUMBER : ${await getPrefPhoneNumber()}");
+  print("_WINCH_PLATES : ${await getPrefWinchPlates()}");
+  print("_WORKING_CITY : ${await getPrefWorkingCity()}");
+  print("_IAT : ${await getPrefIAT()}");
+  print("_GOOGLE_IMAGE : ${await getPrefSocialImage()}");
+  print("_GOOGLE_EMAIL : ${await getPrefSocialEmail()}");
 }

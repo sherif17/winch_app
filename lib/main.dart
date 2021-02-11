@@ -7,6 +7,7 @@ import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/dash_board/home/home_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/onboarding_screens/intro_screens/intro.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/routes.dart';
 import 'localization/demo_localization.dart';
 import 'themes/light_theme.dart';
@@ -55,6 +56,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
+  String TOKEN;
+  String BACKEND_ID;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -69,6 +72,16 @@ class _MyAppState extends State<MyApp> {
             _locale = local;
           })
         });
+    getPrefJwtToken().then((value) {
+      setState(() {
+        TOKEN = value;
+      });
+    });
+    getPrefBackendID().then((value) {
+      setState(() {
+        BACKEND_ID = value;
+      });
+    });
     super.didChangeDependencies();
   }
 
@@ -86,7 +99,9 @@ class _MyAppState extends State<MyApp> {
       return new MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
-        initialRoute: Intro.routeName,
+        initialRoute: TOKEN == null && BACKEND_ID == null
+            ? Intro.routeName
+            : DashBoard.routeName,
         routes: routes,
         locale: _locale,
         supportedLocales: [

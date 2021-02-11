@@ -150,21 +150,25 @@ class _StepperBodyState extends State<StepperBody> {
                               .registerUser(winchRegisterRequestModel,
                                   currentJwtToken, currentLang)
                               .then((value) {
-                            if (value != null) {
+                            if (value.token != null) {
                               // setPrefJwtToken(value.token);
                               print(value.token);
                               print(value.error);
                               JwtToken = value.token;
                               setState(() {
                                 isApiCallProcess = false;
-                                setState(() {
-                                  if (this._currentstep <
-                                      _stepper().length - 1) {
-                                    this._currentstep = this._currentstep + 1;
-                                  }
-                                });
+                                printAllWinchUserCurrentData();
+                                if (value.error == null) {
+                                  setState(() {
+                                    if (this._currentstep <
+                                        _stepper().length - 1) {
+                                      this._currentstep = this._currentstep + 1;
+                                    }
+                                  });
+                                }
                               });
-                            }
+                            } else
+                              print(value.error);
                           });
                         }
                       }
@@ -230,15 +234,10 @@ class _StepperBodyState extends State<StepperBody> {
                               String winchCheckReportPicture =
                                   decodedToken["winchCheckReportPicture"];
                               var responseIat = decodedToken["iat"];
-                              print(responseID);
                               setPrefBackendID(responseID);
-                              print(responseFName);
                               setPrefFirstName(responseFName);
-                              print(responseLName);
                               setPrefLastName(responseLName);
-                              print(winchPlates);
                               setPrefWinchPlates(winchPlates);
-                              print(governorate);
                               setPrefWorkingCity(governorate);
                               print(personalPicture);
                               print(driverLicensePicture);
@@ -250,17 +249,22 @@ class _StepperBodyState extends State<StepperBody> {
                               setPrefIAT(responseIat.toString());
                               setState(() {
                                 isApiCallProcess = false;
-                                if (this._currentstep < _stepper().length - 1) {
+                                if (value.error == null) if (this._currentstep <
+                                    _stepper().length - 1) {
                                   this._currentstep = this._currentstep + 2;
                                 }
                               });
                             } else
                               print("value of token is null");
+                            print(value.error);
                           } else
                             print(response.reasonPhrase);
                         }
-                      } else
+                      } else {
                         Navigator.pushNamed(context, DashBoard.routeName);
+                        printAllWinchUserCurrentData();
+                      }
+
                       /* setState(() {
                       if (this._currentstep < _stepper().length - 1) {
                         this._currentstep = this._currentstep + 1;

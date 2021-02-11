@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/models/phone_num_model.dart';
+import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
 import 'package:winch_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/screens/login_screens/user_register/register_body.dart';
@@ -41,7 +42,9 @@ class _OtpFormState extends State<OtpForm> {
   String responseID;
   String responseFName;
   String responseLName;
-  String responseIat;
+  int responseIat;
+  String winchPlates;
+  String governorate;
 
   String pin1;
   String pin2;
@@ -233,7 +236,9 @@ class _OtpFormState extends State<OtpForm> {
                     isApiCallProcess = true;
                   });
                   ApiService apiService = new ApiService();
-                  apiService.phoneCheck(widget.phoneRequestModel).then((value) {
+                  apiService
+                      .phoneCheck(widget.phoneRequestModel)
+                      .then((value) async {
                     if (value.error == null) {
                       print("Response:");
                       jwtToken = value.token;
@@ -242,9 +247,14 @@ class _OtpFormState extends State<OtpForm> {
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
                       responseID = decodedToken["_id"];
+                      //setPrefBackendID(responseID);
                       responseFName = decodedToken["firstName"];
                       responseLName = decodedToken["lastName"];
-                      // responseIat = decodedToken["iat"];
+                      winchPlates = decodedToken["winchPlates"];
+                      setPrefWinchPlates(winchPlates);
+                      governorate = decodedToken["governorate"];
+                      setPrefWorkingCity(governorate);
+                      responseIat = decodedToken["iat"];
                       print(responseID);
                       print(responseLName);
                       print(responseFName);
@@ -253,11 +263,11 @@ class _OtpFormState extends State<OtpForm> {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        setPrefBackendID(responseID);
                         setPrefFirstName(responseFName);
                         setPrefLastName(responseLName);
-                        setPrefIAT(responseIat);
-                        Navigator.pushNamed(
+                        setPrefIAT(responseIat.toString());
+                        printAllWinchUserCurrentData();
+                        await Navigator.pushNamed(
                           context,
                           ConfirmThisUser.routeName,
                         );

@@ -32,6 +32,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
     _dropdownMenuItems = buildDropdownMenuItems(_cities);
     _selectedCity = _dropdownMenuItems[0].value;
     getCurrentLang();
+    CityItem.lang = Lang;
     // TODO: implement initState
     super.initState();
   }
@@ -57,7 +58,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
   }
 
   getCurrentLang() async {
-    Lang = await getPrefCurrentLang();
+    getPrefCurrentLang().then((value) {
+      Lang = value;
+    });
   }
 
   void addError({String error}) {
