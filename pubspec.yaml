@@ -40,6 +40,7 @@ dependencies:
   dio: ^3.0.10
   path: ^1.7.0
   google_maps_flutter: ^1.2.0
+  geolocator: ^6.2.0
   #flutter_facebook_login: ^3.0.0
 
 
