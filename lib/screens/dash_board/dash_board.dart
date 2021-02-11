@@ -24,6 +24,7 @@ class _DashBoard extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: PageStorage(
         child: currentScreen,
@@ -48,7 +49,7 @@ class _DashBoard extends State<DashBoard> {
         shape: CircularNotchedRectangle(),
         notchMargin: 5,
         child: Container(
-          height: 60,
+          height: size.height * 0.08,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

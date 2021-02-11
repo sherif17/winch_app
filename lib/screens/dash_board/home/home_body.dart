@@ -17,15 +17,17 @@ class _HomeBodyState extends State<HomeBody> {
   Position currentPosition;
   var geoLocator = Geolocator();
 
-  void locatePosition(context) async
-  {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  void locatePosition(context) async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
     print("Current position:: $currentPosition");
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
 
-    CameraPosition cameraPosition = new CameraPosition(target: latLatPosition, zoom: 15.5);
-    _googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosition, zoom: 15.5);
+    _googleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
   bool buttonState = true;
@@ -40,31 +42,27 @@ class _HomeBodyState extends State<HomeBody> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
-                padding: EdgeInsets.only(top: size.height * 0.03,),
-                child: Container(
-                  height: size.height * 0.85,
-                  child: GoogleMap(
-                      initialCameraPosition: _initialPosition,
-                      mapType: MapType.normal,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      zoomGesturesEnabled: true,
-                      zoomControlsEnabled: true,
-                      mapToolbarEnabled: true,
-
-                      onMapCreated: (GoogleMapController controller) {
-                        _completerGoogleMap.complete(controller);
-                        _googleMapController = controller;
-                        locatePosition(context);
-                      },
-
-                  ),
-
-                ),
-              ),
+        padding: EdgeInsets.only(
+          top: size.height * 0.03,
+        ),
+        child: Container(
+          height: size.height * 0.92,
+          child: GoogleMap(
+            initialCameraPosition: _initialPosition,
+            mapType: MapType.normal,
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: true,
+            mapToolbarEnabled: true,
+            onMapCreated: (GoogleMapController controller) {
+              _completerGoogleMap.complete(controller);
+              _googleMapController = controller;
+              locatePosition(context);
+            },
+          ),
+        ),
+      ),
     );
-
   }
-
-
 }
