@@ -97,12 +97,13 @@ class _RegisterFormState extends State<RegisterForm> {
           press: () async {
             if (registerValidateAndSave()) {
               print("Request body: ${winchRegisterRequestModel.toJson()}.");
-              Navigator.pushNamed(context, MainStepper.routeName);
-              print(await getPrefJwtToken());
-              print(await getPrefPhoneNumber());
-              print(await getPrefLastName());
-              print(await getPrefFirstName());
-              print(await getPrefFirebaseID());
+              Navigator.pushReplacementNamed(context, MainStepper.routeName);
+              // print(await getPrefJwtToken());
+              // print(await getPrefPhoneNumber());
+              // print(await getPrefLastName());
+              // print(await getPrefFirstName());
+              // print(await getPrefFirebaseID());
+              printAllWinchUserCurrentData();
               /* setState(() {
                 isApiCallProcess = true;
               });

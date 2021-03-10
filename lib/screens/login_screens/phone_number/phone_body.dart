@@ -16,8 +16,11 @@ class Body extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(
                 top: size.height * 0.1, left: size.width * 0.03),
-            child: Text('Enter Mobile Number:',
-                style: Theme.of(context).textTheme.headline1),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Enter Mobile Number:',
+                  style: Theme.of(context).textTheme.headline1),
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(

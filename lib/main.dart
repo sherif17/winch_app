@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
       return new MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
-        initialRoute: TOKEN == null && BACKEND_ID == null
+        initialRoute: TOKEN == null || BACKEND_ID == null
             ? Intro.routeName
             : DashBoard.routeName,
         routes: routes,

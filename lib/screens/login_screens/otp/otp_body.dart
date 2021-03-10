@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:winch_app/screens/login_screens/otp/otp_form.dart';
 import 'package:winch_app/screens/login_screens/phone_number/componants/phone_number.dart';
+import 'package:winch_app/screens/login_screens/phone_number/enter_phone_number.dart';
 
 class Otp_Body extends StatelessWidget {
   @override
@@ -50,7 +51,8 @@ class Otp_Body extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed('/PhoneNumber');
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, EnterPhoneNumber.routeName, (route) => false);
                   },
                   child: Text(
                     "  Edit number",

@@ -10,14 +10,15 @@ import 'package:winch_app/widgets/form_error.dart';
 
 class CompleteProfile extends StatefulWidget {
   GlobalKey<FormState> firstStepFormKey = GlobalKey<FormState>();
-  CompleteProfile({this.firstStepFormKey});
+  String Lang, Fname;
+  CompleteProfile({this.firstStepFormKey, this.Fname, this.Lang});
   @override
   _CompleteProfileState createState() => _CompleteProfileState();
 }
 
 class _CompleteProfileState extends State<CompleteProfile> {
-  String Lang;
-  List<CityItem> _cities = CityItem.getCompanies();
+  // String Lang;
+  List<CityItem> _cities;
   List<DropdownMenuItem<CityItem>> _dropdownMenuItems;
   CityItem _selectedCity;
   @override
@@ -29,10 +30,19 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
   @override
   void initState() {
+    setState(() {
+      _cities = widget.Lang == 'ar'
+          ? CityItem.getArabCompanies()
+          : CityItem.getEngCompanies();
+    });
+
     _dropdownMenuItems = buildDropdownMenuItems(_cities);
     _selectedCity = _dropdownMenuItems[0].value;
-    getCurrentLang();
-    CityItem.lang = Lang;
+
+    // setState(() {
+    //   CityItem.lang = 'en';
+    // });
+    //=  widget.Lang;
     // TODO: implement initState
     super.initState();
   }
@@ -54,12 +64,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
     setState(() {
       _selectedCity = selectedCity;
       setPrefWorkingCity(selectedCity.city);
-    });
-  }
-
-  getCurrentLang() async {
-    getPrefCurrentLang().then((value) {
-      Lang = value;
     });
   }
 
@@ -92,8 +96,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 top: MediaQuery.of(context).size.height * 0.01,
                 bottom: MediaQuery.of(context).size.height * 0.03),
             child: Text(
-              "Complete Your Profile",
-              style: Theme.of(context).textTheme.headline2,
+              "Let's Complete Your Profile,${widget.Fname}",
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
@@ -177,7 +181,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
         focusedBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 2),
-          borderRadius: Lang == 'en'
+          borderRadius: widget.Lang == 'en'
               ? BorderRadius.only(
                   bottomLeft: Radius.circular(10), topLeft: Radius.circular(10))
               : BorderRadius.only(
@@ -188,7 +192,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
             ),
-            borderRadius: Lang == 'en'
+            borderRadius: widget.Lang == 'en'
                 ? BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     topLeft: Radius.circular(10))
@@ -199,7 +203,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             borderSide: BorderSide(
               color: Colors.redAccent,
             ),
-            borderRadius: Lang == 'en'
+            borderRadius: widget.Lang == 'en'
                 ? BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     topLeft: Radius.circular(10))
@@ -257,7 +261,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             color: Theme.of(context).primaryColor,
             width: 2,
           ),
-          borderRadius: Lang == 'en'
+          borderRadius: widget.Lang == 'en'
               ? BorderRadius.only(
                   bottomRight: Radius.circular(10),
                   topRight: Radius.circular(10))
@@ -269,7 +273,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             borderSide: BorderSide(
               color: Theme.of(context).primaryColor,
             ),
-            borderRadius: Lang == 'en'
+            borderRadius: widget.Lang == 'en'
                 ? BorderRadius.only(
                     bottomRight: Radius.circular(10),
                     topRight: Radius.circular(10))
@@ -280,7 +284,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             borderSide: BorderSide(
               color: Colors.redAccent,
             ),
-            borderRadius: Lang == 'en'
+            borderRadius: widget.Lang == 'en'
                 ? BorderRadius.only(
                     bottomRight: Radius.circular(10),
                     topRight: Radius.circular(10))

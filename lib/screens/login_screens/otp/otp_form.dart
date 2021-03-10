@@ -267,30 +267,29 @@ class _OtpFormState extends State<OtpForm> {
                         setPrefLastName(responseLName);
                         setPrefIAT(responseIat.toString());
                         printAllWinchUserCurrentData();
-                        await Navigator.pushNamed(
-                          context,
-                          ConfirmThisUser.routeName,
-                        );
+                        await Navigator.pushNamedAndRemoveUntil(context,
+                            ConfirmThisUser.routeName, (route) => false);
                       } else if (responseFName == null &&
                           responseLName == null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        Navigator.pushNamed(context, RegisterNewUser.routeName);
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            RegisterNewUser.routeName, (route) => false);
                       } else {
                         setState(() {
                           isApiCallProcess = false;
                         });
                         print("Something wrong");
                         showRegisterModalBottomSheet(
-                            context, size.height * 0.3, false, " ", "");
+                            context, size.height * 0.45, false, " ", "");
                       }
                     } else {
                       print(value.error);
                       setState(() {
                         isApiCallProcess = false;
                       });
-                      showRegisterModalBottomSheet(context, size.height * 0.4,
+                      showRegisterModalBottomSheet(context, size.height * 0.45,
                           false, "InvalidUserToken", "");
                     }
                   });

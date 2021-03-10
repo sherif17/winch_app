@@ -30,6 +30,8 @@ class _StepperBodyState extends State<StepperBody> {
   String charPlate;
   String numPlate;
   String JwtToken;
+  String Lang;
+  String Fname;
   // String title = 'Stepper';
   int _currentstep = 0;
   List<String> filesList = List<String>();
@@ -47,6 +49,7 @@ class _StepperBodyState extends State<StepperBody> {
   void initState() {
     super.initState();
     winchRegisterRequestModel = new WinchRegisterRequestModel();
+    getCurrentWinchUserData();
   }
 
   uploadAllFiles() async {
@@ -60,6 +63,20 @@ class _StepperBodyState extends State<StepperBody> {
                 contentType: new MediaType("image", "jpg"))),
       ]);
     }
+  }
+
+  getCurrentWinchUserData() {
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        Lang = value;
+      });
+    });
+
+    getPrefFirstName().then((value) {
+      setState(() {
+        Fname = value;
+      });
+    });
   }
 
   @override
@@ -261,7 +278,8 @@ class _StepperBodyState extends State<StepperBody> {
                             print(response.reasonPhrase);
                         }
                       } else {
-                        Navigator.pushNamed(context, DashBoard.routeName);
+                        Navigator.pushReplacementNamed(
+                            context, DashBoard.routeName);
                         printAllWinchUserCurrentData();
                       }
 
@@ -311,6 +329,8 @@ class _StepperBodyState extends State<StepperBody> {
         title: Text(""),
         content: CompleteProfile(
           firstStepFormKey: this.firstStepFormKey,
+          Fname: Fname,
+          Lang: Lang,
         ),
         isActive: true,
         state: StepState.indexed,

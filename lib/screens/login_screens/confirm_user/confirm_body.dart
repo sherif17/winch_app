@@ -23,6 +23,7 @@ String prefFName;
 String prefLName;
 String prefJwtToken;
 String prefPhone;
+String winchPlates;
 String prefWinchPlatesNum;
 String prefWinchPlatesChar;
 String currentLang;
@@ -72,26 +73,26 @@ class _BodyState extends State<Body> {
             "$prefFName  $prefLName",
             style: Theme.of(context).textTheme.headline2,
           ),
+          Text(
+            "Winch Plates : $winchPlates",
+            style: Theme.of(context).textTheme.headline6,
+          ),
           RoundedButton(
               text: 'Yes, its Me',
               color: Theme.of(context).primaryColor,
               press: () {
-
                 Map<String, dynamic> decodedToken =
-                JwtDecoder.decode(prefJwtToken);
-                setPrefBackendID(decodedToken["_id"]) ;
-                Navigator.pushNamed(context, DashBoard.routeName);
+                    JwtDecoder.decode(prefJwtToken);
+                setPrefBackendID(decodedToken["_id"]);
+                Navigator.pushReplacementNamed(context, DashBoard.routeName);
               }),
-          Theme(
-            data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-            child: borderedRoundedButton(
-                text: 'No, Edit Info',
-                CornerRadius: 10,
-                press: () async {
-                  await buildStepperShowModalBottomSheet(context, size);
-                  //ConfirmUserForm();
-                }),
-          )
+          borderedRoundedButton(
+              text: 'No, Edit Info',
+              CornerRadius: 10,
+              press: () async {
+                await buildStepperShowModalBottomSheet(context, size);
+                //ConfirmUserForm();
+              })
         ],
       ),
     );
@@ -143,6 +144,7 @@ class _BodyState extends State<Body> {
     });
     getPrefWinchPlates().then((value) {
       setState(() {
+        winchPlates = value;
         prefWinchPlatesNum = value.substring(0, 4);
         String part1 = value.substring(4);
         //String part2 = value.substring(4, 7);
@@ -161,25 +163,24 @@ class _BodyState extends State<Body> {
   }
 }
 
-Future buildStepperShowModalBottomSheet(BuildContext context, size) {
+Future buildStepperShowModalBottomSheet(BuildContext context, Size size) {
   return showModalBottomSheet(
     context: context,
-    //isScrollControlled: true,
+    isScrollControlled: true,
     enableDrag: true,
     backgroundColor: Colors.transparent,
     builder: (context) {
       return StatefulBuilder(
         builder: (BuildContext context, setState) {
           return Stack(
-            fit: StackFit.expand,
+            // fit: StackFit.expand,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             overflow: Overflow.visible,
             children: [
-              SingleChildScrollView(
-                  child: Container(
-                height: size.height * 0.5,
+              Container(
+                height: size.height * 0.6,
                 /*padding:
-                    EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),*/
+                EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),*/
                 margin: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 decoration: BoxDecoration(
@@ -198,7 +199,7 @@ Future buildStepperShowModalBottomSheet(BuildContext context, size) {
                     prefWinchPlatesChar,
                     currentLang,
                     workingCity),
-              )),
+              ),
               Positioned(
                 top: size.height * -0.03,
                 left: size.width * 0.4,

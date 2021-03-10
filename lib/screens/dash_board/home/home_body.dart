@@ -46,7 +46,7 @@ class _HomeBodyState extends State<HomeBody> {
           top: size.height * 0.03,
         ),
         child: Container(
-          height: size.height * 0.92,
+          height: size.height * 0.91,
           child: GoogleMap(
             initialCameraPosition: _initialPosition,
             mapType: MapType.normal,
