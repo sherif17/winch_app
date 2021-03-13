@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/user_register_model.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
@@ -129,14 +130,14 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
               ],
             ),
             SizedBox(
-                width: size.height * 0.1,
+                width: size.height * 0.2,
                 child: FormError(size: size, errors: errors)),
             SizedBox(
                 height: size.height * 0.1,
                 width: size.width * 0.5,
                 child: DecoratedPhoneTField()),
             RoundedButton(
-                text: "Edit my info",
+                text: getTranslated(context, "Edit my info"),
                 color: Theme.of(context).primaryColor,
                 press: () async {
                   if (confirmValidateAndSave()) {
@@ -220,7 +221,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       initialValue: widget.prefFName,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        labelText: 'First Name',
+        labelText: widget.currentLang == "en" ? 'First Name' : "الاسم الاول",
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onSaved: (newValue) {
@@ -260,7 +261,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       initialValue: widget.prefLName,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        labelText: 'Last Name',
+        labelText: widget.currentLang == "en" ? 'Last Name' : "اسم العائله",
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onSaved: (newValue) {
@@ -305,7 +306,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       ],
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        labelText: "Characters",
+        labelText: widget.currentLang == "en" ? "Characters" : "الحروف",
         focusedBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 2),
@@ -389,7 +390,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       keyboardType: TextInputType.number,
       initialValue: widget.prefWinchPlatesNum,
       decoration: InputDecoration(
-        labelText: "Numbers",
+        labelText: widget.currentLang == "en" ? "Numbers" : "الارقام",
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).primaryColor,
@@ -472,7 +473,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
       initialValue: widget.prefPhone,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
-        labelText: 'Phone',
+        labelText: widget.currentLang == "en" ? 'Phone number' : "رقم الهاتف",
         //disabledBorder: disableInputBorder(),
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),

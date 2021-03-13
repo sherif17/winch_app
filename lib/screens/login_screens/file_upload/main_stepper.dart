@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:winch_app/screens/login_screens/file_upload/lang_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/stepper_body.dart';
 
 class MainStepper extends StatelessWidget {
@@ -6,6 +7,7 @@ class MainStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: StepperBody());
+    LangModel res = ModalRoute.of(context).settings.arguments;
+    return Scaffold(body: StepperBody(res.language));
   }
 }

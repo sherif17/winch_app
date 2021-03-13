@@ -1,6 +1,31 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-class OrDivider extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/shared_prefrences/winch_user_model.dart';
+
+class OrDivider extends StatefulWidget {
+  @override
+  _OrDividerState createState() => _OrDividerState();
+}
+
+class _OrDividerState extends State<OrDivider> {
+  String currentLang;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentPrefData();
+  }
+
+  void getCurrentPrefData() {
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -12,7 +37,7 @@ class OrDivider extends StatelessWidget {
           buildExpanded(context),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text("OR"),
+            child: Text(getTranslated(context, "OR")),
           ),
           buildExpanded(context),
         ],

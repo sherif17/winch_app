@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/files_upload_model.dart';
 import 'package:winch_app/models/user_register_model.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
@@ -20,6 +21,10 @@ import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 
 class StepperBody extends StatefulWidget {
+  String lango;
+
+  StepperBody(this.lango);
+
   @override
   _StepperBodyState createState() => _StepperBodyState();
 }
@@ -45,6 +50,7 @@ class _StepperBodyState extends State<StepperBody> {
   File winchCheckReport;
   FormData formData;
   bool isApiCallProcess = false;
+
   @override
   void initState() {
     super.initState();
@@ -92,6 +98,7 @@ class _StepperBodyState extends State<StepperBody> {
   @override
   Widget completeProfile_build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Container(
         height: size.height,
@@ -133,7 +140,9 @@ class _StepperBodyState extends State<StepperBody> {
               Expanded(
                 flex: 2,
                 child: RoundedButton(
-                    text: _currentstep == 3 ? "Let's Start" : "Next",
+                    text: _currentstep == 3
+                        ? getTranslated(context, "Let's Start")
+                        : getTranslated(context, "Next"),
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).accentColor,
                     press: () async {
@@ -330,7 +339,7 @@ class _StepperBodyState extends State<StepperBody> {
         content: CompleteProfile(
           firstStepFormKey: this.firstStepFormKey,
           Fname: Fname,
-          Lang: Lang,
+          Lang: widget.lango,
         ),
         isActive: true,
         state: StepState.indexed,

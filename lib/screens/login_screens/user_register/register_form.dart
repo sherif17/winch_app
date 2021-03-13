@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/screens/login_screens/file_upload/lang_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
@@ -15,7 +17,12 @@ import '../../../widgets/form_error.dart';
 class RegisterForm extends StatefulWidget {
   String otpResponse_jwt;
   String otpResponse_phone;
-  RegisterForm({Key key, this.otpResponse_jwt, this.otpResponse_phone});
+  String currentLang;
+  RegisterForm(
+      {Key key,
+      this.otpResponse_jwt,
+      this.otpResponse_phone,
+      this.currentLang});
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -92,12 +99,15 @@ class _RegisterFormState extends State<RegisterForm> {
         FormError(size: size, errors: errors),
         SizedBox(height: size.height * 0.03),
         RoundedButton(
-          text: 'Create Account',
+          text: getTranslated(context, "Continue"),
           color: Theme.of(context).primaryColor,
           press: () async {
             if (registerValidateAndSave()) {
               print("Request body: ${winchRegisterRequestModel.toJson()}.");
-              Navigator.pushReplacementNamed(context, MainStepper.routeName);
+              setPrefSocialImage(null);
+              setPrefSocialImage(null);
+              Navigator.pushReplacementNamed(context, MainStepper.routeName,
+                  arguments: LangModel(language: widget.currentLang));
               // print(await getPrefJwtToken());
               // print(await getPrefPhoneNumber());
               // print(await getPrefLastName());
@@ -158,8 +168,8 @@ class _RegisterFormState extends State<RegisterForm> {
     return TextFormField(
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        hintText: 'Your First Name',
-        labelText: 'First Name',
+        hintText: widget.currentLang == "en" ? 'Your First Name' : "اسمك الاول",
+        labelText: widget.currentLang == "en" ? 'First Name' : "الاسم الاول",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       onSaved: (newValue) {
@@ -196,8 +206,8 @@ class _RegisterFormState extends State<RegisterForm> {
     return TextFormField(
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        hintText: 'Your Last Name',
-        labelText: 'Last Name',
+        hintText: widget.currentLang == "en" ? 'Your Last Name' : "اسم عائلتك",
+        labelText: widget.currentLang == "en" ? 'Last Name' : "اسم العائله",
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       onSaved: (newValue) {

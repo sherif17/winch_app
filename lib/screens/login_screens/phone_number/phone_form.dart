@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/phone_num_model.dart';
 import 'package:winch_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:winch_app/screens/login_screens/phone_number/componants/phone_number.dart';
@@ -10,6 +11,9 @@ import 'package:winch_app/widgets/rounded_button.dart';
 import 'componants/country_code_field.dart';
 
 class PhoneForm extends StatefulWidget {
+  String currentLang;
+  PhoneForm(this.currentLang);
+
   @override
   _PhoneFormState createState() => _PhoneFormState();
 }
@@ -73,10 +77,10 @@ class _PhoneFormState extends State<PhoneForm> {
           FormError(size: size, errors: errors),
           Padding(
             padding: EdgeInsets.only(
-              top: size.height * 0.2,
+              top: size.height * 0.05,
             ),
             child: RoundedButton(
-              text: "Continue",
+              text: getTranslated(context, "Continue"),
               color: Theme.of(context).primaryColor,
               textColor: Theme.of(context).accentColor,
               press: () {
@@ -109,7 +113,9 @@ class _PhoneFormState extends State<PhoneForm> {
       keyboardType: TextInputType.phone,
       maxLength: 10,
       decoration: InputDecoration(
-        hintText: "enter Your Phone Number",
+        hintText: widget.currentLang == "en"
+            ? "enter Your Phone Number"
+            : "أدخل رقم هاتفك هنا ",
         hintStyle: Theme.of(context).textTheme.bodyText2,
         border: OutlineInputBorder(),
       ),

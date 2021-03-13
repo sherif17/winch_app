@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
 import 'package:winch_app/screens/login_screens/common_widgets/background.dart';
@@ -35,19 +36,6 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     getCurrentPrefData();
-    //getCurrentPrefFName();
-    /* getPrefFirstName().then((value) {
-      setState(() {
-        fName = value.toUpperCase();
-      });
-    });
-    getPrefLastName().then((value) {
-      setState(() {
-        lName = value.toUpperCase();
-      });
-    });*/
-    //final prefs = await SharedPreferences.getInstance();
-    //yarab = prefs.getString("firstName") ?? " ";
 
     // TODO: implement initState
     super.initState();
@@ -62,7 +50,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "$prefFName ,Is That You ?",
+            prefFName.toUpperCase() + getTranslated(context, "Is That You ?"),
             style: Theme.of(context).textTheme.headline1,
           ),
           UserAvatar(
@@ -74,11 +62,15 @@ class _BodyState extends State<Body> {
             style: Theme.of(context).textTheme.headline2,
           ),
           Text(
-            "Winch Plates : $winchPlates",
+            getTranslated(context, "Winch Plates :") + winchPlates.trim(),
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Text(
+            getTranslated(context, "Working City") + workingCity.trim(),
             style: Theme.of(context).textTheme.headline6,
           ),
           RoundedButton(
-              text: 'Yes, its Me',
+              text: getTranslated(context, "Yes, its Me"),
               color: Theme.of(context).primaryColor,
               press: () {
                 Map<String, dynamic> decodedToken =
@@ -87,7 +79,7 @@ class _BodyState extends State<Body> {
                 Navigator.pushReplacementNamed(context, DashBoard.routeName);
               }),
           borderedRoundedButton(
-              text: 'No, Edit Info',
+              text: getTranslated(context, "No, Edit Info"),
               CornerRadius: 10,
               press: () async {
                 await buildStepperShowModalBottomSheet(context, size);
@@ -145,8 +137,8 @@ class _BodyState extends State<Body> {
     getPrefWinchPlates().then((value) {
       setState(() {
         winchPlates = value;
-        prefWinchPlatesNum = value.substring(0, 4);
-        String part1 = value.substring(4);
+        prefWinchPlatesNum = value.substring(0, 4).trim();
+        String part1 = value.substring(4).trim();
         //String part2 = value.substring(4, 7);
         prefWinchPlatesChar = part1;
         print(prefWinchPlatesNum);
@@ -158,8 +150,14 @@ class _BodyState extends State<Body> {
         prefJwtToken = value;
       });
     });
-    getPrefCurrentLang().then((value) => currentLang = value);
-    getPrefWorkingCity().then((value) => workingCity = value);
+    getPrefCurrentLang().then((value) {
+      setState(() {
+        currentLang = value;
+      });
+    });
+    getPrefWorkingCity().then((value) {
+      workingCity = value;
+    });
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/confirm_user/confirm_body.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
@@ -13,15 +14,15 @@ class ProfileBody extends StatefulWidget {
 
 String token;
 String ID;
-String Fname;
-String Lname;
-String Phone;
-String WinchPlates;
-String currentLang;
-String WorkingCity;
-String profilePhoto;
-String email;
-String iat;
+String Fname = " ";
+String Lname = " ";
+String Phone = " ";
+String WinchPlates = " ";
+String currentLang = " ";
+String WorkingCity = " ";
+String profilePhoto = " ";
+String email = " ";
+String iat = " ";
 
 class _ProfileBodyState extends State<ProfileBody> {
   @override
@@ -64,7 +65,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Winch Driver information",
+              Text(getTranslated(context, "Winch Driver information"),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   textAlign: TextAlign.end),
               SizedBox(
@@ -100,7 +101,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("Phone ",
+                  Text(getTranslated(context, "Phone"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -117,7 +118,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("Working City",
+                  Text(getTranslated(context, "Working City"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -134,7 +135,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("Winch Plates",
+                  Text(getTranslated(context, "Winch Plates"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -151,7 +152,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("Current Language",
+                  Text(getTranslated(context, "Current Language"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -189,25 +190,28 @@ class _ProfileBodyState extends State<ProfileBody> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Detailed Info",
+                getTranslated(context, "Detailed Info"),
                 style: Theme.of(context).textTheme.headline1,
               ),
               SizedBox(
                 height: 40,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("User ID",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          color: Colors.red,
-                          fontSize: 15)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(ID),
-                ],
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(getTranslated(context, "User ID"),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.red,
+                            fontSize: 15)),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(ID),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -223,7 +227,7 @@ class _ProfileBodyState extends State<ProfileBody> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Email",
+                  Text(getTranslated(context, "Email"),
                       style: TextStyle(
                           fontWeight: FontWeight.w900,
                           color: Colors.red,
@@ -300,41 +304,24 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        title: Text(
-          "Profile",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
-        ),
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColorLight,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
-        actions: <Widget>[],
-      ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+    return SingleChildScrollView(
+      child: Fname == " "
+          ? CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent))
+          : Stack(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                _greenColors(),
+                _getInfo(
+                    ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
+                SizedBox(),
+                _userAdress(
+                    ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
+              ],
             ),
-            _greenColors(),
-            _getInfo(ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
-            SizedBox(),
-            _userAdress(
-                ID, Fname, Lname, Phone, iat, token, profilePhoto, email),
-          ],
-        ),
-      ),
     );
   }
 

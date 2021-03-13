@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 
 class WatchTutorial extends StatefulWidget {
@@ -30,18 +31,19 @@ class _WatchTutorialState extends State<WatchTutorial> {
             )),
         SizedBox(height: size.height * 0.05),
         Text(
-          "Congratulations $CurrentWinchUserFname",
+          getTranslated(context, "Congratulations") + CurrentWinchUserFname,
           style: Theme.of(context).textTheme.headline3,
         ),
         SizedBox(height: size.height * 0.04),
         Text(
-          "You Have Successfully Registered as Winch Driver In Our App",
+          getTranslated(context,
+              "You Have Successfully Registered as Winch Driver In Our App"),
           style: Theme.of(context).textTheme.bodyText1,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: size.height * 0.03),
         Text(
-          "Let's Start Your Mission With Us",
+          getTranslated(context, "Let's Start Your Mission With Us"),
           style: Theme.of(context).textTheme.bodyText2,
           textAlign: TextAlign.center,
         ),
@@ -91,7 +93,7 @@ class _WatchTutorialState extends State<WatchTutorial> {
   getWinchUserData() async {
     getPrefFirstName().then((value) {
       setState(() {
-        CurrentWinchUserFname=value;
+        CurrentWinchUserFname = value;
       });
     });
   }

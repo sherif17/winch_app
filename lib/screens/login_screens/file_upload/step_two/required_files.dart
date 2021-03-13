@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:winch_app/localization/localization_constants.dart';
 
 class RequiredFiles extends StatefulWidget {
   File personalPhoto;
@@ -41,63 +43,67 @@ class _RequiredFilesState extends State<RequiredFiles> {
                 top: MediaQuery.of(context).size.height * 0.01,
                 bottom: MediaQuery.of(context).size.height * 0.03),
             child: Text(
-              "Upload Required Files",
+              getTranslated(context, "Upload Required Files"),
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
           BuildFileUpload(
               context,
-              'Personal Photo',
-              "Please upload clear photo",
+              getTranslated(context, "Personal Photo"),
+              getTranslated(context, "Please upload clear photo for you"),
               "assets/icons/profile.png",
               true,
               widget.personalPhoto,
               1),
           BuildFileUpload(
               context,
-              'Driver License',
-              "Please upload your licence ",
-              "assets/icons/profile.png",
+              getTranslated(context, "Driver License"),
+              getTranslated(context, "Please upload your licence "),
+              "assets/images/drivingLinceFront.jpg",
               true,
               widget.driverLicense,
               2),
           BuildFileUpload(
               context,
-              'Winch License : Front',
-              "upload your winch licence,front image",
-              "assets/icons/profile.png",
+              getTranslated(context, "Winch License : Front"),
+              getTranslated(
+                  context, "Please upload your winch licence,front image"),
+              "assets/images/winchdrivingfront.jpg",
               true,
               widget.winchLicenseFront,
               3),
           BuildFileUpload(
               context,
-              'Winch License : Back ',
-              "upload your winch licence,back image",
-              "assets/icons/profile.png",
+              getTranslated(context, "Winch License : Back "),
+              getTranslated(
+                  context, "Please upload your winch licence,back image"),
+              "assets/images/winchdrivingback.jpg",
               true,
               widget.winchLicenseBack,
               4),
           BuildFileUpload(
               context,
-              'Criminal Record',
-              "upload Criminal record about you",
-              "assets/icons/profile.png",
+              getTranslated(context, "Criminal Record"),
+              getTranslated(context, "Please upload Criminal record about you"),
+              "assets/images/winchFeshhjpg.jpg",
               true,
               widget.criminalRecord,
               5),
           BuildFileUpload(
               context,
-              'Drugs Analysis',
-              "upload Drug analysis report form X Laboratory",
-              "assets/icons/profile.png",
+              getTranslated(context, "Drugs Analysis"),
+              getTranslated(context,
+                  "Please upload Drug analysis report form X Laboratory"),
+              "assets/images/checkReport.jpg",
               true,
               widget.drugsAnalysis,
               6),
           BuildFileUpload(
               context,
-              'Winch Check Report',
-              "upload your winch check Report,from X Center",
-              "assets/icons/profile.png",
+              getTranslated(context, "Winch Check Report"),
+              getTranslated(context,
+                  "Please upload your winch check Report,from X Center"),
+              "assets/images/checkReport.jpg",
               true,
               widget.winchCheckReport,
               7),
@@ -135,10 +141,14 @@ class _RequiredFilesState extends State<RequiredFiles> {
                         child: Padding(
                             padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width * 0.04),
-                            child: Text(
-                              content,
-                              style: TextStyle(
-                                  color: Colors.deepOrangeAccent, fontSize: 17),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              child: Text(
+                                content,
+                                style: TextStyle(
+                                    color: Colors.deepOrangeAccent,
+                                    fontSize: 17),
+                              ),
                             ))),
                     Expanded(
                         flex: 1,
@@ -159,7 +169,7 @@ class _RequiredFilesState extends State<RequiredFiles> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Upload"),
+                        Text(getTranslated(context, "Upload")),
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.03),
                         SvgPicture.asset(

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/step_one/city_modal_list.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
@@ -23,8 +25,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
   CityItem _selectedCity;
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     super.dispose();
   }
 
@@ -38,11 +38,6 @@ class _CompleteProfileState extends State<CompleteProfile> {
 
     _dropdownMenuItems = buildDropdownMenuItems(_cities);
     _selectedCity = _dropdownMenuItems[0].value;
-
-    // setState(() {
-    //   CityItem.lang = 'en';
-    // });
-    //=  widget.Lang;
     // TODO: implement initState
     super.initState();
   }
@@ -95,16 +90,20 @@ class _CompleteProfileState extends State<CompleteProfile> {
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.01,
                 bottom: MediaQuery.of(context).size.height * 0.03),
-            child: Text(
-              "Let's Complete Your Profile,${widget.Fname}",
-              style: Theme.of(context).textTheme.headline6,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                getTranslated(context, "Let's Complete Your Profile") +
+                    widget.Fname,
+                style: Theme.of(context).textTheme.headline6,
+              ),
             ),
           ),
         ),
         SizedBox(
           height: size.height * 0.05,
         ),
-        Text("Please Enter Winch Plates information"),
+        Text(getTranslated(context, "Please Enter Winch Plates information")),
         SizedBox(
           height: size.height * 0.04,
         ),
@@ -128,7 +127,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
         SizedBox(
           height: size.height * 0.05,
         ),
-        Text("Select Desired Working City"),
+        Text(getTranslated(context, "Select Desired Working City")),
         SizedBox(
           height: size.height * 0.05,
         ),
@@ -177,7 +176,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
       ],
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-        labelText: "Characters",
+        labelText: widget.Lang == "en" ? "Characters" : "الحروف",
         focusedBorder: OutlineInputBorder(
           borderSide:
               BorderSide(color: Theme.of(context).primaryColor, width: 2),
@@ -255,7 +254,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
       maxLength: 4,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        labelText: "Numbers",
+        labelText: widget.Lang == "en" ? "Numbers" : "الارقام",
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).primaryColor,

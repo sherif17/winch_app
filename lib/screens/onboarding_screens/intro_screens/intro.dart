@@ -3,8 +3,6 @@ import 'package:winch_app/lang/language_list.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/size_config.dart';
-
-import '../../../main.dart';
 import '../../../main.dart';
 import 'intro_body.dart';
 
