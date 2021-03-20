@@ -134,7 +134,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
         Align(
           alignment: Alignment.center,
           child: Container(
-            width: size.width * 0.5,
+            width: size.width * 0.6,
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).primaryColorDark, width: 1.2),

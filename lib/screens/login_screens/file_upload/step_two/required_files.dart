@@ -143,11 +143,14 @@ class _RequiredFilesState extends State<RequiredFiles> {
                                 left: MediaQuery.of(context).size.width * 0.04),
                             child: Padding(
                               padding: EdgeInsets.only(left: 10, right: 10),
-                              child: Text(
-                                content,
-                                style: TextStyle(
-                                    color: Colors.deepOrangeAccent,
-                                    fontSize: 17),
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  content,
+                                  style: TextStyle(
+                                      color: Colors.deepOrangeAccent,
+                                      fontSize: 17),
+                                ),
                               ),
                             ))),
                     Expanded(

@@ -143,7 +143,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   SizedBox(
                     width: 10,
                   ),
-                  Text(WinchPlates),
+                  Text(WinchPlates.trim()),
                 ],
               ),
               SizedBox(
@@ -349,6 +349,7 @@ class _ProfileBodyState extends State<ProfileBody> {
     getPrefWinchPlates().then((value) {
       setState(() {
         WinchPlates = value;
+        print("hi hiiiiii $WinchPlates");
       });
     });
     getPrefJwtToken().then((value) {

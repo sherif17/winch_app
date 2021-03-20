@@ -33,6 +33,7 @@ String prefWinchPlates;
 
 class _BodyState extends State<Body> {
   otpNavData otpResponse;
+
   @override
   void initState() {
     getCurrentPrefData();
@@ -62,7 +63,7 @@ class _BodyState extends State<Body> {
             style: Theme.of(context).textTheme.headline2,
           ),
           Text(
-            getTranslated(context, "Winch Plates :") + winchPlates.trim(),
+            getTranslated(context, "Winch Plates :") + winchPlates.trimRight(),
             style: Theme.of(context).textTheme.headline6,
           ),
           Text(
@@ -137,12 +138,13 @@ class _BodyState extends State<Body> {
     getPrefWinchPlates().then((value) {
       setState(() {
         winchPlates = value;
-        prefWinchPlatesNum = value.substring(0, 4).trim();
-        String part1 = value.substring(4).trim();
+        String part2 = value.substring(0, 3).trim();
+        String part1 = value.substring(3).trim();
         //String part2 = value.substring(4, 7);
-        prefWinchPlatesChar = part1;
-        print(prefWinchPlatesNum);
+        prefWinchPlatesChar = part2;
+        prefWinchPlatesNum = part1;
         print(prefWinchPlatesChar);
+        print(prefWinchPlatesNum);
       });
     });
     getPrefJwtToken().then((value) {
