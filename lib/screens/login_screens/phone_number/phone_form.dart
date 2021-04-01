@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/phone_num_model.dart';
 import 'package:winch_app/screens/login_screens/otp/phone_verification.dart';
@@ -55,6 +56,7 @@ class _PhoneFormState extends State<PhoneForm> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: <Widget>[
                 Expanded(
                     flex: 3,

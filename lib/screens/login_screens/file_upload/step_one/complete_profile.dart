@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/step_one/city_modal_list.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
@@ -164,9 +162,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
   static final translators = {'#': new RegExp(r'(?<!^)(\B|b)(?!$)')};
   var maskFormatter = new MaskTextInputFormatter(
       filter: {'A': new RegExp(r'(?<!^)(\B|b)(?!$)')});
-  var controller =
+  /* var controller =
       new MaskedTextController(mask: '000.000.000-00', translator: translators);
-
+*/
   TextFormField BuildCharPlateTextFormField() {
     return TextFormField(
       maxLength: 3,
