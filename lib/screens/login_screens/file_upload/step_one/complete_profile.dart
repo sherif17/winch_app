@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/file_upload/step_one/city_modal_list.dart';
@@ -111,6 +112,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
                 children: [
                   Expanded(
                     child: BuildCharPlateTextFormField(),

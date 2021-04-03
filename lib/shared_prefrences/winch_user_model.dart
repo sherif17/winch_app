@@ -48,7 +48,7 @@ loadPrefJwtToken() async {
 //////////////////////////////////////////////////////////////
 Future<String> getPrefFirebaseID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_FIREBASE_ID) ?? null;
+  return _prefs.getString(_FIREBASE_ID) ?? "";
 }
 
 Future<String> setPrefFirebaseID(String value) async {
@@ -63,7 +63,7 @@ loadPrefFirebaseID() async {
 ////////////////////////////////////////////////////////////////////
 Future<String> getPrefBackendID() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_BACKEND_ID) ?? null;
+  return _prefs.getString(_BACKEND_ID) ?? "";
 }
 
 Future<String> setPrefBackendID(String value) async {
@@ -78,7 +78,7 @@ loadPrefBackendID() async {
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefFirstName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  String value = _prefs.getString(_FIRST_NAME) ?? null;
+  String value = _prefs.getString(_FIRST_NAME) ?? "";
   return value;
 }
 
@@ -96,7 +96,7 @@ loadPrefFirstName() {
 //////////////////////////////////////////////////////////////////////
 Future<String> getPrefLastName() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_LAST_NAME) ?? null;
+  return _prefs.getString(_LAST_NAME) ?? "";
 }
 
 Future<String> setPrefLastName(String value) async {
@@ -111,7 +111,7 @@ loadPrefLastName() async {
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefPhoneNumber() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_PHONE_NUMBER) ?? null;
+  return _prefs.getString(_PHONE_NUMBER) ?? "";
 }
 
 Future<String> setPrefPhoneNumber(String value) async {
@@ -126,7 +126,7 @@ loadPrefPhoneNumber() async {
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlates() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_WINCH_PLATES) ?? null;
+  return _prefs.getString(_WINCH_PLATES) ?? "";
 }
 
 Future<String> setPrefWinchPlates(String value) async {
@@ -141,7 +141,7 @@ loadPrefWinchPlates() async {
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlatesChars() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_WINCH_PLATES_CHARS) ?? null;
+  return _prefs.getString(_WINCH_PLATES_CHARS) ?? "";
 }
 
 Future<String> setPrefWinchPlatesChars(String value) async {
@@ -156,7 +156,7 @@ loadPrefWinchPlatesChars() async {
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlatesNum() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_WINCH_PLATES_NUM) ?? null;
+  return _prefs.getString(_WINCH_PLATES_NUM) ?? "";
 }
 
 Future<String> setPrefWinchPlatesNum(String value) async {
@@ -171,7 +171,7 @@ loadPrefWinchPlatesNum() async {
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWorkingCity() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_WORKING_CITY) ?? null;
+  return _prefs.getString(_WORKING_CITY) ?? "";
 }
 
 Future<String> setPrefWorkingCity(String value) async {
@@ -186,7 +186,7 @@ loadPrefWorkingCity() async {
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefIAT() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_IAT) ?? null;
+  return _prefs.getString(_IAT) ?? "";
 }
 
 Future<String> setPrefIAT(String value) async {
@@ -201,7 +201,7 @@ loadPrefIAT() async {
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialImage() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_SOCIAL_IMAGE) ?? null;
+  return _prefs.getString(_SOCIAL_IMAGE) ?? "";
 }
 
 Future<String> setPrefSocialImage(String value) async {
@@ -216,7 +216,7 @@ loadPrefGoogleImage() async {
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialEmail() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  return _prefs.getString(_SOCIAL_EMAIL) ?? null;
+  return _prefs.getString(_SOCIAL_EMAIL) ?? "";
 }
 
 Future<String> setPrefSocialEmail(String value) async {
@@ -246,15 +246,15 @@ printAllWinchUserCurrentData() async {
 
 ////////////////////////////////////////////////
 resetAllUserCurrentData() {
-  setPrefBackendID(null);
-  setPrefJwtToken(null);
-  setPrefFirebaseID(null);
-  setPrefIAT(null);
-  setPrefFirstName(null);
-  setPrefLastName(null);
-  setPrefPhoneNumber(null);
-  setPrefWorkingCity(null);
-  setPrefWinchPlates(null);
-  setPrefSocialEmail(null);
-  setPrefSocialImage(null);
+  setPrefBackendID("");
+  setPrefJwtToken("");
+  setPrefFirebaseID("");
+  setPrefIAT("");
+  setPrefFirstName("");
+  setPrefLastName("");
+  setPrefPhoneNumber("");
+  setPrefWorkingCity("");
+  setPrefWinchPlates("");
+  setPrefSocialEmail("");
+  setPrefSocialImage("");
 }

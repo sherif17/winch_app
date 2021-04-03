@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: lightTheme(),
         initialRoute: //MainStepper.routeName,
-            TOKEN == null || BACKEND_ID == null
+            TOKEN == "" || BACKEND_ID == ""
                 ? Intro.routeName
                 : DashBoard.routeName,
         routes: routes,

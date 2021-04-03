@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/user_register_model.dart';
@@ -78,6 +79,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(
                 child: Column(

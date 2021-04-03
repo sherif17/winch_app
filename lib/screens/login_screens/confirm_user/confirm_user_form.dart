@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/localization/localization_constants.dart';
@@ -106,6 +107,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 SizedBox(
                     height: size.height * 0.1,
@@ -122,6 +124,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 Expanded(
                   child: BuildCharPlateTextFormField(),

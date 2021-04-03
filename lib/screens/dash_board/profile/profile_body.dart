@@ -45,7 +45,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   Widget _getInfo(ID, Fname, Lname, Phone, iat, token, profilePhoto, email) {
     bool exist;
-    if (profilePhoto != null)
+    if (profilePhoto != "")
       exist = true;
     else
       exist = false;
