@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 
@@ -9,10 +10,10 @@ class WatchTutorial extends StatefulWidget {
 }
 
 class _WatchTutorialState extends State<WatchTutorial> {
-  String CurrentWinchUserFname = " ";
+  String CurrentWinchUserFname = loadFirstNameFromDB(); //" ";
   @override
   void initState() {
-    getWinchUserData();
+    // getWinchUserData();
     // TODO: implement initState
     super.initState();
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:winch_app/lang/language_list.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/main.dart';
 import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
@@ -41,6 +42,7 @@ class _ProfileState extends State<Profile> {
               child: Text(getTranslated(context, "Leave")),
               onPressed: () {
                 resetAllUserCurrentData();
+                resetAllWinchDriverSavedInfoInDB();
                 Navigator.pushNamedAndRemoveUntil(
                     context, Intro.routeName, (route) => false);
               },

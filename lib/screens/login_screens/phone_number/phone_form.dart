@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/phone_num_model.dart';
 import 'package:winch_app/screens/login_screens/otp/phone_verification.dart';
@@ -12,8 +13,8 @@ import 'package:winch_app/widgets/rounded_button.dart';
 import 'componants/country_code_field.dart';
 
 class PhoneForm extends StatefulWidget {
-  String currentLang;
-  PhoneForm(this.currentLang);
+  String currentLang = loadCurrentLangFromDB();
+  // PhoneForm(this.currentLang);
 
   @override
   _PhoneFormState createState() => _PhoneFormState();
@@ -125,6 +126,7 @@ class _PhoneFormState extends State<PhoneForm> {
         String numberCodeFormat = "+20${newValue}";
         phoneRequestModel.phoneNumber = numberCodeFormat;
         setPrefPhoneNumber(numberCodeFormat);
+        savePhoneNumberInDB(numberCodeFormat);
       },
       onChanged: (value) {
         this.phone = value;

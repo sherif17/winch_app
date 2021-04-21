@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'home_body.dart';
+import 'home_components/rps_custom_painter.dart';
 
 class Home extends StatefulWidget {
   @override
