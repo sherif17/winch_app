@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/provider/appData.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/dash_board/home/home_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
@@ -96,34 +98,39 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       // TODO: implement build
-      return new MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme(),
-        initialRoute: //MainStepper.routeName,
-            TOKEN == "" || BACKEND_ID == ""
-                ? Intro.routeName
-                : DashBoard.routeName,
-        routes: routes,
-        locale: _locale,
-        supportedLocales: [
-          Locale("en", "US"),
-          Locale("ar", "EG"),
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AppData>(create: (_) => AppData()),
         ],
-        localizationsDelegates: [
-          DemoLocalization.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (deviceLocal, supportedLocales) {
-          for (var local in supportedLocales) {
-            if (local.languageCode == deviceLocal.languageCode &&
-                local.countryCode == deviceLocal.countryCode) {
-              return deviceLocal;
+        child: new MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme(),
+          initialRoute: //MainStepper.routeName,
+              TOKEN == "" || BACKEND_ID == ""
+                  ? Intro.routeName
+                  : DashBoard.routeName,
+          routes: routes,
+          locale: _locale,
+          supportedLocales: [
+            Locale("en", "US"),
+            Locale("ar", "EG"),
+          ],
+          localizationsDelegates: [
+            DemoLocalization.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (deviceLocal, supportedLocales) {
+            for (var local in supportedLocales) {
+              if (local.languageCode == deviceLocal.languageCode &&
+                  local.countryCode == deviceLocal.countryCode) {
+                return deviceLocal;
+              }
             }
-          }
-          return supportedLocales.first;
-        },
+            return supportedLocales.first;
+          },
+        ),
       );
     }
   }

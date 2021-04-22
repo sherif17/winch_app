@@ -25,13 +25,6 @@ class MapsApiService {
       st4 = response["results"][0]["address_components"][3]["long_name"];
       placeAddress = st1 + ", " + st2 + ", " + st3 + ", " + st4;
 
-      Address userPickupAddress = new Address();
-      userPickupAddress.longitude = position.longitude;
-      userPickupAddress.latitude = position.latitude;
-      userPickupAddress.placeName = placeAddress;
-
-      Provider.of<AppData>(context, listen: false)
-          .updatePickUpLocationAddress(userPickupAddress);
     }
     return placeAddress;
   }

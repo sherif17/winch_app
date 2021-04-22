@@ -5,6 +5,7 @@ class AppData extends ChangeNotifier
 {
   Address pickUpLocation;
   Address dropOffLocation;
+  Address myStartLocation;
 
   void updatePickUpLocationAddress(Address pickUpAddress)
   {
@@ -15,6 +16,12 @@ class AppData extends ChangeNotifier
   void updateDropOffLocationAddress(Address dropOffAddress)
   {
     dropOffLocation = dropOffAddress;
+    notifyListeners();
+  }
+
+  void updateMyStartLocationAddress(Address myStartAddress)
+  {
+    myStartLocation = myStartAddress;
     notifyListeners();
   }
 
