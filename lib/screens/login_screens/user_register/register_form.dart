@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/user_register_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/lang_model.dart';
@@ -106,8 +107,8 @@ class _RegisterFormState extends State<RegisterForm> {
           press: () async {
             if (registerValidateAndSave()) {
               print("Request body: ${winchRegisterRequestModel.toJson()}.");
-              setPrefSocialImage(null);
-              setPrefSocialImage(null);
+              setPrefSocialImage("");
+              setPrefSocialImage("");
               Navigator.pushReplacementNamed(context, MainStepper.routeName,
                   arguments: LangModel(language: widget.currentLang));
               // print(await getPrefJwtToken());
@@ -115,6 +116,7 @@ class _RegisterFormState extends State<RegisterForm> {
               // print(await getPrefLastName());
               // print(await getPrefFirstName());
               // print(await getPrefFirebaseID());
+              printAllWinchUserCurrentData();
               printAllWinchUserCurrentData();
               /* setState(() {
                 isApiCallProcess = true;
@@ -178,6 +180,7 @@ class _RegisterFormState extends State<RegisterForm> {
         //firstName = newValue;
         winchRegisterRequestModel.firstName = newValue;
         setPrefFirstName(newValue);
+        saveFirstNameInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -216,6 +219,7 @@ class _RegisterFormState extends State<RegisterForm> {
         //lastName = newValue;
         winchRegisterRequestModel.lastName = newValue;
         setPrefLastName(newValue);
+        saveLastNameInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {

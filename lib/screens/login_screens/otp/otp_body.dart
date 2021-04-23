@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/otp/otp_form.dart';
 import 'package:winch_app/screens/login_screens/phone_number/componants/phone_number.dart';
@@ -12,12 +13,12 @@ class Otp_Body extends StatefulWidget {
 }
 
 class _Otp_BodyState extends State<Otp_Body> {
-  String currentLang;
+  String currentLang = loadCurrentLangFromDB();
 
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    //getCurrentPrefData();
   }
 
   void getCurrentPrefData() {

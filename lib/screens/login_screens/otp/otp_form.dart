@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/phone_num_model.dart';
 import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
@@ -220,6 +221,7 @@ class _OtpFormState extends State<OtpForm> {
                     if (value.user != null) {
                       fireToken = FirebaseAuth.instance.currentUser.uid;
                       setPrefFirebaseID(fireToken);
+                      saveFirebaseIDInDB(fireToken);
                       checkFirebase = true;
                       print(checkFirebase);
                       print("Firebase Token:${fireToken}");
@@ -245,6 +247,7 @@ class _OtpFormState extends State<OtpForm> {
                       print("Response:");
                       jwtToken = value.token;
                       setPrefJwtToken(jwtToken);
+                      saveJwtTokenInDB(jwtToken);
                       print(jwtToken);
                       Map<String, dynamic> decodedToken =
                           JwtDecoder.decode(jwtToken);
@@ -254,8 +257,10 @@ class _OtpFormState extends State<OtpForm> {
                       responseLName = decodedToken["lastName"];
                       winchPlates = decodedToken["winchPlates"];
                       setPrefWinchPlates(winchPlates);
+                      saveWinchPlatesInDB(winchPlates);
                       governorate = decodedToken["governorate"];
                       setPrefWorkingCity(governorate);
+                      saveWorkingCityInDB(governorate);
                       responseIat = decodedToken["iat"];
                       print(responseID);
                       print(responseLName);
@@ -267,8 +272,12 @@ class _OtpFormState extends State<OtpForm> {
                         });
                         setPrefFirstName(responseFName);
                         setPrefLastName(responseLName);
+                        saveFirstNameInDB(responseFName);
+                        saveLastNameInDB(responseLName);
                         setPrefIAT(responseIat.toString());
+                        saveIATInDB(responseIat.toString());
                         printAllWinchUserCurrentData();
+                        printAllWinchDriverSavedInfoInDB();
                         await Navigator.pushNamedAndRemoveUntil(context,
                             ConfirmThisUser.routeName, (route) => false);
                       } else if (responseFName == null &&

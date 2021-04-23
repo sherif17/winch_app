@@ -26,9 +26,9 @@ Future<String> setPrefCurrentLang(String value) async {
   await _prefs.setString(_CURRENT_LANGUAGE, value);
 }
 
-loadPrefCurrentLang() async {
-  return getPrefCurrentLang();
-}
+// loadPrefCurrentLang() async {
+//   return getPrefCurrentLang();
+// }
 
 //////////////////////////////////////////////////////////////////
 Future<String> getPrefJwtToken() async {
@@ -41,9 +41,9 @@ Future<String> setPrefJwtToken(String value) async {
   await _prefs.setString(_JWT_TOKEN, value);
 }
 
-loadPrefJwtToken() async {
-  return getPrefJwtToken();
-}
+// loadPrefJwtToken() async {
+//   return getPrefJwtToken();
+// }
 
 //////////////////////////////////////////////////////////////
 Future<String> getPrefFirebaseID() async {
@@ -56,9 +56,9 @@ Future<String> setPrefFirebaseID(String value) async {
   await _prefs.setString(_FIREBASE_ID, value);
 }
 
-loadPrefFirebaseID() async {
-  return getPrefFirebaseID();
-}
+// loadPrefFirebaseID() async {
+//   return getPrefFirebaseID();
+// }
 
 ////////////////////////////////////////////////////////////////////
 Future<String> getPrefBackendID() async {
@@ -71,9 +71,9 @@ Future<String> setPrefBackendID(String value) async {
   await _prefs.setString(_BACKEND_ID, value);
 }
 
-loadPrefBackendID() async {
-  return getPrefBackendID();
-}
+// loadPrefBackendID() async {
+//   return getPrefBackendID();
+// }
 
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefFirstName() async {
@@ -104,9 +104,9 @@ Future<String> setPrefLastName(String value) async {
   await _prefs.setString(_LAST_NAME, value);
 }
 
-loadPrefLastName() async {
-  return getPrefLastName();
-}
+// loadPrefLastName() async {
+//   return getPrefLastName();
+// }
 
 ///////////////////////////////////////////////////////////////////////
 Future<String> getPrefPhoneNumber() async {
@@ -119,9 +119,9 @@ Future<String> setPrefPhoneNumber(String value) async {
   await _prefs.setString(_PHONE_NUMBER, value);
 }
 
-loadPrefPhoneNumber() async {
-  return getPrefPhoneNumber();
-}
+// loadPrefPhoneNumber() async {
+//   return getPrefPhoneNumber();
+// }
 
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlates() async {
@@ -134,9 +134,9 @@ Future<String> setPrefWinchPlates(String value) async {
   await _prefs.setString(_WINCH_PLATES, value);
 }
 
-loadPrefWinchPlates() async {
-  return getPrefWinchPlates();
-}
+// loadPrefWinchPlates() async {
+//   return getPrefWinchPlates();
+// }
 
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlatesChars() async {
@@ -149,9 +149,9 @@ Future<String> setPrefWinchPlatesChars(String value) async {
   await _prefs.setString(_WINCH_PLATES_CHARS, value);
 }
 
-loadPrefWinchPlatesChars() async {
-  return getPrefWinchPlatesChars();
-}
+// loadPrefWinchPlatesChars() async {
+//   return getPrefWinchPlatesChars();
+// }
 
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWinchPlatesNum() async {
@@ -164,9 +164,9 @@ Future<String> setPrefWinchPlatesNum(String value) async {
   await _prefs.setString(_WINCH_PLATES_NUM, value);
 }
 
-loadPrefWinchPlatesNum() async {
-  return getPrefWinchPlatesNum();
-}
+// loadPrefWinchPlatesNum() async {
+//   return getPrefWinchPlatesNum();
+// }
 
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefWorkingCity() async {
@@ -179,9 +179,9 @@ Future<String> setPrefWorkingCity(String value) async {
   await _prefs.setString(_WORKING_CITY, value);
 }
 
-loadPrefWorkingCity() async {
-  return getPrefWorkingCity();
-}
+// loadPrefWorkingCity() async {
+//   return getPrefWorkingCity();
+// }
 
 /////////////////////////////////////////////////////////////////////
 Future<String> getPrefIAT() async {
@@ -194,9 +194,9 @@ Future<String> setPrefIAT(String value) async {
   await _prefs.setString(_IAT, value);
 }
 
-loadPrefIAT() async {
-  return getPrefIAT();
-}
+// loadPrefIAT() async {
+//   return getPrefIAT();
+// }
 
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialImage() async {
@@ -209,9 +209,9 @@ Future<String> setPrefSocialImage(String value) async {
   await _prefs.setString(_SOCIAL_IMAGE, value);
 }
 
-loadPrefGoogleImage() async {
-  return getPrefSocialImage();
-}
+// loadPrefGoogleImage() async {
+//   return getPrefSocialImage();
+// }
 
 ///////////////////////////////////////////////////////
 Future<String> getPrefSocialEmail() async {
@@ -224,9 +224,9 @@ Future<String> setPrefSocialEmail(String value) async {
   await _prefs.setString(_SOCIAL_EMAIL, value);
 }
 
-loadPrefGoogleEmail() async {
-  return getPrefSocialEmail();
-}
+// loadPrefGoogleEmail() async {
+//   return getPrefSocialEmail();
+// }
 
 /////////////////////////////////////////////////////////////////
 printAllWinchUserCurrentData() async {

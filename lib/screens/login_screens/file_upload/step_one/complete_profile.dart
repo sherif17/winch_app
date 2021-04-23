@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/file_upload/step_one/city_modal_list.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
@@ -58,6 +59,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
     setState(() {
       _selectedCity = selectedCity;
       setPrefWorkingCity(selectedCity.city);
+      saveWorkingCityInDB(selectedCity.city);
     });
   }
 
@@ -215,6 +217,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
         //winchRegisterRequestModel.firstName = newValue;
         // setPrefFirstName(newValue);
         setPrefWinchPlatesChars(newValue);
+        saveWinchPlatesCharInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -297,6 +300,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
         // setPrefFirstName(newValue);
         //numPlatController.text = newValue;
         setPrefWinchPlatesNum(newValue);
+        saveWinchPlatesNumInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/files_upload_model.dart';
 import 'package:winch_app/models/user_register_model.dart';
@@ -35,8 +36,8 @@ class _StepperBodyState extends State<StepperBody> {
   String charPlate;
   String numPlate;
   String JwtToken;
-  String Lang;
-  String Fname;
+  String Lang = loadCurrentLangFromDB();
+  String Fname = loadFirstNameFromDB();
   // String title = 'Stepper';
   int _currentstep = 0;
   List<String> filesList = List<String>();
@@ -146,9 +147,11 @@ class _StepperBodyState extends State<StepperBody> {
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).accentColor,
                     press: () async {
-                      print("current lang: ${await getPrefCurrentLang()}");
-                      String currentLang = await getPrefCurrentLang();
-                      String currentJwtToken = await getPrefJwtToken();
+                      //print("current lang: ${await getPrefCurrentLang()}");
+                      String currentLang =
+                          loadCurrentLangFromDB(); //await getPrefCurrentLang();
+                      String currentJwtToken =
+                          loadJwtTokenFromDB(); //await getPrefJwtToken();
                       print(currentLang);
                       print(currentJwtToken);
                       //print(_currentstep + 1);
@@ -161,14 +164,20 @@ class _StepperBodyState extends State<StepperBody> {
                           });
                           setPrefWinchPlates(await getPrefWinchPlatesChars() +
                               await getPrefWinchPlatesNum());
+                          saveWinchPlatesInDB(loadWinchPlatesCharFromDB() +
+                              loadWinchPlatesNumFromDB());
                           winchRegisterRequestModel.firstName =
-                              await getPrefFirstName();
+                              loadFirstNameFromDB();
+                          // await getPrefFirstName();
                           winchRegisterRequestModel.lastName =
-                              await getPrefLastName();
+                              loadLastNameFromDB();
+                          //await getPrefLastName();
                           winchRegisterRequestModel.winchPlates =
-                              await getPrefWinchPlates();
+                              loadWinchPlatesFromDB();
+                          // await getPrefWinchPlates();
                           winchRegisterRequestModel.governorate =
-                              await getPrefWorkingCity();
+                              loadWorkingCityFromDB();
+                          // await getPrefWorkingCity();
                           print(
                               "Request body: ${winchRegisterRequestModel.toJson()}.");
                           ApiService apiService = new ApiService();
@@ -184,6 +193,7 @@ class _StepperBodyState extends State<StepperBody> {
                               setState(() {
                                 isApiCallProcess = false;
                                 printAllWinchUserCurrentData();
+                                printAllWinchDriverSavedInfoInDB();
                                 if (value.error == null) {
                                   setState(() {
                                     if (this._currentstep <
@@ -261,10 +271,15 @@ class _StepperBodyState extends State<StepperBody> {
                                   decodedToken["winchCheckReportPicture"];
                               var responseIat = decodedToken["iat"];
                               setPrefBackendID(responseID);
+                              saveBackendIBInDB(responseID);
                               setPrefFirstName(responseFName);
+                              saveFirstNameInDB(responseFName);
                               setPrefLastName(responseLName);
+                              saveLastNameInDB(responseLName);
                               setPrefWinchPlates(winchPlates);
+                              saveWinchPlatesInDB(winchPlates);
                               setPrefWorkingCity(governorate);
+                              saveWorkingCityInDB(governorate);
                               print(personalPicture);
                               print(driverLicensePicture);
                               print(winchLicenseFrontPicture);
@@ -273,6 +288,7 @@ class _StepperBodyState extends State<StepperBody> {
                               print(winchCheckReportPicture);
                               print(responseIat);
                               setPrefIAT(responseIat.toString());
+                              saveIATInDB(responseIat.toString());
                               setState(() {
                                 isApiCallProcess = false;
                                 if (value.error == null) if (this._currentstep <

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/models/user_register_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/lang_model.dart';
@@ -51,7 +52,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
+    //getCurrentPrefData();
     winchRegisterRequestModel = new WinchRegisterRequestModel();
   }
 
@@ -63,7 +64,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  String currentLang;
+  String currentLang = loadCurrentLangFromDB();
 
   void getCurrentPrefData() {
     getPrefCurrentLang().then((value) {
@@ -218,7 +219,9 @@ class _BodyState extends State<Body> {
                     googleImage = _googleSignIn.currentUser.photoUrl;
                     googleEmail = _googleSignIn.currentUser.email;
                     setPrefSocialEmail(googleEmail);
+                    saveSocialEmailInDB(googleEmail);
                     setPrefSocialImage(googleImage);
+                    saveSocialImageInDB(googleImage);
                     print(googleName);
                     print(googleImage);
                   } catch (err) {
@@ -231,7 +234,9 @@ class _BodyState extends State<Body> {
                     Gdecode = googleName.split(new RegExp('\\s+'));
                     print(Gdecode);
                     setPrefFirstName(Gdecode[0]);
+                    saveFirstNameInDB(Gdecode[0]);
                     setPrefLastName(Gdecode[1]);
+                    saveLastNameInDB(Gdecode[1]);
                     showRegisterModalBottomSheet(context, size.height * 0.48,
                         true, "byGoogle", LangModel(language: currentLang));
                     // Navigator.pushReplacementNamed(

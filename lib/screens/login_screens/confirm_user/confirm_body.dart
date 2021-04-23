@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
@@ -20,23 +21,23 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-String prefFName;
-String prefLName;
-String prefJwtToken;
-String prefPhone;
-String winchPlates;
-String prefWinchPlatesNum;
-String prefWinchPlatesChar;
-String currentLang;
-String workingCity;
-String prefWinchPlates;
+String prefFName = loadFirstNameFromDB();
+String prefLName = loadLastNameFromDB();
+String prefJwtToken = loadJwtTokenFromDB();
+String prefPhone = loadPhoneNumberFromDB();
+String winchPlates = loadWinchPlatesFromDB();
+String prefWinchPlatesChar = winchPlates.substring(0, 3).trim();
+String prefWinchPlatesNum = winchPlates.substring(3).trim();
+String currentLang = loadCurrentLangFromDB();
+String workingCity = loadWorkingCityFromDB();
+//String prefWinchPlates;
 
 class _BodyState extends State<Body> {
   otpNavData otpResponse;
 
   @override
   void initState() {
-    getCurrentPrefData();
+    //  getCurrentPrefData();
 
     // TODO: implement initState
     super.initState();
