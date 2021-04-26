@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/models/phone_num_model.dart';
+import 'package:winch_app/models/winch_driver_register/phone_num_model.dart';
 import 'package:winch_app/screens/login_screens/otp/phone_verification.dart';
 import 'package:winch_app/screens/login_screens/phone_number/componants/phone_number.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';

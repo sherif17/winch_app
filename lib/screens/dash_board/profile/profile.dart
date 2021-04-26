@@ -40,9 +40,9 @@ class _ProfileState extends State<Profile> {
             );
             Widget continueButton = FlatButton(
               child: Text(getTranslated(context, "Leave")),
-              onPressed: () {
-                resetAllUserCurrentData();
-                resetAllWinchDriverSavedInfoInDB();
+              onPressed: () async {
+                await resetAllUserCurrentData();
+                await resetAllWinchDriverSavedInfoInDB();
                 Navigator.pushNamedAndRemoveUntil(
                     context, Intro.routeName, (route) => false);
               },

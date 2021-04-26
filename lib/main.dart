@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_state_provider.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/dash_board/home/home_body.dart';
@@ -74,6 +75,7 @@ class _MyAppState extends State<MyApp> {
   Locale _locale;
   String TOKEN = loadJwtTokenFromDB();
   String BACKEND_ID = loadBackendIDFromDB();
+  String verificationStatus = loadVerificationStateFromDB();
 
   void setLocale(Locale locale) {
     setState(() {
@@ -116,14 +118,16 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider<WinchStateProvider>(
               create: (_) => WinchStateProvider()),
+          ChangeNotifierProvider<MapsProvider>(create: (_) => MapsProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme(),
           initialRoute: //MainStepper.routeName,
-              TOKEN == "" || BACKEND_ID == ""
-                  ? Intro.routeName
-                  : DashBoard.routeName,
+              // TOKEN == "" || BACKEND_ID == ""
+              verificationStatus == "true"
+                  ? DashBoard.routeName
+                  : Intro.routeName,
           routes: routes,
           locale: _locale,
           supportedLocales: [

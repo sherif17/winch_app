@@ -23,14 +23,6 @@ class _BodyState extends State<Body> {
     // getCurrentPrefData();
   }
 
-  void getCurrentPrefData() {
-    getPrefCurrentLang().then((value) {
-      setState(() {
-        currentLang = value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

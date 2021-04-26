@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:winch_app/models/files_upload_model.dart';
+import 'package:winch_app/models/winch_driver_register/files_upload_model.dart';
 import 'dart:convert';
 
-import 'package:winch_app/models/phone_num_model.dart';
-import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/models/winch_driver_register/phone_num_model.dart';
+import 'package:winch_app/models/winch_driver_register/user_register_model.dart';
 
 class ApiService {
   static const String baseUrl = 'http://161.97.155.244/api/';
