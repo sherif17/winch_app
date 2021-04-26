@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:winch_app/screens/dash_board/home/home_components/rps_custom_painter.dart';
+import 'package:winch_app/screens/request_screens/ride_request.dart';
 
 import 'home_components/driver_status_header.dart';
 
@@ -73,6 +74,7 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ),
             ),
+            RideRequest(),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
@@ -155,6 +157,9 @@ class _HomeBodyState extends State<HomeBody> {
             //           .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
             //   painter: RPSCustomPainter(),
             // ),
+
+
+
           ],
         ),
       ),

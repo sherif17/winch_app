@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:winch_app/screens/request_screens/tryingScreen.dart';
 import 'package:winch_app/services/Maps_Assistants/maps_services.dart';
 
 class RideRequest extends StatefulWidget {
@@ -71,6 +72,7 @@ class _RideRequestState extends State<RideRequest> {
                     ),
                   ],
                 ),
+
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 17.0, horizontal: 15.0,),
                   child: Column(
@@ -89,6 +91,31 @@ class _RideRequestState extends State<RideRequest> {
                       ),
 
                       SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: OutlinedButton(
+                          onPressed: ()
+                          {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => AddTodoButton()
+                                ));
+                          },
+                          //color: Theme.of(context).accentColor,
+                          child: Padding(
+                            padding: EdgeInsets.all(17.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Click me", style: Theme.of(context).textTheme.headline2,),
+                                //Icon(Icons.close, color: Theme.of(context).primaryColorDark, size: 26.0,)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
 
                       Padding(
@@ -176,8 +203,6 @@ class _RideRequestState extends State<RideRequest> {
 
                         ],),
                       //Expanded(child: Container()),
-
-
 
 
                       Padding(

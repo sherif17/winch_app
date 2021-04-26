@@ -13,7 +13,7 @@ class _EarningsState extends State<Earnings> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Earnnings',
+        title: Text('Earnings',
             style: TextStyle(
                 color: Colors.indigoAccent,
                 fontWeight: FontWeight.bold,
