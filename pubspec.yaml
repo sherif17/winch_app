@@ -48,6 +48,7 @@ dependencies:
   build_runner: ^1.12.2
   fswitch: ^1.1.2
   flutter_advanced_avatar: ^1.0.0+1
+  animated_text_kit: ^4.2.1
   #flutter_facebook_login: ^3.0.0
 
 

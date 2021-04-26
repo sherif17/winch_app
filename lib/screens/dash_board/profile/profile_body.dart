@@ -127,7 +127,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   SizedBox(
                     width: 10,
                   ),
-                  Text(workingCity)
+                  Text(workingCity ?? "")
                 ],
               ),
               SizedBox(

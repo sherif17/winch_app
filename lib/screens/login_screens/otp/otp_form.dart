@@ -7,13 +7,13 @@ import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/models/phone_num_model.dart';
+import 'package:winch_app/models/winch_driver_register/phone_num_model.dart';
 import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
 import 'package:winch_app/screens/login_screens/confirm_user/confirm_is_that_user.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/screens/login_screens/user_register/register_body.dart';
 import 'package:winch_app/screens/login_screens/user_register/register_new_user.dart';
-import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/services/winch_driver_register/api_services.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/utils/size_config.dart';
@@ -248,40 +248,28 @@ class _OtpFormState extends State<OtpForm> {
                       jwtToken = value.token;
                       setPrefJwtToken(jwtToken);
                       saveJwtTokenInDB(jwtToken);
-                      print(jwtToken);
-                      Map<String, dynamic> decodedToken =
-                          JwtDecoder.decode(jwtToken);
-                      responseID = decodedToken["_id"];
-                      //setPrefBackendID(responseID);
-                      responseFName = decodedToken["firstName"];
-                      responseLName = decodedToken["lastName"];
-                      winchPlates = decodedToken["winchPlates"];
-                      setPrefWinchPlates(winchPlates);
-                      saveWinchPlatesInDB(winchPlates);
-                      governorate = decodedToken["governorate"];
-                      setPrefWorkingCity(governorate);
-                      saveWorkingCityInDB(governorate);
-                      responseIat = decodedToken["iat"];
-                      print(responseID);
-                      print(responseLName);
-                      print(responseFName);
-                      //print(responseIat);
-                      if (responseFName != null && responseLName != null) {
+                      if (value.firstName != null &&
+                          value.lastName != null &&
+                          value.winchPlates != null) {
                         setState(() {
                           isApiCallProcess = false;
                         });
-                        setPrefFirstName(responseFName);
-                        setPrefLastName(responseLName);
-                        saveFirstNameInDB(responseFName);
-                        saveLastNameInDB(responseLName);
-                        setPrefIAT(responseIat.toString());
-                        saveIATInDB(responseIat.toString());
+                        setPrefFirstName(value.firstName);
+                        setPrefLastName(value.lastName);
+                        setPrefWinchPlates(value.winchPlates);
+                        saveFirstNameInDB(value.firstName);
+                        saveLastNameInDB(value.lastName);
+                        setPrefWinchPlates(value.winchPlates);
+                        saveWinchPlatesInDB(value.winchPlates);
+                        setPrefWorkingCity(value.governorate);
+                        saveWorkingCityInDB(value.governorate);
                         printAllWinchUserCurrentData();
                         printAllWinchDriverSavedInfoInDB();
                         await Navigator.pushNamedAndRemoveUntil(context,
                             ConfirmThisUser.routeName, (route) => false);
-                      } else if (responseFName == null &&
-                          responseLName == null) {
+                      } else if (value.firstName == null &&
+                          value.lastName == null &&
+                          value.winchPlates == null) {
                         setState(() {
                           isApiCallProcess = false;
                         });

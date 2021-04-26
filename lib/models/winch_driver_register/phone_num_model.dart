@@ -35,10 +35,6 @@ class PhoneRequestModel {
 //
 //     final phoneResponseModel = phoneResponseModelFromJson(jsonString);
 
-// To parse this JSON data, do
-//
-//     final phoneResponseModel = phoneResponseModelFromJson(jsonString);
-
 PhoneResponseModel phoneResponseModelFromJson(String str) =>
     PhoneResponseModel.fromJson(json.decode(str));
 
@@ -48,20 +44,36 @@ String phoneResponseModelToJson(PhoneResponseModel data) =>
 class PhoneResponseModel {
   PhoneResponseModel({
     this.token,
+    this.firstName,
+    this.lastName,
     this.error,
+    this.governorate,
+    this.winchPlates,
   });
 
   String token;
+  String firstName;
+  String lastName;
   String error;
+  String governorate;
+  String winchPlates;
 
   factory PhoneResponseModel.fromJson(Map<String, dynamic> json) =>
       PhoneResponseModel(
         token: json["token"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
         error: json["error"],
+        governorate: json["governorate"],
+        winchPlates: json["winchPlates"],
       );
 
   Map<String, dynamic> toJson() => {
         "token": token,
+        "firstName": firstName,
+        "lastName": lastName,
         "error": error,
+        "governorate": governorate,
+        "winchPlates": winchPlates,
       };
 }

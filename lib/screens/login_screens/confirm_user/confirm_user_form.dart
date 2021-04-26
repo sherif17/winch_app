@@ -5,11 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/models/winch_driver_register/user_register_model.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
-import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/services/winch_driver_register/api_services.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/form_error.dart';
@@ -52,6 +52,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
   int responseIat;
   String responseWinchPlates;
   String responseGovernorate;
+  bool status;
 
   bool FName_Changed = false;
   bool LName_changed = false;
@@ -179,25 +180,31 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                             responseID = decodedToken["_id"];
                             setPrefBackendID(responseID);
                             saveBackendIBInDB(responseID);
-                            responseFName = decodedToken["firstName"];
-                            setPrefFirstName(responseFName);
-                            saveFirstNameInDB(responseFName);
-                            responseLName = decodedToken["lastName"];
-                            setPrefLastName(responseLName);
-                            saveLastNameInDB(responseLName);
-                            responseWinchPlates = decodedToken["winchPlates"];
-                            setPrefWinchPlates(responseWinchPlates);
-                            saveWinchPlatesInDB(responseWinchPlates);
-                            responseGovernorate = decodedToken["governorate"];
-                            setPrefWorkingCity(responseGovernorate);
-                            saveWorkingCityInDB(responseGovernorate);
+                            setPrefFirstName(
+                                winchRegisterRequestModel.firstName);
+                            saveFirstNameInDB(
+                                winchRegisterRequestModel.firstName);
+                            setPrefLastName(winchRegisterRequestModel.lastName);
+                            saveLastNameInDB(
+                                winchRegisterRequestModel.lastName);
+                            setPrefWinchPlates(
+                                winchRegisterRequestModel.winchPlates);
+                            saveWinchPlatesInDB(
+                                winchRegisterRequestModel.winchPlates);
+                            setPrefWorkingCity(
+                                winchRegisterRequestModel.governorate);
+                            saveWorkingCityInDB(
+                                winchRegisterRequestModel.governorate);
                             responseIat = decodedToken["iat"];
                             setPrefIAT(responseIat.toString());
                             saveIATInDB(responseIat.toString());
+                            status = decodedToken["verified"];
+                            saveVerificationStateInDB(status.toString());
                             setState(() {
                               isApiCallProcess = false;
                             });
                             printAllWinchUserCurrentData();
+                            printAllWinchDriverSavedInfoInDB();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, DashBoard.routeName, (route) => false);
                           } else

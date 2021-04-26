@@ -68,7 +68,8 @@ class _BodyState extends State<Body> {
             style: Theme.of(context).textTheme.headline6,
           ),
           Text(
-            getTranslated(context, "Working City") + workingCity.trim(),
+            getTranslated(context, "Working City"),
+            /* workingCity.trim()*/
             style: Theme.of(context).textTheme.headline6,
           ),
           RoundedButton(
@@ -78,6 +79,12 @@ class _BodyState extends State<Body> {
                 Map<String, dynamic> decodedToken =
                     JwtDecoder.decode(prefJwtToken);
                 setPrefBackendID(decodedToken["_id"]);
+                saveBackendIBInDB(decodedToken["_id"]);
+                saveVerificationStateInDB(decodedToken["verified"].toString());
+                saveIATInDB(decodedToken["iat"].toString());
+                setPrefIAT(decodedToken["iat"].toString());
+                printAllWinchDriverSavedInfoInDB();
+                printAllWinchUserCurrentData();
                 Navigator.pushReplacementNamed(context, DashBoard.routeName);
               }),
           borderedRoundedButton(

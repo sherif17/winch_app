@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+const _VERIFICATION_STATE = 'verificationState';
 const String _CURRENT_LANGUAGE = 'currentLanguage';
 const String _JWT_TOKEN = 'jwtToken';
 const String _FIREBASE_ID = 'fireBaseId';
@@ -17,6 +18,15 @@ const String _SOCIAL_EMAIL = 'socialEmail';
 
 Box winchDriverInfo = Hive.box<String>("winchDriverInfoDBBox");
 
+saveVerificationStateInDB(String state) {
+  winchDriverInfo.put(_VERIFICATION_STATE, state);
+}
+
+String loadVerificationStateFromDB() {
+  return winchDriverInfo.get(_VERIFICATION_STATE);
+}
+
+////////////////////////////////////////////////////////////////////////
 saveCurrentLangInDB(String lang) {
   winchDriverInfo.put(_CURRENT_LANGUAGE, lang);
 }
@@ -112,7 +122,7 @@ saveWorkingCityInDB(String phone) {
 }
 
 String loadWorkingCityFromDB() {
-  return winchDriverInfo.get(_WORKING_CITY, defaultValue: "");
+  return winchDriverInfo.get(_WORKING_CITY, defaultValue: "N/A");
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -144,6 +154,7 @@ String loadSocialEmailFromDB() {
 
 /////////////////////////////////////////////////////////////////
 printAllWinchDriverSavedInfoInDB() {
+  print("_VERIFICATION_STATE : ${loadVerificationStateFromDB()}");
   print("_CURRENT_LANGUAGE : ${loadCurrentLangFromDB()}");
   print("_JWT_TOKEN : ${loadJwtTokenFromDB()}");
   print("_FIREBASE_ID : ${loadFirebaseFromDB()}");
@@ -152,6 +163,8 @@ printAllWinchDriverSavedInfoInDB() {
   print("_LAST_NAME : ${loadLastNameFromDB()}");
   print("_PHONE_NUMBER : ${loadPhoneNumberFromDB()}");
   print("_IAT : ${loadIATFromDB()}");
+  print("_WORKING_CITY : ${loadWorkingCityFromDB()}");
+  print("_WINCH_PLATES : ${loadWinchPlatesFromDB()}");
   print("_SOCIAL_IMAGE : ${loadSocialImageFromDB()}");
   print("_SOCIAL_EMAIL : ${loadSocialEmailFromDB()}");
 }

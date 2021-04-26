@@ -21,14 +21,6 @@ class _Otp_BodyState extends State<Otp_Body> {
     //getCurrentPrefData();
   }
 
-  void getCurrentPrefData() {
-    getPrefCurrentLang().then((value) {
-      setState(() {
-        currentLang = value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     phoneNum response = ModalRoute.of(context).settings.arguments;
