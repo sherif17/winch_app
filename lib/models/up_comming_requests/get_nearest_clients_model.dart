@@ -30,7 +30,8 @@ class GetNearestClientRequestModel {
         "Location_Long": locationLong,
       };
 }
-// To parse this JSON data, do
+
+/// To parse this JSON data, do
 //
 //     final getNearestClientResponseModel = getNearestClientResponseModelFromJson(jsonString);
 
@@ -44,62 +45,31 @@ String getNearestClientResponseModelToJson(
 
 class GetNearestClientResponseModel {
   GetNearestClientResponseModel({
-    this.nearestRide,
+    this.nearestRidePickupLocation,
+    this.dropoffLocation,
     this.error,
     this.requestId,
   });
 
-  NearestRide nearestRide;
+  Location nearestRidePickupLocation;
+  Location dropoffLocation;
   String error;
   String requestId;
 
   factory GetNearestClientResponseModel.fromJson(Map<String, dynamic> json) =>
       GetNearestClientResponseModel(
-        nearestRide: NearestRide.fromJson(json["Nearest Ride: "]),
+        nearestRidePickupLocation:
+            Location.fromJson(json["Nearest Ride: Pickup Location"]),
+        dropoffLocation: Location.fromJson(json["Dropoff Location"]),
         error: json["error"],
         requestId: json["requestId"],
       );
 
   Map<String, dynamic> toJson() => {
-        "Nearest Ride: ": nearestRide.toJson(),
+        "Nearest Ride: Pickup Location": nearestRidePickupLocation.toJson(),
+        "Dropoff Location": dropoffLocation.toJson(),
         "error": error,
         "requestId": requestId,
-      };
-}
-
-class NearestRide {
-  NearestRide({
-    this.searchScope,
-    this.creationTimeStamp,
-    this.lastScopeIncrease,
-    this.pickupLocation,
-    this.dropOffLocation,
-    this.requesterId,
-  });
-
-  int searchScope;
-  int creationTimeStamp;
-  int lastScopeIncrease;
-  Location pickupLocation;
-  Location dropOffLocation;
-  String requesterId;
-
-  factory NearestRide.fromJson(Map<String, dynamic> json) => NearestRide(
-        searchScope: json["searchScope"],
-        creationTimeStamp: json["creationTimeStamp"],
-        lastScopeIncrease: json["lastScopeIncrease"],
-        pickupLocation: Location.fromJson(json["pickupLocation"]),
-        dropOffLocation: Location.fromJson(json["dropOffLocation"]),
-        requesterId: json["requesterId"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "searchScope": searchScope,
-        "creationTimeStamp": creationTimeStamp,
-        "lastScopeIncrease": lastScopeIncrease,
-        "pickupLocation": pickupLocation.toJson(),
-        "dropOffLocation": dropOffLocation.toJson(),
-        "requesterId": requesterId,
       };
 }
 

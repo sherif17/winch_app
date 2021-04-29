@@ -7,9 +7,8 @@ import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:fswitch/fswitch.dart';
 import 'package:provider/provider.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
-import 'package:winch_app/models/up_comming_requests/get_nearest_client_model.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
-import 'package:winch_app/provider/upcomming_winch_service/winch_state_provider.dart';
+import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 
 class DriverStatusHeader extends StatefulWidget {
   @override
@@ -27,7 +26,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WinchStateProvider>(
+    return Consumer<WinchRequestProvider>(
       builder: (context, val, child) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -43,7 +42,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
   }
 
   buildDriverInfo(context) {
-    return Consumer<WinchStateProvider>(
+    return Consumer<WinchRequestProvider>(
       builder: (context, val, child) => Padding(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.02,
@@ -100,15 +99,15 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                   if (v == true) {
                     z = Timer.periodic(Duration(seconds: 20), (z) async {
                       print("start");
-                      await val.getNearestClientToMe(loadJwtTokenFromDB());
+                      await val.getNearestClientToMe();
                       print(val.getNearestClientResponseModel.error);
                       if (val.CUSTOMER_FOUNDED == true) {
                         z.cancel();
                         print("customer found");
                         print(
-                            "CustomerPickUpLocation: Lat : ${val.getNearestClientResponseModel.nearestRide.pickupLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRide.pickupLocation.lng}");
+                            "CustomerPickUpLocation: Lat : ${val.getNearestClientResponseModel.nearestRidePickupLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRidePickupLocation.lng}");
                         print(
-                            "CustomerDropOffLocation: Lat : ${val.getNearestClientResponseModel.nearestRide.dropOffLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRide.dropOffLocation.lng}");
+                            "CustomerDropOffLocation: Lat : ${val.getNearestClientResponseModel.dropoffLocation.lat} ,long : ${val.getNearestClientResponseModel.dropoffLocation.lng}");
                       } else if (val.ALREADY_HAVE_RIDE == true) {
                         z.cancel();
                         print(val.getNearestClientResponseModel.error);
