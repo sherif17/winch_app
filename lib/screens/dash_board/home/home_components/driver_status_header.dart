@@ -19,7 +19,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
   @override
   void initState() {
     super.initState();
-    //print(loadJwtTokenFromDB());
+    print(loadJwtTokenFromDB());
   }
 
   Timer z;
@@ -100,14 +100,13 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                     z = Timer.periodic(Duration(seconds: 20), (z) async {
                       print("start");
                       await val.getNearestClientToMe();
-                      print(val.getNearestClientResponseModel.error);
                       if (val.CUSTOMER_FOUNDED == true) {
                         z.cancel();
                         print("customer found");
                         print(
                             "CustomerPickUpLocation: Lat : ${val.getNearestClientResponseModel.nearestRidePickupLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRidePickupLocation.lng}");
                         print(
-                            "CustomerDropOffLocation: Lat : ${val.getNearestClientResponseModel.dropoffLocation.lat} ,long : ${val.getNearestClientResponseModel.dropoffLocation.lng}");
+                            "CustomerDropOffLocation: Lat : ${val.getNearestClientResponseModel.nearestRideDistinationLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRideDistinationLocation.lng}");
                       } else if (val.ALREADY_HAVE_RIDE == true) {
                         z.cancel();
                         print(val.getNearestClientResponseModel.error);
@@ -127,10 +126,4 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
       ),
     );
   }
-}
-
-Timer timer;
-
-startTimer() {
-  timer = Timer.periodic(Duration(seconds: 30), (timer) {});
 }

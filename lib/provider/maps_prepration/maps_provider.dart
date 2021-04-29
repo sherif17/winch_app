@@ -67,4 +67,14 @@ class MapsProvider extends ChangeNotifier {
     print("provider dropOff latitude:: ${dropOffLocation.latitude}");
     print("provider dropOff longitude:: ${dropOffLocation.longitude}");
   }
+
+  getAddressesNames(customerPosition, destinationPosition, context) async {
+    pickUpLocation.placeName =
+        await MapsApiService.searchCoordinateAddress(customerPosition, context);
+    dropOffLocation.placeName = await MapsApiService.searchCoordinateAddress(
+        destinationPosition, context);
+
+    print(pickUpLocation.placeName);
+    print(dropOffLocation.placeName);
+  }
 }

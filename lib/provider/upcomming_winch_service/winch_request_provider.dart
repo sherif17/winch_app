@@ -15,6 +15,7 @@ class WinchRequestProvider extends ChangeNotifier {
   bool currentState = false;
   bool isLoading = false;
   Timer liveTrackerTimer;
+  Timer searchingForCustomerTimer;
   Position winchDriverCurrentPosition;
   bool SEARCHING_FOR_CUSTOMER = false;
   bool CUSTOMER_FOUNDED = false;
@@ -62,24 +63,21 @@ class WinchRequestProvider extends ChangeNotifier {
     state == true
         ? SEARCHING_FOR_CUSTOMER = true
         : SEARCHING_FOR_CUSTOMER = false;
-    // if (currentState == true)
-    //  // CUSTOMER_FOUNDED = true;
-    // else
-    //   //CUSTOMER_FOUNDED = false;
+    if (currentState == true) {
+    } else {
+      searchingForCustomerTimer.cancel();
+      resetAllFlags();
+    }
     notifyListeners();
   }
 
   getNearestClientToMe() async {
     isLoading = true;
-    print("hk hk");
     getNearestClientResponseModel = await requestService.getNearestClient(
         getNearestClientRequestModel, loadJwtTokenFromDB());
-    print("pk pk");
     isLoading = false;
-
     if (getNearestClientResponseModel.requestId == null &&
         getNearestClientResponseModel.error == "No client requests now") {
-      print("hi hi hi");
       SEARCHING_FOR_CUSTOMER = true;
       CUSTOMER_FOUNDED = false;
       ALREADY_HAVE_RIDE = false;
@@ -113,6 +111,34 @@ class WinchRequestProvider extends ChangeNotifier {
         trackWinchDriver();
       });
     }
+    notifyListeners();
+  }
+
+  cancelUpcomingRequest() {
+    SEARCHING_FOR_CUSTOMER = true;
+    CUSTOMER_FOUNDED = false;
+    searchingForCustomerTimer =
+        Timer.periodic(Duration(seconds: 20), (z) async {
+      print("start");
+      await getNearestClientToMe();
+      if (CUSTOMER_FOUNDED == true) {
+        z.cancel();
+        print("customer found");
+        print(
+            "CustomerPickUpLocation: Lat : ${getNearestClientResponseModel.nearestRidePickupLocation.lat} ,long : ${getNearestClientResponseModel.nearestRidePickupLocation.lng}");
+        print(
+            "CustomerDropOffLocation: Lat : ${getNearestClientResponseModel.nearestRideDistinationLocation.lat} ,long : ${getNearestClientResponseModel.nearestRideDistinationLocation.lng}");
+        notifyListeners();
+      } else if (ALREADY_HAVE_RIDE == true) {
+        z.cancel();
+        print(getNearestClientResponseModel.error);
+        print(getNearestClientResponseModel.requestId);
+        notifyListeners();
+      } else if (SEARCHING_FOR_CUSTOMER == true) {
+        print("still searching");
+        print(getNearestClientResponseModel.error);
+      }
+    });
     notifyListeners();
   }
 
@@ -180,6 +206,14 @@ class WinchRequestProvider extends ChangeNotifier {
     startingOfWinchTripResponseModel = await requestService.startingWinchTrip(
         startingOfWinchTripRequestModel, loadJwtTokenFromDB());
     isLoading = false;
+    notifyListeners();
+  }
+
+  resetAllFlags() {
+    bool SEARCHING_FOR_CUSTOMER = false;
+    bool CUSTOMER_FOUNDED = false;
+    bool ALREADY_HAVE_RIDE = false;
+    bool RIDE_ACCEPTED = false;
     notifyListeners();
   }
 }

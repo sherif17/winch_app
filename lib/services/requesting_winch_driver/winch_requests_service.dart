@@ -12,19 +12,19 @@ import 'package:winch_app/models/up_comming_requests/startting_winch_trip_model.
 class WinchRequestService {
   Future<GetNearestClientResponseModel> getNearestClient(
       GetNearestClientRequestModel getNearestClientRequestModel, token) async {
+    print("Request body : ${getNearestClientRequestModel.toJson()}");
     var url =
         Uri.parse('http://161.97.155.244/api/driverMatching/getNearestClient');
     final response = await http.post(url,
         headers: {"x-auth-token": "$token"},
         body: getNearestClientRequestModel.toJson());
-    print("Request body : ${getNearestClientRequestModel.toJson()}");
-    print("response.bodies:${response.body}");
-    if (response.statusCode == 200 || response.statusCode == 400) {
+    print("response.body:${response.body}");
+    if (response.statusCode == 200) {
       print("response.body:${response.statusCode}");
       print("response.body:${response.reasonPhrase}");
       return GetNearestClientResponseModel.fromJson(json.decode(response.body));
-      // } else if (response.statusCode == 400) {
-      //   return getNearestClientResponseModelFromJson(response.body);
+    } else if (response.statusCode == 400) {
+      return GetNearestClientResponseModel.fromJson(json.decode(response.body));
     } else {
       throw Exception("failed to load Data");
     }

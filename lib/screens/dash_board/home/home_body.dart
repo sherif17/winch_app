@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animarker/flutter_map_marker_animation.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +13,7 @@ import 'package:winch_app/models/maps/address.dart';
 import 'package:winch_app/models/up_comming_requests/get_nearest_clients_model.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
+import 'package:winch_app/screens/dash_board/home/home_components/upcomming_request_pop_up.dart';
 import 'package:winch_app/screens/request_screens/custom_rect_tween.dart';
 import 'package:winch_app/screens/request_screens/hero_dialog_route.dart';
 import 'package:winch_app/services/Maps_Assistants/maps_services.dart';
@@ -19,19 +23,48 @@ import 'package:flutter/scheduler.dart';
 class HomeBody extends StatefulWidget {
   @override
   _HomeBodyState createState() => _HomeBodyState();
+  final double size;
+  final Color color;
+  final Widget child;
+  final VoidCallback onPressed;
+
+  const HomeBody({
+    Key key,
+    this.size = 80.0,
+    this.color = Colors.red,
+    this.onPressed,
+    @required this.child,
+  }) : super(key: key);
 }
 
-class _HomeBodyState extends State<HomeBody> {
+class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
   Completer<GoogleMapController> _completerGoogleMap = Completer(); //////
   final CameraPosition _initialPosition = CameraPosition(
     target: LatLng(31.2001, 29.9187),
     zoom: 15.4746,
   );
-
+  AnimationController _controller;
   Address pickUpAddress = Address(
       latitude: 31.20684069999999, longitude: 29.9237711, placeName: null);
   Address dropOffAddress =
       Address(latitude: 31.2181232, longitude: 29.9570564, placeName: null);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      lowerBound: 0.5,
+      duration: Duration(seconds: 3),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext ctx) {
@@ -43,38 +76,28 @@ class _HomeBodyState extends State<HomeBody> {
           body: Stack(
             clipBehavior: Clip.hardEdge,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: size.height * 0.00,
-                ),
-                child: Container(
-                  height: size.height * 0.91,
-                  child: GoogleMap(
-                    initialCameraPosition: _initialPosition,
-                    mapType: MapType.normal,
-                    myLocationButtonEnabled: true,
-                    myLocationEnabled: true,
-                    zoomGesturesEnabled: true,
-                    zoomControlsEnabled: true,
-                    mapToolbarEnabled: true,
-                    onMapCreated: (GoogleMapController controller) async {
-                      _completerGoogleMap.complete(controller);
-                      MapsProvider.googleMapController = controller;
-                      await MapsProvider.locatePosition();
-                      await MapsProvider.getAddressNames(
-                          pickUpAddress, dropOffAddress, context);
-                      WinchRequestProvider.getNearestClientRequestModel =
-                          GetNearestClientRequestModel(
-                              locationLat: MapsProvider.currentPosition.latitude
-                                  .toString(),
-                              locationLong: MapsProvider
-                                  .currentPosition.longitude
-                                  .toString());
-                    },
-                  ),
-                ),
+              GoogleMap(
+                initialCameraPosition: _initialPosition,
+                mapType: MapType.normal,
+                myLocationButtonEnabled: true,
+                myLocationEnabled: true,
+                zoomGesturesEnabled: true,
+                zoomControlsEnabled: true,
+                mapToolbarEnabled: true,
+                onMapCreated: (GoogleMapController controller) async {
+                  _completerGoogleMap.complete(controller);
+                  MapsProvider.googleMapController = controller;
+                  await MapsProvider.locatePosition();
+                  /*  await MapsProvider.getAddressNames(
+                      pickUpAddress, dropOffAddress, context);*/
+                  WinchRequestProvider.getNearestClientRequestModel =
+                      GetNearestClientRequestModel(
+                          locationLat:
+                              MapsProvider.currentPosition.latitude.toString(),
+                          locationLong: MapsProvider.currentPosition.longitude
+                              .toString());
+                },
               ),
-
               Align(
                 alignment: Alignment.topCenter,
                 child: Container(
@@ -152,82 +175,10 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ),
               DriverStatusHeader(),
-              // WinchRequestProvider.CUSTOMER_FOUNDED == true
-              //     ?
-              //         // Future.delayed(Duration(milliseconds: 50));
-              //         // Navigator.of(ctx).push(HeroDialogRoute(builder: (ctx) {
-              //         //   return const _AddTodoPopupCard();
-              //         // }));
-              //
-              //     : SizedBox(),
-              //RideRequest(),
+              WinchRequestProvider.CUSTOMER_FOUNDED == true
+                  ? buildUpCommingRequest(size: size)
+                  : SizedBox(),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Tag-value used for the add todo popup button.
-const String _heroAddTodo = 'add-todo-hero';
-
-class _AddTodoPopupCard extends StatelessWidget {
-  /// {@macro add_todo_popup_card}
-  const _AddTodoPopupCard({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Hero(
-          tag: _heroAddTodo,
-          createRectTween: (begin, end) {
-            return CustomRectTween(begin: begin, end: end);
-          },
-          child: Material(
-            color: Colors.greenAccent,
-            elevation: 2,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'New todo',
-                        border: InputBorder.none,
-                      ),
-                      cursorColor: Colors.white,
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                      thickness: 0.2,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Write a note',
-                        border: InputBorder.none,
-                      ),
-                      cursorColor: Colors.white,
-                      maxLines: 6,
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                      thickness: 0.2,
-                    ),
-                    FlatButton(
-                      onPressed: () {},
-                      child: const Text('Add'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ),
         ),
       ),

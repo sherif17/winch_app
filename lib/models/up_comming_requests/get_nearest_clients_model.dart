@@ -30,8 +30,7 @@ class GetNearestClientRequestModel {
         "Location_Long": locationLong,
       };
 }
-
-/// To parse this JSON data, do
+// To parse this JSON data, do
 //
 //     final getNearestClientResponseModel = getNearestClientResponseModelFromJson(jsonString);
 
@@ -45,36 +44,43 @@ String getNearestClientResponseModelToJson(
 
 class GetNearestClientResponseModel {
   GetNearestClientResponseModel({
-    this.nearestRidePickupLocation,
-    this.dropoffLocation,
     this.error,
     this.requestId,
+    this.nearestRidePickupLocation,
+    this.nearestRideDistinationLocation,
   });
 
-  Location nearestRidePickupLocation;
-  Location dropoffLocation;
   String error;
   String requestId;
+  NearestRideLocation nearestRidePickupLocation;
+  NearestRideLocation nearestRideDistinationLocation;
 
   factory GetNearestClientResponseModel.fromJson(Map<String, dynamic> json) =>
       GetNearestClientResponseModel(
-        nearestRidePickupLocation:
-            Location.fromJson(json["Nearest Ride: Pickup Location"]),
-        dropoffLocation: Location.fromJson(json["Dropoff Location"]),
         error: json["error"],
         requestId: json["requestId"],
+        nearestRidePickupLocation: json["Nearest Ride: Pickup Location"] != null
+            ? NearestRideLocation.fromJson(
+                json["Nearest Ride: Pickup Location"])
+            : null,
+        nearestRideDistinationLocation:
+            json["Nearest Ride: Distination Location"] != null
+                ? NearestRideLocation.fromJson(
+                    json["Nearest Ride: Distination Location"])
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
-        "Nearest Ride: Pickup Location": nearestRidePickupLocation.toJson(),
-        "Dropoff Location": dropoffLocation.toJson(),
         "error": error,
         "requestId": requestId,
+        "Nearest Ride: Pickup Location": nearestRidePickupLocation.toJson(),
+        "Nearest Ride: Distination Location":
+            nearestRideDistinationLocation.toJson(),
       };
 }
 
-class Location {
-  Location({
+class NearestRideLocation {
+  NearestRideLocation({
     this.lat,
     this.lng,
   });
@@ -82,7 +88,8 @@ class Location {
   String lat;
   String lng;
 
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
+  factory NearestRideLocation.fromJson(Map<String, dynamic> json) =>
+      NearestRideLocation(
         lat: json["lat"],
         lng: json["lng"],
       );
