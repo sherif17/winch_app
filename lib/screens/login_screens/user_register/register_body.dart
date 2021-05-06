@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/winch_app/lib/models/winch_driver_register/user_register_model.dart';
+import 'package:winch_app/models/winch_driver_register/user_register_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/lang_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
-import 'file:///G:/Programming/Projects/Flutter/AndroidStudio/GradProject/winch_app/lib/services/winch_driver_register/api_services.dart';
+
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
 import '../common_widgets/background.dart';

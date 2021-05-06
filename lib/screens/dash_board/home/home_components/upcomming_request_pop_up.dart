@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:winch_app/models/maps/address.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
+import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
+import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
+import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/accepted_service_map.dart';
 import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/acceptted_serivce_sheet.dart';
 
-class buildUpCommingRequest extends StatelessWidget {
+class buildUpCommingRequest extends StatefulWidget {
   const buildUpCommingRequest({
     Key key,
     @required this.size,
@@ -14,16 +18,28 @@ class buildUpCommingRequest extends StatelessWidget {
   final Size size;
 
   @override
+  _buildUpCommingRequestState createState() => _buildUpCommingRequestState();
+}
+
+class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Align(
         alignment: Alignment.bottomCenter,
-        child: Consumer2<WinchRequestProvider, MapsProvider>(
-          builder: (context, WinchRequestProvider, MapsProvider, child) =>
+        child: Consumer3<WinchRequestProvider, MapsProvider, PolyLineProvider>(
+          builder: (context, WinchRequestProvider, MapsProvider, PolyLineProvider, child) =>
               Container(
-            height: size.height * 0.25,
+            height: widget.size.height * 0.25,
             width: double.infinity,
             margin: EdgeInsets.fromLTRB(
-                size.width * 0.1, 0, size.width * 0.1, size.height * 0.05),
+                widget.size.width * 0.1, 0, widget.size.width * 0.1, widget.size.height * 0.05),
             child: Material(
               color: Colors.white,
               elevation: 15,
@@ -37,24 +53,24 @@ class buildUpCommingRequest extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("0.5 KM"),
+                      Text(PolyLineProvider.tripDirectionDetails.distanceText),
                       SvgPicture.asset("assets/icons/car.svg",
-                          width: size.width * 0.08),
+                          width: widget.size.width * 0.08),
                       TextButton.icon(
                           label: Text("4.9",
                               style: Theme.of(context).textTheme.subtitle1),
                           icon: Icon(
                             Icons.star_half_outlined,
-                            size: size.width * 0.05,
+                            size: widget.size.width * 0.05,
                             color: Colors.yellowAccent,
                           )),
                     ],
                   ),
-                  Text("10 Min apart"),
+                  Text(PolyLineProvider.tripDirectionDetails.durationText + " away"),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.07,
-                        vertical: size.height * 0.009),
+                        horizontal: widget.size.width * 0.07,
+                        vertical: widget.size.height * 0.009),
                     child: Divider(
                       color: Colors.grey.withOpacity(0.3),
                       thickness: 2,
@@ -83,9 +99,9 @@ class buildUpCommingRequest extends StatelessWidget {
                                           side: BorderSide(
                                               width: 0.7, color: Colors.red)))),
                               onPressed: () {
-                                WinchRequestProvider.cancelUpcomingRequest();
+                                WinchRequestProvider.cancelUpcomingRequest(context);
                               }),
-                          SizedBox(width: size.width * 0.1),
+                          SizedBox(width: widget.size.width * 0.1),
                           ElevatedButton(
                             child: Text("accept".toUpperCase(),
                                 style: TextStyle(fontSize: 18)),
@@ -105,10 +121,14 @@ class buildUpCommingRequest extends StatelessWidget {
                                         side:
                                             BorderSide(color: Colors.green)))),
                             onPressed: () {
+                              // MapsProvider.currentLocation.latitude = MapsProvider.currentLocation.latitude;
+                              // MapsProvider.currentLocation.longitude = MapsProvider.currentLocation.longitude;
+                              MapsProvider.getPickUpAddress(WinchRequestProvider.getNearestClientResponseModel.nearestRidePickupLocation.lat, WinchRequestProvider.getNearestClientResponseModel.nearestRidePickupLocation.lng, context);
+                              MapsProvider.getDropOffAddress(WinchRequestProvider.getNearestClientResponseModel.nearestRideDistinationLocation.lat, WinchRequestProvider.getNearestClientResponseModel.nearestRideDistinationLocation.lng, context);
+
                               Navigator.pushNamedAndRemoveUntil(
                                   context,
-                                  AcceptedServiceSheet.routeName,
-                                  (route) => false);
+                                  AcceptedServiceScreen.routeName, (route) => false);
                               // WinchRequestProvider.acceptUpcomingRequest();
                               // if (WinchRequestProvider.RIDE_ACCEPTED == true) {
                               //

@@ -50,6 +50,7 @@ dependencies:
   flutter_advanced_avatar: ^1.0.0+1
   animated_text_kit: ^4.2.1
   flutter_animarker: ^3.2.0
+  flutter_polyline_points: ^0.2.4
   #flutter_facebook_login: ^3.0.0
 
 

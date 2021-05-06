@@ -1,3 +1,4 @@
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:winch_app/models/maps/address.dart';
 import 'package:winch_app/models/maps/direction_details.dart';
 import 'package:winch_app/services/Maps_Assistants/RequestAssistant.dart';
@@ -32,7 +33,7 @@ class MapsApiService {
       LatLng initialPosition, LatLng finalPosition) async {
     String mapKey = "AIzaSyAbT3_43qH7mG81Ufy4xS-GbqDjo9rrPAU";
     String directionUrl =
-        "https://maps.googleapis.com/maps/api/directions/json?origin=${initialPosition.latitude},${initialPosition.longitude}&destination=${finalPosition.latitude},${finalPosition.longitude}&key=$mapKey";
+        "https://maps.googleapis.com/maps/api/directions/json?origin=${initialPosition.latitude},${initialPosition.longitude}&destination=${finalPosition.latitude},${finalPosition.longitude}&travelMode=${TravelMode.driving}&key=$mapKey";
 
     var res = await RequestAssistant.getRequest(directionUrl);
 

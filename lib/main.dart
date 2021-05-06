@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
+import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/dash_board/home/home_body.dart';
@@ -119,6 +120,7 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<WinchRequestProvider>(
               create: (_) => WinchRequestProvider()),
           ChangeNotifierProvider<MapsProvider>(create: (_) => MapsProvider()),
+          ChangeNotifierProvider<PolyLineProvider>(create: (_) => PolyLineProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

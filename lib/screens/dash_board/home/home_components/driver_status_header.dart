@@ -7,7 +7,9 @@ import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:fswitch/fswitch.dart';
 import 'package:provider/provider.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
+import 'package:winch_app/models/maps/address.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
+import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 
 class DriverStatusHeader extends StatefulWidget {
@@ -85,7 +87,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                       stopPauseOnTap: true,
                     ),
                   )
-                : Text(val.currentState == true ? "Online" : "Offline"),
+                :val.CUSTOMER_FOUNDED==true ?Text("Customer Founded") :Text(val.currentState == true ? "Online" : "Offline"),
             FSwitch(
                 open: val.currentState,
                 openColor: Theme.of(context).primaryColorLight,
@@ -107,6 +109,14 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                             "CustomerPickUpLocation: Lat : ${val.getNearestClientResponseModel.nearestRidePickupLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRidePickupLocation.lng}");
                         print(
                             "CustomerDropOffLocation: Lat : ${val.getNearestClientResponseModel.nearestRideDistinationLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRideDistinationLocation.lng}");
+                        Address finalPos = Address(descriptor: "PickUp ");
+                        finalPos.latitude  = double.parse(val.getNearestClientResponseModel.nearestRidePickupLocation.lat);
+                        finalPos.longitude = double.parse(val.getNearestClientResponseModel.nearestRidePickupLocation.lng);
+
+                        print(finalPos.latitude);
+                        print(finalPos.latitude.runtimeType);
+                        Address initial = Provider.of<MapsProvider>(context,listen: false).currentLocation;
+                        Provider.of<PolyLineProvider>(context,listen: false).getPlaceDirection(context, initial, finalPos, Provider.of<MapsProvider>(context, listen: false).googleMapController);
                       } else if (val.ALREADY_HAVE_RIDE == true) {
                         z.cancel();
                         print(val.getNearestClientResponseModel.error);

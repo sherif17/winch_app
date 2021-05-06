@@ -2,41 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
+import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 
 class AcceptedServiceSheet extends StatelessWidget {
   static String routeName = '/AcceptedServiceSheet';
 
   @override
   Widget build(BuildContext context) {
-    double customerLat = 31.20684069999999;
-    double customerLng = 29.9237711;
-    LatLng customerPosition = LatLng(customerLat, customerLng);
-    double destinationLat = 31.2181232;
-    double destinationLng = 29.9570564;
-    LatLng destinationPosition = LatLng(destinationLat, destinationLng);
-    String customerAddress = " ";
-    String destinationAddress = " ";
-    String customerFirstName = "Mohamed";
-    String customerLastName = "Mahmoud";
-    String estimatedDuration = "25 min";
-    double estimatedFare = 234.0;
-    String estimatedArrivalTime = "12:56";
-    String carPlates = "س ن ت 1234";
-    String carType = "BMW X6";
-
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: Consumer<MapsProvider>(
-        builder: (context, MapsProvider, child) => DraggableScrollableSheet(
-          initialChildSize: 0.4,
+      child: Consumer2<MapsProvider,WinchRequestProvider>(
+        builder: (context, MapsProvider,WinchRequestProvider, child) => DraggableScrollableSheet(
+          initialChildSize: 0.3,
           minChildSize: 0.22,
           maxChildSize: 1.0,
           builder: (BuildContext myContext, controller) {
-            // MapsProvider.getAddressesNames(
-            //     customerPosition, destinationPosition, context);
-            // print("customerAddress: ${MapsProvider.pickUpLocation.placeName}");
-            // print(
-            //     "destinationAddress: ${MapsProvider.pickUpLocation.placeName}");
             return SingleChildScrollView(
               controller: controller,
               child: Container(
@@ -78,31 +58,6 @@ class AcceptedServiceSheet extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: OutlinedButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => AddTodoButton()));
-                          },
-                          //color: Theme.of(context).accentColor,
-                          child: Padding(
-                            padding: EdgeInsets.all(17.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Click me",
-                                  style: Theme.of(context).textTheme.headline2,
-                                ),
-                                //Icon(Icons.close, color: Theme.of(context).primaryColorDark, size: 26.0,)
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
 
                       Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -123,14 +78,14 @@ class AcceptedServiceSheet extends StatelessWidget {
                                       MediaQuery.of(context).size.width * 0.05,
                                 ),
                                 Row(children: [
-                                  Text(customerFirstName,
+                                  Text(WinchRequestProvider.acceptingWinchServiceResponseModel.firstName?? "" ,
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle1),
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  Text(customerLastName,
+                                  Text(WinchRequestProvider.acceptingWinchServiceResponseModel.lastName ?? "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle1),
@@ -205,17 +160,18 @@ class AcceptedServiceSheet extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                carType,
+                                WinchRequestProvider.acceptingWinchServiceResponseModel.carBrand?? "" ),
+                            Text(WinchRequestProvider.acceptingWinchServiceResponseModel.carModel?? "",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               Expanded(child: Container()),
                               Text(
-                                carPlates,
+                                WinchRequestProvider.acceptingWinchServiceResponseModel.carPlates?? "",
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               Expanded(child: Container()),
                               Text(
-                                "EGP $estimatedFare",
+                                "EGP ${WinchRequestProvider.acceptingWinchServiceResponseModel.estimatedFare ?? ""}",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                             ],
@@ -256,7 +212,7 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //Text("Estimated arrival time", style: Theme.of(context).textTheme.bodyText2,),
                               Expanded(child: Container()),
                               Text(
-                                customerAddress,
+                                MapsProvider.customerPickUpLocation.placeName??"",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
@@ -301,7 +257,7 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //Text("Estimated arrival time", style: Theme.of(context).textTheme.bodyText2,),
                               Expanded(child: Container()),
                               Text(
-                                destinationAddress,
+                                MapsProvider.customerDropOffLocation.placeName??"",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
@@ -345,7 +301,7 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //SizedBox(width: MediaQuery.of(context).size.width * 0.2,),
                               Expanded(child: Container()),
                               Text(
-                                estimatedArrivalTime,
+                                WinchRequestProvider.acceptingWinchServiceResponseModel.estimatedTime??"",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
@@ -427,7 +383,7 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //SizedBox(width: MediaQuery.of(context).size.width * 0.2,),
                               Expanded(child: Container()),
                               Text(
-                                estimatedDuration,
+                                WinchRequestProvider.acceptingWinchServiceResponseModel.estimatedTime??"",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
