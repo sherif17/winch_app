@@ -81,13 +81,15 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                           duration: const Duration(seconds: 3),
                         ),
                       ],
-                      totalRepeatCount: 100000000000,
+                      repeatForever: true,
                       pause: const Duration(milliseconds: 2),
                       displayFullTextOnTap: true,
                       stopPauseOnTap: true,
                     ),
                   )
-                :val.CUSTOMER_FOUNDED==true ?Text("Customer Founded") :Text(val.currentState == true ? "Online" : "Offline"),
+                : val.CUSTOMER_FOUNDED == true
+                    ? Text("Customer Founded")
+                    : Text(val.currentState == true ? "Online" : "Offline"),
             FSwitch(
                 open: val.currentState,
                 openColor: Theme.of(context).primaryColorLight,
@@ -101,7 +103,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                   if (v == true) {
                     z = Timer.periodic(Duration(seconds: 20), (z) async {
                       print("start");
-                      await val.getNearestClientToMe();
+                      await val.getNearestClientToMe(context);
                       if (val.CUSTOMER_FOUNDED == true) {
                         z.cancel();
                         print("customer found");
@@ -110,13 +112,28 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                         print(
                             "CustomerDropOffLocation: Lat : ${val.getNearestClientResponseModel.nearestRideDistinationLocation.lat} ,long : ${val.getNearestClientResponseModel.nearestRideDistinationLocation.lng}");
                         Address finalPos = Address(descriptor: "PickUp ");
-                        finalPos.latitude  = double.parse(val.getNearestClientResponseModel.nearestRidePickupLocation.lat);
-                        finalPos.longitude = double.parse(val.getNearestClientResponseModel.nearestRidePickupLocation.lng);
-
+                        finalPos.latitude = double.parse(val
+                            .getNearestClientResponseModel
+                            .nearestRidePickupLocation
+                            .lat);
+                        finalPos.longitude = double.parse(val
+                            .getNearestClientResponseModel
+                            .nearestRidePickupLocation
+                            .lng);
                         print(finalPos.latitude);
                         print(finalPos.latitude.runtimeType);
-                        Address initial = Provider.of<MapsProvider>(context,listen: false).currentLocation;
-                        Provider.of<PolyLineProvider>(context,listen: false).getPlaceDirection(context, initial, finalPos, Provider.of<MapsProvider>(context, listen: false).googleMapController);
+                        Address initial =
+                            Provider.of<MapsProvider>(context, listen: false)
+                                .currentLocation;
+                       await Provider.of<PolyLineProvider>(context, listen: false)
+                            .getPlaceDirection(
+                                context,
+                                initial,
+                                finalPos,
+                                Provider.of<MapsProvider>(context,
+                                        listen: false)
+                                    .googleMapController);
+                        val.isPopRequestDataReady=true;
                       } else if (val.ALREADY_HAVE_RIDE == true) {
                         z.cancel();
                         print(val.getNearestClientResponseModel.error);

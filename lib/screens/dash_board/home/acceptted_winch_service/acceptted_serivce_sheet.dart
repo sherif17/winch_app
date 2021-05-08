@@ -11,8 +11,9 @@ class AcceptedServiceSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: Consumer2<MapsProvider,WinchRequestProvider>(
-        builder: (context, MapsProvider,WinchRequestProvider, child) => DraggableScrollableSheet(
+      child: Consumer2<MapsProvider, WinchRequestProvider>(
+        builder: (context, MapsProvider, WinchRequestProvider, child) =>
+            DraggableScrollableSheet(
           initialChildSize: 0.3,
           minChildSize: 0.22,
           maxChildSize: 1.0,
@@ -58,7 +59,6 @@ class AcceptedServiceSheet extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
 
-
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Row(
@@ -78,14 +78,22 @@ class AcceptedServiceSheet extends StatelessWidget {
                                       MediaQuery.of(context).size.width * 0.05,
                                 ),
                                 Row(children: [
-                                  Text(WinchRequestProvider.acceptingWinchServiceResponseModel.firstName?? "" ,
+                                  Text(
+                                      WinchRequestProvider
+                                              .upcomingRequestResponseModel
+                                              .firstName ??
+                                          "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle1),
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  Text(WinchRequestProvider.acceptingWinchServiceResponseModel.lastName ?? "",
+                                  Text(
+                                      WinchRequestProvider
+                                              .upcomingRequestResponseModel
+                                              .lastName ??
+                                          "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .subtitle1),
@@ -159,19 +167,27 @@ class AcceptedServiceSheet extends StatelessWidget {
                         child: Container(
                           child: Row(
                             children: [
+                              Text(WinchRequestProvider
+                                      .upcomingRequestResponseModel.carBrand ??
+                                  ""),
                               Text(
-                                WinchRequestProvider.acceptingWinchServiceResponseModel.carBrand?? "" ),
-                            Text(WinchRequestProvider.acceptingWinchServiceResponseModel.carModel?? "",
+                                WinchRequestProvider
+                                        .upcomingRequestResponseModel
+                                        .carModel ??
+                                    "",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               Expanded(child: Container()),
                               Text(
-                                WinchRequestProvider.acceptingWinchServiceResponseModel.carPlates?? "",
+                                WinchRequestProvider
+                                        .upcomingRequestResponseModel
+                                        .carPlates ??
+                                    "",
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               Expanded(child: Container()),
                               Text(
-                                "EGP ${WinchRequestProvider.acceptingWinchServiceResponseModel.estimatedFare ?? ""}",
+                                "EGP ${WinchRequestProvider.upcomingRequestResponseModel.estimatedFare ?? ""}",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                             ],
@@ -212,7 +228,8 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //Text("Estimated arrival time", style: Theme.of(context).textTheme.bodyText2,),
                               Expanded(child: Container()),
                               Text(
-                                MapsProvider.customerPickUpLocation.placeName??"",
+                                MapsProvider.customerPickUpLocation.placeName ??
+                                    "",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
@@ -257,7 +274,9 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //Text("Estimated arrival time", style: Theme.of(context).textTheme.bodyText2,),
                               Expanded(child: Container()),
                               Text(
-                                MapsProvider.customerDropOffLocation.placeName??"",
+                                MapsProvider
+                                        .customerDropOffLocation.placeName ??
+                                    "",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
@@ -301,7 +320,10 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //SizedBox(width: MediaQuery.of(context).size.width * 0.2,),
                               Expanded(child: Container()),
                               Text(
-                                WinchRequestProvider.acceptingWinchServiceResponseModel.estimatedTime??"",
+                                WinchRequestProvider
+                                        .upcomingRequestResponseModel
+                                        .estimatedTime ??
+                                    "",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(
@@ -383,7 +405,10 @@ class AcceptedServiceSheet extends StatelessWidget {
                               //SizedBox(width: MediaQuery.of(context).size.width * 0.2,),
                               Expanded(child: Container()),
                               Text(
-                                WinchRequestProvider.acceptingWinchServiceResponseModel.estimatedTime??"",
+                                WinchRequestProvider
+                                        .upcomingRequestResponseModel
+                                        .estimatedTime ??
+                                    "",
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               SizedBox(

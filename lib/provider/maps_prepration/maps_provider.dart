@@ -12,7 +12,6 @@ class MapsProvider extends ChangeNotifier {
   Address currentLocation = Address(descriptor: "My current Position");
   GoogleMapController googleMapController;
 
-
   void updateCustomerPickUpLocationAddress(Address pickUpAddress) {
     customerPickUpLocation = pickUpAddress;
     notifyListeners();
@@ -28,11 +27,13 @@ class MapsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void locatePosition() async {
+  void locatePosition(context) async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentLocation.latitude = position.latitude;
     currentLocation.longitude = position.longitude;
+    await getCurrentLocationAddress(
+        position.latitude.toString(), position.longitude.toString(), context);
     print("Current position:: ${currentLocation.placeName}");
     LatLng latLatPosition = LatLng(position.latitude, position.longitude);
     CameraPosition cameraPosition =
@@ -41,13 +42,14 @@ class MapsProvider extends ChangeNotifier {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
-
-  getPickUpAddress(String pickUpPositionLatitude, String pickUpPositionLongitude, context) async {
-
+  getPickUpAddress(String pickUpPositionLatitude,
+      String pickUpPositionLongitude, context) async {
     customerPickUpLocation.latitude = double.parse(pickUpPositionLatitude);
     customerPickUpLocation.longitude = double.parse(pickUpPositionLongitude);
-    LatLng pickUpPosition = LatLng(customerPickUpLocation.latitude, customerPickUpLocation.longitude);
-    customerPickUpLocation.placeName = await MapsApiService.searchCoordinateAddress(pickUpPosition, context);
+    LatLng pickUpPosition = LatLng(
+        customerPickUpLocation.latitude, customerPickUpLocation.longitude);
+    customerPickUpLocation.placeName =
+        await MapsApiService.searchCoordinateAddress(pickUpPosition, context);
 
     print("Customer pickUp location:: ${customerPickUpLocation.placeName}");
     print("updated");
@@ -58,11 +60,14 @@ class MapsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getDropOffAddress(String dropOffPositionLatitude, String dropOffPositionLongitude, context) async {
+  getDropOffAddress(String dropOffPositionLatitude,
+      String dropOffPositionLongitude, context) async {
     customerDropOffLocation.latitude = double.parse(dropOffPositionLatitude);
     customerDropOffLocation.longitude = double.parse(dropOffPositionLongitude);
-    LatLng dropOffPosition = LatLng(customerDropOffLocation.latitude, customerDropOffLocation.longitude);
-    customerDropOffLocation.placeName = await MapsApiService.searchCoordinateAddress(dropOffPosition, context);
+    LatLng dropOffPosition = LatLng(
+        customerDropOffLocation.latitude, customerDropOffLocation.longitude);
+    customerDropOffLocation.placeName =
+        await MapsApiService.searchCoordinateAddress(dropOffPosition, context);
 
     print("updated");
     print("provider dropOff location:: $customerDropOffLocation");
@@ -72,11 +77,14 @@ class MapsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getCurrentLocationAddress(String currentPositionLatitude, String currentPositionLongitude, context) async {
+  getCurrentLocationAddress(String currentPositionLatitude,
+      String currentPositionLongitude, context) async {
     currentLocation.latitude = double.parse(currentPositionLatitude);
     currentLocation.longitude = double.parse(currentPositionLongitude);
-    LatLng currentPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
-    currentLocation.placeName = await MapsApiService.searchCoordinateAddress(currentPosition, context);
+    LatLng currentPosition =
+        LatLng(currentLocation.latitude, currentLocation.longitude);
+    currentLocation.placeName =
+        await MapsApiService.searchCoordinateAddress(currentPosition, context);
 
     print("updated");
     print("provider Current location:: $currentLocation");
@@ -85,5 +93,4 @@ class MapsProvider extends ChangeNotifier {
     print("provider Current place name:: ${currentLocation.placeName}");
     notifyListeners();
   }
-
 }

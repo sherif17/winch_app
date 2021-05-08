@@ -22,24 +22,25 @@ class buildUpCommingRequest extends StatefulWidget {
 }
 
 class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
-
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Align(
         alignment: Alignment.bottomCenter,
         child: Consumer3<WinchRequestProvider, MapsProvider, PolyLineProvider>(
-          builder: (context, WinchRequestProvider, MapsProvider, PolyLineProvider, child) =>
+          builder: (context, WinchRequestProvider, MapsProvider,
+                  PolyLineProvider, child) =>
               Container(
             height: widget.size.height * 0.25,
             width: double.infinity,
-            margin: EdgeInsets.fromLTRB(
-                widget.size.width * 0.1, 0, widget.size.width * 0.1, widget.size.height * 0.05),
+            margin: EdgeInsets.fromLTRB(widget.size.width * 0.1, 0,
+                widget.size.width * 0.1, widget.size.height * 0.05),
             child: Material(
               color: Colors.white,
               elevation: 15,
@@ -53,7 +54,7 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(PolyLineProvider.tripDirectionDetails.distanceText),
+                      PolyLineProvider.tripDirectionDetails.distanceText !=null?Text(PolyLineProvider.tripDirectionDetails.distanceText):CircularProgressIndicator(),
                       SvgPicture.asset("assets/icons/car.svg",
                           width: widget.size.width * 0.08),
                       TextButton.icon(
@@ -66,7 +67,8 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                           )),
                     ],
                   ),
-                  Text(PolyLineProvider.tripDirectionDetails.durationText + " away"),
+                  Text(PolyLineProvider.tripDirectionDetails.durationText +
+                      " away"),
                   Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: widget.size.width * 0.07,
@@ -81,27 +83,6 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                              child: Text("Decline".toUpperCase(),
-                                  style: TextStyle(fontSize: 17.5)),
-                              style: ButtonStyle(
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.all(15)),
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.red),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          side: BorderSide(
-                                              width: 0.7, color: Colors.red)))),
-                              onPressed: () {
-                                WinchRequestProvider.cancelUpcomingRequest(context);
-                              }),
-                          SizedBox(width: widget.size.width * 0.1),
                           ElevatedButton(
                             child: Text("accept".toUpperCase(),
                                 style: TextStyle(fontSize: 18)),
@@ -120,21 +101,59 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                                         borderRadius: BorderRadius.circular(10),
                                         side:
                                             BorderSide(color: Colors.green)))),
-                            onPressed: () {
-                              // MapsProvider.currentLocation.latitude = MapsProvider.currentLocation.latitude;
-                              // MapsProvider.currentLocation.longitude = MapsProvider.currentLocation.longitude;
-                              MapsProvider.getPickUpAddress(WinchRequestProvider.getNearestClientResponseModel.nearestRidePickupLocation.lat, WinchRequestProvider.getNearestClientResponseModel.nearestRidePickupLocation.lng, context);
-                              MapsProvider.getDropOffAddress(WinchRequestProvider.getNearestClientResponseModel.nearestRideDistinationLocation.lat, WinchRequestProvider.getNearestClientResponseModel.nearestRideDistinationLocation.lng, context);
-
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  AcceptedServiceScreen.routeName, (route) => false);
-                              // WinchRequestProvider.acceptUpcomingRequest();
-                              // if (WinchRequestProvider.RIDE_ACCEPTED == true) {
-                              //
-                              // }
+                            onPressed: () async {
+                              // MapsProvider.getPickUpAddress(
+                              //     WinchRequestProvider
+                              //         .getNearestClientResponseModel
+                              //         .nearestRidePickupLocation
+                              //         .lat,
+                              //     WinchRequestProvider
+                              //         .getNearestClientResponseModel
+                              //         .nearestRidePickupLocation
+                              //         .lng,
+                              //     context);
+                              // MapsProvider.getDropOffAddress(
+                              //     WinchRequestProvider
+                              //         .getNearestClientResponseModel
+                              //         .nearestRideDistinationLocation
+                              //         .lat,
+                              //     WinchRequestProvider
+                              //         .getNearestClientResponseModel
+                              //         .nearestRideDistinationLocation
+                              //         .lng,
+                              //     context);
+                              await WinchRequestProvider.acceptUpcomingRequest(
+                                  context);
+                              if (WinchRequestProvider.RIDE_ACCEPTED == true) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    AcceptedServiceScreen.routeName,
+                                    (route) => false);
+                              }
                             },
-                          )
+                          ),
+                          SizedBox(width: widget.size.width * 0.1),
+                          TextButton(
+                              child: Text("Decline".toUpperCase(),
+                                  style: TextStyle(fontSize: 17.5)),
+                              style: ButtonStyle(
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.all(15)),
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: BorderSide(
+                                              width: 0.7, color: Colors.red)))),
+                              onPressed: () {
+                                WinchRequestProvider.cancelUpcomingRequest(
+                                    context);
+                              }),
                         ]),
                   )
                 ],

@@ -1,27 +1,30 @@
 // To parse this JSON data, do
 //
-//     final acceptingWinchServiceRequestModel = acceptingWinchServiceRequestModelFromJson(jsonString);
+//     final upcommingRequestRequestModel = upcommingRequestRequestModelFromJson(jsonString);
 
 import 'dart:convert';
 
-AcceptingWinchServiceRequestModel acceptingWinchServiceRequestModelFromJson(
-        String str) =>
-    AcceptingWinchServiceRequestModel.fromJson(json.decode(str));
+// To parse this JSON data, do
+//
+//     final upcomingRequestRequestModel = upcomingRequestRequestModelFromJson(jsonString);
 
-String acceptingWinchServiceRequestModelToJson(
-        AcceptingWinchServiceRequestModel data) =>
+import 'dart:convert';
+
+UpcomingRequestRequestModel upcomingRequestRequestModelFromJson(String str) =>
+    UpcomingRequestRequestModel.fromJson(json.decode(str));
+
+String upcomingRequestRequestModelToJson(UpcomingRequestRequestModel data) =>
     json.encode(data.toJson());
 
-class AcceptingWinchServiceRequestModel {
-  AcceptingWinchServiceRequestModel({
+class UpcomingRequestRequestModel {
+  UpcomingRequestRequestModel({
     this.driverResponse,
   });
 
   String driverResponse;
 
-  factory AcceptingWinchServiceRequestModel.fromJson(
-          Map<String, dynamic> json) =>
-      AcceptingWinchServiceRequestModel(
+  factory UpcomingRequestRequestModel.fromJson(Map<String, dynamic> json) =>
+      UpcomingRequestRequestModel(
         driverResponse: json["driverResponse"],
       );
 
@@ -29,20 +32,19 @@ class AcceptingWinchServiceRequestModel {
         "driverResponse": driverResponse,
       };
 }
+
 // To parse this JSON data, do
 //
-//     final acceptingWinchServiceResponseModel = acceptingWinchServiceResponseModelFromJson(jsonString);
+//     final upcomingRequestResponseModel = upcomingRequestResponseModelFromJson(jsonString);
 
-AcceptingWinchServiceResponseModel acceptingWinchServiceResponseModelFromJson(
-        String str) =>
-    AcceptingWinchServiceResponseModel.fromJson(json.decode(str));
+UpcomingRequestResponseModel upcomingRequestResponseModelFromJson(String str) =>
+    UpcomingRequestResponseModel.fromJson(json.decode(str));
 
-String acceptingWinchServiceResponseModelToJson(
-        AcceptingWinchServiceResponseModel data) =>
+String upcomingRequestResponseModelToJson(UpcomingRequestResponseModel data) =>
     json.encode(data.toJson());
 
-class AcceptingWinchServiceResponseModel {
-  AcceptingWinchServiceResponseModel({
+class UpcomingRequestResponseModel {
+  UpcomingRequestResponseModel({
     this.firstName,
     this.lastName,
     this.phoneNumber,
@@ -51,6 +53,7 @@ class AcceptingWinchServiceResponseModel {
     this.estimatedFare,
     this.carBrand,
     this.carModel,
+    this.msg,
     this.carPlates,
   });
 
@@ -62,11 +65,11 @@ class AcceptingWinchServiceResponseModel {
   String estimatedFare;
   String carBrand;
   String carModel;
+  String msg;
   String carPlates;
 
-  factory AcceptingWinchServiceResponseModel.fromJson(
-          Map<String, dynamic> json) =>
-      AcceptingWinchServiceResponseModel(
+  factory UpcomingRequestResponseModel.fromJson(Map<String, dynamic> json) =>
+      UpcomingRequestResponseModel(
         firstName: json["firstName"],
         lastName: json["lastName"],
         phoneNumber: json["phoneNumber"],
@@ -75,6 +78,7 @@ class AcceptingWinchServiceResponseModel {
         estimatedFare: json["EstimatedFare"],
         carBrand: json["CarBrand"],
         carModel: json["CarModel"],
+        msg: json["msg"],
         carPlates: json["CarPlates"],
       );
 
@@ -87,6 +91,7 @@ class AcceptingWinchServiceResponseModel {
         "EstimatedFare": estimatedFare,
         "CarBrand": carBrand,
         "CarModel": carModel,
+        "msg": msg,
         "CarPlates": carPlates,
       };
 }

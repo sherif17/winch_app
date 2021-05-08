@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/models/maps/address.dart';
-import 'package:winch_app/models/up_comming_requests/accepting_trip_model.dart';
+import 'package:winch_app/models/up_comming_requests/upcoming_request_model.dart';
 import 'package:winch_app/models/up_comming_requests/arrival_to_customer_location_model.dart';
 import 'package:winch_app/models/up_comming_requests/ending_trip_model.dart';
 import 'package:winch_app/models/up_comming_requests/get_nearest_clients_model.dart';
@@ -26,6 +26,7 @@ class WinchRequestProvider extends ChangeNotifier {
   bool CUSTOMER_FOUNDED = false;
   bool ALREADY_HAVE_RIDE = false;
   bool RIDE_ACCEPTED = false;
+  bool isPopRequestDataReady = false;
 
   WinchRequestService requestService = WinchRequestService();
   /////////////////////////////////////////////////////////////////////////////
@@ -34,10 +35,12 @@ class WinchRequestProvider extends ChangeNotifier {
   GetNearestClientResponseModel getNearestClientResponseModel =
       new GetNearestClientResponseModel();
   /////////////////////////////////////////////////////////////////////////////
-  AcceptingWinchServiceRequestModel acceptingWinchServiceRequestModel =
-      AcceptingWinchServiceRequestModel(driverResponse: "Accept");
-  AcceptingWinchServiceResponseModel acceptingWinchServiceResponseModel =
-      AcceptingWinchServiceResponseModel();
+  UpcomingRequestRequestModel upcomingRequestAcceptRequestModel =
+      UpcomingRequestRequestModel(driverResponse: "Accept");
+  UpcomingRequestRequestModel upcomingRequestDenyRequestModel =
+      UpcomingRequestRequestModel(driverResponse: "Deny");
+  UpcomingRequestResponseModel upcomingRequestResponseModel =
+      UpcomingRequestResponseModel();
   /////////////////////////////////////////////////////////////////////////////
   EndingWinchServiceRequestModel endingWinchServiceRequestModel =
       EndingWinchServiceRequestModel();
@@ -76,7 +79,19 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getNearestClientToMe() async {
+  getNearestClientToMe(context) async {
+    await getWinchDriverCurrentLocation(context);
+
+    getNearestClientRequestModel.locationLat =
+        Provider.of<MapsProvider>(context, listen: false)
+            .currentLocation
+            .latitude
+            .toString();
+    getNearestClientRequestModel.locationLong =
+        Provider.of<MapsProvider>(context, listen: false)
+            .currentLocation
+            .longitude
+            .toString();
     isLoading = true;
     getNearestClientResponseModel = await requestService.getNearestClient(
         getNearestClientRequestModel, loadJwtTokenFromDB());
@@ -89,8 +104,7 @@ class WinchRequestProvider extends ChangeNotifier {
       notifyListeners();
     }
     if (getNearestClientResponseModel.nearestRidePickupLocation != null) {
-
-   // PolyLineProvider.getPlaceDirection(context, MapsProvider.currentLocation, MapsProvider.customerPickUpLocation, _googleMapController):
+      // PolyLineProvider.getPlaceDirection(context, MapsProvider.currentLocation, MapsProvider.customerPickUpLocation, _googleMapController):
       CUSTOMER_FOUNDED = true;
       SEARCHING_FOR_CUSTOMER = false;
       notifyListeners();
@@ -106,56 +120,74 @@ class WinchRequestProvider extends ChangeNotifier {
 
   acceptUpcomingRequest(context) async {
     isLoading = true;
-    acceptingWinchServiceResponseModel =
-        await requestService.acceptCustomerRequest(
-            acceptingWinchServiceRequestModel, loadJwtTokenFromDB());
+    upcomingRequestResponseModel = await requestService.acceptCustomerRequest(
+        upcomingRequestAcceptRequestModel, loadJwtTokenFromDB());
     isLoading = false;
-    if (acceptingWinchServiceResponseModel != null) {
+    if (upcomingRequestResponseModel != null) {
       RIDE_ACCEPTED = true;
       SEARCHING_FOR_CUSTOMER = false;
-      Provider.of<MapsProvider>(context).getPickUpAddress(getNearestClientResponseModel.nearestRidePickupLocation.lat, getNearestClientResponseModel.nearestRidePickupLocation.lng, context);
-      Provider.of<MapsProvider>(context).getDropOffAddress(getNearestClientResponseModel.nearestRideDistinationLocation.lat, getNearestClientResponseModel.nearestRideDistinationLocation.lng, context);
+      Provider.of<MapsProvider>(context, listen: false).getPickUpAddress(
+          getNearestClientResponseModel.nearestRidePickupLocation.lat,
+          getNearestClientResponseModel.nearestRidePickupLocation.lng,
+          context);
+      Provider.of<MapsProvider>(context, listen: false).getDropOffAddress(
+          getNearestClientResponseModel.nearestRideDistinationLocation.lat,
+          getNearestClientResponseModel.nearestRideDistinationLocation.lng,
+          context);
       print("live tracker started");
       liveTrackerTimer = Timer.periodic(Duration(seconds: 30), (z) async {
-        trackWinchDriver();
+        trackWinchDriver(context);
       });
     }
     notifyListeners();
   }
 
-  cancelUpcomingRequest(context) {
-    SEARCHING_FOR_CUSTOMER = true;
-    CUSTOMER_FOUNDED = false;
-    searchingForCustomerTimer =
-        Timer.periodic(Duration(seconds: 20), (z) async {
-      print("start");
-      await getNearestClientToMe();
-      if (CUSTOMER_FOUNDED == true) {
-        z.cancel();
-        print("customer found");
-        print(
-            "CustomerPickUpLocation: Lat : ${getNearestClientResponseModel.nearestRidePickupLocation.lat} ,long : ${getNearestClientResponseModel.nearestRidePickupLocation.lng}");
-        print(
-            "CustomerDropOffLocation: Lat : ${getNearestClientResponseModel.nearestRideDistinationLocation.lat} ,long : ${getNearestClientResponseModel.nearestRideDistinationLocation.lng}");
-        Address finalPos = Address(descriptor: "PickUp ");
-        finalPos.latitude  = double.parse(getNearestClientResponseModel.nearestRidePickupLocation.lat);
-        finalPos.longitude = double.parse(getNearestClientResponseModel.nearestRidePickupLocation.lng);
-
-        print(finalPos.latitude);
-        print(finalPos.latitude.runtimeType);
-        Address initial = Provider.of<MapsProvider>(context,listen: false).currentLocation;
-        Provider.of<PolyLineProvider>(context,listen: false).getPlaceDirection(context, initial, finalPos, Provider.of<MapsProvider>(context, listen: false).googleMapController);
-        notifyListeners();
-      } else if (ALREADY_HAVE_RIDE == true) {
-        z.cancel();
-        print(getNearestClientResponseModel.error);
-        print(getNearestClientResponseModel.requestId);
-        notifyListeners();
-      } else if (SEARCHING_FOR_CUSTOMER == true) {
-        print("still searching");
-        print(getNearestClientResponseModel.error);
-      }
-    });
+  cancelUpcomingRequest(context) async {
+    isLoading = true;
+    upcomingRequestResponseModel = await requestService.acceptCustomerRequest(
+        upcomingRequestDenyRequestModel, loadJwtTokenFromDB());
+    isLoading = false;
+    if (upcomingRequestResponseModel.msg == "Check For Another Request") {
+      SEARCHING_FOR_CUSTOMER = true;
+      CUSTOMER_FOUNDED = false;
+      searchingForCustomerTimer =
+          Timer.periodic(Duration(seconds: 10), (z) async {
+        print("start");
+        await getNearestClientToMe(context);
+        if (CUSTOMER_FOUNDED == true) {
+          z.cancel();
+          print("customer found");
+          print(
+              "CustomerPickUpLocation: Lat : ${getNearestClientResponseModel.nearestRidePickupLocation.lat} ,long : ${getNearestClientResponseModel.nearestRidePickupLocation.lng}");
+          print(
+              "CustomerDropOffLocation: Lat : ${getNearestClientResponseModel.nearestRideDistinationLocation.lat} ,long : ${getNearestClientResponseModel.nearestRideDistinationLocation.lng}");
+          Address finalPos = Address(descriptor: "PickUp ");
+          finalPos.latitude = double.parse(
+              getNearestClientResponseModel.nearestRidePickupLocation.lat);
+          finalPos.longitude = double.parse(
+              getNearestClientResponseModel.nearestRidePickupLocation.lng);
+          Address initial =
+              Provider.of<MapsProvider>(context, listen: false).currentLocation;
+          Provider.of<PolyLineProvider>(context, listen: false)
+              .getPlaceDirection(
+                  context,
+                  initial,
+                  finalPos,
+                  Provider.of<MapsProvider>(context, listen: false)
+                      .googleMapController);
+          notifyListeners();
+        } else if (ALREADY_HAVE_RIDE == true) {
+          z.cancel();
+          print(getNearestClientResponseModel.error);
+          print(getNearestClientResponseModel.requestId);
+          notifyListeners();
+        } else if (SEARCHING_FOR_CUSTOMER == true) {
+          print("still searching");
+          print(getNearestClientResponseModel.error);
+        }
+      });
+    } else
+      print(upcomingRequestResponseModel.msg);
     notifyListeners();
   }
 
@@ -181,31 +213,40 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  trackWinchDriver() async {
-    await getWinchDriverCurrentLocation();
+  trackWinchDriver(context) async {
+    await getWinchDriverCurrentLocation(context);
     print("live tracker request body: ${liveTrackerRequestModel.toJson()}");
     isLoading = true;
     liveTrackerResponseModel = await requestService.liveTracker(
         liveTrackerRequestModel, loadJwtTokenFromDB());
     isLoading = false;
-    if (liveTrackerResponseModel.done != null)
+    if (liveTrackerResponseModel.done != null) {
       print("updated ${liveTrackerResponseModel.done}");
-    else
+    } else {
       print(liveTrackerResponseModel.error);
-
+      liveTrackerTimer.cancel();
+    }
     notifyListeners();
   }
 
-  getWinchDriverCurrentLocation() async {
+  getWinchDriverCurrentLocation(context) async {
     isLoading = true;
     winchDriverCurrentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     isLoading = false;
     print("Current Postionss: $winchDriverCurrentPosition");
+
+    Provider.of<MapsProvider>(context, listen: false)
+        .currentLocation
+        .longitude = winchDriverCurrentPosition.longitude;
+    Provider.of<MapsProvider>(context, listen: false).currentLocation.latitude =
+        winchDriverCurrentPosition.latitude;
+
     liveTrackerRequestModel.locationLat =
         winchDriverCurrentPosition.latitude.toString();
     liveTrackerRequestModel.locationLong =
         winchDriverCurrentPosition.longitude.toString();
+
     notifyListeners();
   }
 
@@ -227,10 +268,10 @@ class WinchRequestProvider extends ChangeNotifier {
   }
 
   resetAllFlags() {
-     SEARCHING_FOR_CUSTOMER = false;
-     CUSTOMER_FOUNDED = false;
-     ALREADY_HAVE_RIDE = false;
-     RIDE_ACCEPTED = false;
+    SEARCHING_FOR_CUSTOMER = false;
+    CUSTOMER_FOUNDED = false;
+    ALREADY_HAVE_RIDE = false;
+    RIDE_ACCEPTED = false;
     notifyListeners();
   }
 }

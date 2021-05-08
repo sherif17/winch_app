@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:winch_app/models/up_comming_requests/accepting_trip_model.dart';
+import 'package:winch_app/models/up_comming_requests/upcoming_request_model.dart';
 import 'package:winch_app/models/up_comming_requests/arrival_to_customer_location_model.dart';
 import 'package:winch_app/models/up_comming_requests/ending_trip_model.dart';
 import 'package:http/http.dart' as http;
@@ -30,8 +30,8 @@ class WinchRequestService {
     }
   }
 
-  Future<AcceptingWinchServiceResponseModel> acceptCustomerRequest(
-      AcceptingWinchServiceRequestModel acceptingWinchServiceRequestModel,
+  Future<UpcomingRequestResponseModel> acceptCustomerRequest(
+      UpcomingRequestRequestModel acceptingWinchServiceRequestModel,
       token) async {
     var url =
         Uri.parse('http://161.97.155.244/api/driverMatching/driverResponse');
@@ -40,7 +40,7 @@ class WinchRequestService {
         body: acceptingWinchServiceRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
       print("response.body:${response.body}");
-      return AcceptingWinchServiceResponseModel.fromJson(
+      return UpcomingRequestResponseModel.fromJson(
           json.decode(response.body));
     } else {
       throw Exception("failed to load Data");
