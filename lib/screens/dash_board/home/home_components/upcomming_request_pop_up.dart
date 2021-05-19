@@ -10,10 +10,14 @@ import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/accept
 import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/acceptted_serivce_sheet.dart';
 
 class buildUpCommingRequest extends StatefulWidget {
-  const buildUpCommingRequest({
-    Key key,
-    @required this.size,
-  }) : super(key: key);
+  BuildContext context;
+  // const buildUpCommingRequest({
+  //
+  //   Key key,
+  //   @required this.size,
+  // }) : super(key: key);
+
+  buildUpCommingRequest({this.context, this.size});
 
   final Size size;
 
@@ -54,7 +58,10 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      PolyLineProvider.tripDirectionDetails.distanceText !=null?Text(PolyLineProvider.tripDirectionDetails.distanceText):CircularProgressIndicator(),
+                      PolyLineProvider.tripDirectionDetails.distanceText != null
+                          ? Text(PolyLineProvider
+                              .tripDirectionDetails.distanceText)
+                          : CircularProgressIndicator(),
                       SvgPicture.asset("assets/icons/car.svg",
                           width: widget.size.width * 0.08),
                       TextButton.icon(
@@ -152,7 +159,7 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                                               width: 0.7, color: Colors.red)))),
                               onPressed: () {
                                 WinchRequestProvider.cancelUpcomingRequest(
-                                    context);
+                                    widget.context);
                               }),
                         ]),
                   )

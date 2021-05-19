@@ -14,6 +14,7 @@ import 'package:winch_app/models/up_comming_requests/rating_for_customer_model.d
 import 'package:winch_app/models/up_comming_requests/startting_winch_trip_model.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
+import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/services/requesting_winch_driver/winch_requests_service.dart';
 
 class WinchRequestProvider extends ChangeNotifier {
@@ -27,6 +28,7 @@ class WinchRequestProvider extends ChangeNotifier {
   bool ALREADY_HAVE_RIDE = false;
   bool RIDE_ACCEPTED = false;
   bool isPopRequestDataReady = false;
+  //BuildContext ctx;
 
   WinchRequestService requestService = WinchRequestService();
   /////////////////////////////////////////////////////////////////////////////
@@ -68,12 +70,14 @@ class WinchRequestProvider extends ChangeNotifier {
 
   getWinchDriverCurrentState(state) {
     currentState = state;
+    print("current State $state");
     state == true
         ? SEARCHING_FOR_CUSTOMER = true
         : SEARCHING_FOR_CUSTOMER = false;
     if (currentState == true) {
     } else {
-      // searchingForCustomerTimer.cancel();
+      if (upcomingRequestResponseModel.msg == "Check For Another Request")
+        searchingForCustomerTimer.cancel();
       resetAllFlags();
     }
     notifyListeners();
@@ -98,6 +102,8 @@ class WinchRequestProvider extends ChangeNotifier {
     isLoading = false;
     if (getNearestClientResponseModel.requestId == null &&
         getNearestClientResponseModel.error == "No client requests now") {
+      Provider.of<MapsProvider>(context, listen: false).locatePosition(context);
+      Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
       SEARCHING_FOR_CUSTOMER = true;
       CUSTOMER_FOUNDED = false;
       ALREADY_HAVE_RIDE = false;
@@ -134,10 +140,9 @@ class WinchRequestProvider extends ChangeNotifier {
           getNearestClientResponseModel.nearestRideDistinationLocation.lat,
           getNearestClientResponseModel.nearestRideDistinationLocation.lng,
           context);
-      print("live tracker started");
-      liveTrackerTimer = Timer.periodic(Duration(seconds: 30), (z) async {
-        trackWinchDriver(context);
-      });
+      // liveTrackerTimer = Timer.periodic(Duration(seconds: 30), (z) async {
+      //   //trackWinchDriver(context);
+      // });
     }
     notifyListeners();
   }
@@ -148,8 +153,10 @@ class WinchRequestProvider extends ChangeNotifier {
         upcomingRequestDenyRequestModel, loadJwtTokenFromDB());
     isLoading = false;
     if (upcomingRequestResponseModel.msg == "Check For Another Request") {
+      Provider.of<MapsProvider>(context, listen: false).locatePosition(context);
       SEARCHING_FOR_CUSTOMER = true;
       CUSTOMER_FOUNDED = false;
+      Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
       searchingForCustomerTimer =
           Timer.periodic(Duration(seconds: 10), (z) async {
         print("start");
@@ -214,33 +221,49 @@ class WinchRequestProvider extends ChangeNotifier {
   }
 
   trackWinchDriver(context) async {
-    await getWinchDriverCurrentLocation(context);
+    print("live tracker started");
     print("live tracker request body: ${liveTrackerRequestModel.toJson()}");
-    isLoading = true;
     liveTrackerResponseModel = await requestService.liveTracker(
         liveTrackerRequestModel, loadJwtTokenFromDB());
-    isLoading = false;
-    if (liveTrackerResponseModel.done != null) {
-      print("updated ${liveTrackerResponseModel.done}");
-    } else {
-      print(liveTrackerResponseModel.error);
-      liveTrackerTimer.cancel();
-    }
+    await getWinchDriverCurrentLocation(context);
+    liveTrackerTimer = Timer.periodic(Duration(seconds: 30), (z) async {
+      await getWinchDriverCurrentLocation(context);
+      print("live tracker request body: ${liveTrackerRequestModel.toJson()}");
+      isLoading = true;
+      liveTrackerResponseModel = await requestService.liveTracker(
+          liveTrackerRequestModel, loadJwtTokenFromDB());
+      isLoading = false;
+      if (liveTrackerResponseModel.done != null) {
+        print("updated ${liveTrackerResponseModel.done}");
+      } else {
+        print(liveTrackerResponseModel.error);
+        liveTrackerTimer.cancel();
+        print("trip cancelled from customer & live location cancelled aslo");
+        print("notifcation must be added to notify driver");
+        Provider.of<MapsProvider>(context, listen: false)
+            .locatePosition(context);
+        SEARCHING_FOR_CUSTOMER = true;
+        CUSTOMER_FOUNDED = false;
+        Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
+        Navigator.pushNamedAndRemoveUntil(
+            context, DashBoard.routeName, (route) => false);
+      }
+      notifyListeners();
+    });
     notifyListeners();
   }
 
+  //final x= Provider.of<MapsProvider>(ctx, listen: false);
   getWinchDriverCurrentLocation(context) async {
     isLoading = true;
     winchDriverCurrentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     isLoading = false;
     print("Current Postionss: $winchDriverCurrentPosition");
-
-    Provider.of<MapsProvider>(context, listen: false)
-        .currentLocation
-        .longitude = winchDriverCurrentPosition.longitude;
-    Provider.of<MapsProvider>(context, listen: false).currentLocation.latitude =
-        winchDriverCurrentPosition.latitude;
+    Provider.of<MapsProvider>(context, listen: false).getCurrentLocationAddress(
+        winchDriverCurrentPosition.latitude.toString(),
+        winchDriverCurrentPosition.longitude.toString(),
+        context);
 
     liveTrackerRequestModel.locationLat =
         winchDriverCurrentPosition.latitude.toString();

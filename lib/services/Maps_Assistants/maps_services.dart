@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MapsApiService {
-
   static Future<String> searchCoordinateAddress(
       LatLng position, context) async {
     String mapKey = "AIzaSyAK0cIYx9Ph4ld0CzcG4LRFAWcNeXFAXT8";
@@ -24,7 +23,6 @@ class MapsApiService {
       st3 = response["results"][0]["address_components"][2]["long_name"];
       st4 = response["results"][0]["address_components"][3]["long_name"];
       placeAddress = st1 + ", " + st2 + ", " + st3 + ", " + st4;
-
     }
     return placeAddress;
   }
@@ -57,11 +55,11 @@ class MapsApiService {
     return directionsDetails;
   }
 
-  static int calculateFares(DirectionDetails directionDetails)
-  {
+  static int calculateFares(DirectionDetails directionDetails) {
     //in terms USD
     double timeTraveledFare = (directionDetails.durationValue / 60) * 0.20;
-    double distanceTraveledFare = (directionDetails.distanceValue / 1000) * 0.20;
+    double distanceTraveledFare =
+        (directionDetails.distanceValue / 1000) * 0.20;
     double totalFareAmount = timeTraveledFare + distanceTraveledFare;
 
     //Local Currency
@@ -69,9 +67,5 @@ class MapsApiService {
     double totalLocalAmount = totalFareAmount * 16;
 
     return totalLocalAmount.truncate();
-
-
   }
-
-
 }
