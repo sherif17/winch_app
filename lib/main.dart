@@ -12,6 +12,7 @@ import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
+import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/accepted_service_map.dart';
 import 'package:winch_app/screens/dash_board/home/home_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/onboarding_screens/intro_screens/intro.dart';
@@ -120,7 +121,8 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<WinchRequestProvider>(
               create: (_) => WinchRequestProvider()),
           ChangeNotifierProvider<MapsProvider>(create: (_) => MapsProvider()),
-          ChangeNotifierProvider<PolyLineProvider>(create: (_) => PolyLineProvider()),
+          ChangeNotifierProvider<PolyLineProvider>(
+              create: (_) => PolyLineProvider()),
         ],
         child: new MaterialApp(
           debugShowCheckedModeBanner: false,

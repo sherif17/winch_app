@@ -259,8 +259,4 @@ class PolyLineProvider extends ChangeNotifier {
       notifyListeners();
 
   }
-
-
-
-
 }

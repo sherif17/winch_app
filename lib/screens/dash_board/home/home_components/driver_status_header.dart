@@ -125,7 +125,8 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                         Address initial =
                             Provider.of<MapsProvider>(context, listen: false)
                                 .currentLocation;
-                       await Provider.of<PolyLineProvider>(context, listen: false)
+                        await Provider.of<PolyLineProvider>(context,
+                                listen: false)
                             .getPlaceDirection(
                                 context,
                                 initial,
@@ -133,7 +134,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                                 Provider.of<MapsProvider>(context,
                                         listen: false)
                                     .googleMapController);
-                        val.isPopRequestDataReady=true;
+                        val.isPopRequestDataReady = true;
                       } else if (val.ALREADY_HAVE_RIDE == true) {
                         z.cancel();
                         print(val.getNearestClientResponseModel.error);

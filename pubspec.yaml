@@ -51,7 +51,12 @@ dependencies:
   animated_text_kit: ^4.2.1
   flutter_animarker: ^3.2.0
   flutter_polyline_points: ^0.2.4
+  flutter_mapbox_navigation: ^0.0.24
+  fab_circular_menu: ^1.0.2
+  slider_button: ^0.6.0
+  url_launcher: ^6.0.3
   #flutter_facebook_login: ^3.0.0
+
 
 
   # The following adds the Cupertino Icons font to your application.
