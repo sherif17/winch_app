@@ -59,7 +59,9 @@ class EndingWinchServiceResponseModel {
       EndingWinchServiceResponseModel(
         status: json["STATUS"],
         fare: json["Fare"],
-        totalTimeForTrip: TotalTimeForTrip.fromJson(json["TotalTimeForTrip"]),
+        totalTimeForTrip: json["TotalTimeForTrip"] != null
+            ? TotalTimeForTrip.fromJson(json["TotalTimeForTrip"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

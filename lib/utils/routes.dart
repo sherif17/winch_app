@@ -17,6 +17,5 @@ final Map<String, WidgetBuilder> routes = {
   RegisterNewUser.routeName: (context) => RegisterNewUser(),
   MainStepper.routeName: (context) => MainStepper(),
   DashBoard.routeName: (context) => DashBoard(),
-  AcceptedServiceSheet.routeName: (context) => AcceptedServiceSheet(),
   AcceptedServiceScreen.routeName: (context) => AcceptedServiceScreen(),
 };

@@ -27,7 +27,11 @@ class WinchRequestProvider extends ChangeNotifier {
   bool CUSTOMER_FOUNDED = false;
   bool ALREADY_HAVE_RIDE = false;
   bool RIDE_ACCEPTED = false;
+  bool DriverARRIVED = false;
+  bool SERVICE_STARTTED = false;
+  bool SERVICE_FINISHED = false;
   bool isPopRequestDataReady = false;
+  bool RATING_SUBMITTED = false;
   //BuildContext ctx;
 
   WinchRequestService requestService = WinchRequestService();
@@ -198,26 +202,49 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  endCurrentWinchService(endingWinchServiceRequestModel) async {
+  endCurrentWinchService() async {
+    endingWinchServiceRequestModel.finalLocationLat =
+        winchDriverCurrentPosition.latitude.toString();
+    endingWinchServiceRequestModel.finalLocationLong =
+        winchDriverCurrentPosition.longitude.toString();
     isLoading = true;
     endingWinchServiceResponseModel = await requestService.endCustomerTrip(
         endingWinchServiceRequestModel, loadJwtTokenFromDB());
     isLoading = false;
+    print("live tracker stopped");
+    liveTrackerTimer.cancel();
+    SERVICE_FINISHED = true;
+    //SEARCHING_FOR_CUSTOMER = true;
+    notifyListeners();
     if (endingWinchServiceResponseModel.status == "COMPLETED") {
       print("live tracker stopped");
       liveTrackerTimer.cancel();
-      SEARCHING_FOR_CUSTOMER = true;
+      SERVICE_FINISHED = true;
+      //SEARCHING_FOR_CUSTOMER = true;
       notifyListeners();
     }
     notifyListeners();
   }
 
-  rateCustomer() async {
+  rateCustomer(context) async {
     isLoading = true;
     ratingForCustomerResponseModel = await requestService.ratingForCustomer(
         ratingForCustomerRequestModel, loadJwtTokenFromDB());
-    isLoading = false;
+    if (ratingForCustomerResponseModel.msg == null) // to be changed
+    {
+      await returnToDashBoard(context);
+      isLoading = false;
+    }
     notifyListeners();
+  }
+
+  returnToDashBoard(context) {
+    Provider.of<MapsProvider>(context, listen: false).locatePosition(context);
+    SEARCHING_FOR_CUSTOMER = true;
+    CUSTOMER_FOUNDED = false;
+    Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
+    Navigator.pushNamedAndRemoveUntil(
+        context, DashBoard.routeName, (route) => false);
   }
 
   trackWinchDriver(context) async {
@@ -240,13 +267,14 @@ class WinchRequestProvider extends ChangeNotifier {
         liveTrackerTimer.cancel();
         print("trip cancelled from customer & live location cancelled aslo");
         print("notifcation must be added to notify driver");
-        Provider.of<MapsProvider>(context, listen: false)
-            .locatePosition(context);
-        SEARCHING_FOR_CUSTOMER = true;
-        CUSTOMER_FOUNDED = false;
-        Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
-        Navigator.pushNamedAndRemoveUntil(
-            context, DashBoard.routeName, (route) => false);
+        // Provider.of<MapsProvider>(context, listen: false)
+        //     .locatePosition(context);
+        // SEARCHING_FOR_CUSTOMER = true;
+        // CUSTOMER_FOUNDED = false;
+        // Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, DashBoard.routeName, (route) => false);
+        returnToDashBoard(context);
       }
       notifyListeners();
     });
@@ -273,20 +301,37 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  arrivedToCustomerLocation() async {
+  arrivedToCustomerLocation(context) async {
     isLoading = true;
     arrivalOfWinchDriverResponseModel =
         await requestService.arrivalToCustomerLocation(
             arrivalOfWinchDriverRequestModel, loadJwtTokenFromDB());
     isLoading = false;
+    if (arrivalOfWinchDriverResponseModel.msg ==
+        "You haven't arrived yet!" /*arrivalOfWinchDriverResponseModel.msg == "Alright!"*/) {
+      DriverARRIVED = true;
+      Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
+    }
+
     notifyListeners();
   }
 
-  startingWinchService() async {
+  startingWinchService(context) async {
     isLoading = true;
     startingOfWinchTripResponseModel = await requestService.startingWinchTrip(
         startingOfWinchTripRequestModel, loadJwtTokenFromDB());
     isLoading = false;
+    if (startingOfWinchTripResponseModel.error != null) {
+      SERVICE_STARTTED = true;
+      Provider.of<PolyLineProvider>(context, listen: false).getPlaceDirection(
+          context,
+          Provider.of<MapsProvider>(context, listen: false)
+              .customerPickUpLocation,
+          Provider.of<MapsProvider>(context, listen: false)
+              .customerDropOffLocation,
+          Provider.of<MapsProvider>(context, listen: false)
+              .googleMapController);
+    }
     notifyListeners();
   }
 

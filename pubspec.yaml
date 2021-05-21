@@ -55,6 +55,7 @@ dependencies:
   fab_circular_menu: ^1.0.2
   slider_button: ^0.6.0
   url_launcher: ^6.0.3
+  rating_dialog: ^2.0.0
   #flutter_facebook_login: ^3.0.0
 
 

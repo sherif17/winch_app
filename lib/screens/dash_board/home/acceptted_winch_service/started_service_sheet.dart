@@ -1,22 +1,18 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 import 'package:slider_button/slider_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 
-class AcceptedServiceSheet extends StatelessWidget {
-  static String routeName = '/AcceptedServiceSheet';
+class StartedServiceSheet extends StatelessWidget {
   BuildContext ctx;
 
-  AcceptedServiceSheet(this.ctx);
+  StartedServiceSheet(this.ctx);
 
-  void _launchDial(String number) async => await canLaunch("tel:$number")
-      ? await launch("tel:$number")
-      : throw 'Could not launch tel:$number';
+  //StartedServiceSheet({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +22,7 @@ class AcceptedServiceSheet extends StatelessWidget {
             DraggableScrollableSheet(
           initialChildSize: 0.1,
           minChildSize: 0.1,
-          maxChildSize: 0.32,
+          maxChildSize: 0.25,
           builder: (BuildContext myContext, controller) {
             const colorizeColors = [Colors.white, Colors.white, Colors.grey];
 
@@ -44,7 +40,7 @@ class AcceptedServiceSheet extends StatelessWidget {
                     // alignment: Alignment.bottomCenter,
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.32,
+                        height: MediaQuery.of(context).size.height * 0.25,
                         decoration: BoxDecoration(
                             color: Color(
                                 0xFF4F5266), //Theme.of(context).primaryColorDark,
@@ -72,9 +68,12 @@ class AcceptedServiceSheet extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: MediaQuery.of(context).size.height *
-                                      0.005),
+                                      0.000,
+                                  horizontal:
+                                      MediaQuery.of(context).size.height *
+                                          0.007),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -82,36 +81,31 @@ class AcceptedServiceSheet extends StatelessWidget {
                                     flex: 1,
                                     child: Align(
                                       alignment: Alignment.centerLeft,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          _launchDial(WinchRequestProvider
-                                                  .upcomingRequestResponseModel
-                                                  .phoneNumber ??
-                                              "0000");
-                                        },
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.08,
-                                          decoration: new BoxDecoration(
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.06,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.08,
+                                        decoration: new BoxDecoration(
                                             color: Colors.white,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            Icons.call,
-                                            size: 23,
-                                            color: Colors.green,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "22Km",
+                                            style: TextStyle(
+                                                fontSize: 19,
+                                                decoration: TextDecoration.none,
+                                                color: Color(0xFF4F5266)),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  //  Text("no"),
                                   Padding(
                                     padding: EdgeInsets.only(
                                         top:
@@ -122,12 +116,17 @@ class AcceptedServiceSheet extends StatelessWidget {
                                       child: AnimatedTextKit(
                                         animatedTexts: [
                                           ColorizeAnimatedText(
-                                            "${WinchRequestProvider.upcomingRequestResponseModel.carBrand ?? "Car Brand"}-${WinchRequestProvider.upcomingRequestResponseModel.carModel ?? "Model"}",
-                                            textStyle: colorizeTextStyle,
+                                            // "${WinchRequestProvider.upcomingRequestResponseModel.carBrand ?? "Car Brand"}-${WinchRequestProvider.upcomingRequestResponseModel.carModel ?? "Model"}",
+                                            "Going To drop off ${WinchRequestProvider.upcomingRequestResponseModel.firstName ?? "FName"}",
+                                            textStyle: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Horizon',
+                                              decoration: TextDecoration.none,
+                                            ),
                                             colors: colorizeColors,
                                           ),
                                           ColorizeAnimatedText(
-                                            'Meet ${WinchRequestProvider.upcomingRequestResponseModel.firstName ?? "FName"} at 2:30',
+                                            'Please Take Fare In Cash',
                                             textStyle: TextStyle(
                                               fontSize: 20,
                                               fontFamily: 'Horizon',
@@ -144,24 +143,33 @@ class AcceptedServiceSheet extends StatelessWidget {
                                   Expanded(
                                     flex: 1,
                                     child: Align(
-                                      alignment: Alignment.topRight,
+                                      alignment: Alignment.centerRight,
                                       child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.06,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.08,
-                                        decoration: new BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(Icons.chat,
-                                            size: 23,
-                                            color:
-                                                Color(0xFF4F5266) //Colors.grey,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.06,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.08,
+                                          decoration: new BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "30min",
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                  color: Color(0xFF4F5266)),
                                             ),
-                                      ),
+                                          ) //Colors.grey,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -184,98 +192,122 @@ class AcceptedServiceSheet extends StatelessWidget {
                               )),
                           child: Column(
                             children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                      "${WinchRequestProvider.upcomingRequestResponseModel.firstName ?? "FName"} ${WinchRequestProvider.upcomingRequestResponseModel.lastName ?? "LName"}",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 18)),
-                                  Stack(
-                                    children: [
-                                      SvgPicture.asset(
-                                          "assets/icons/sport-car.svg",
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.12),
-                                      Positioned(
-                                        top: 20,
-                                        // right: 25,
-                                        child: SvgPicture.asset(
-                                            "assets/icons/profile.svg",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.07),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                      "${WinchRequestProvider.upcomingRequestResponseModel.carPlates ?? "CarPlates"}",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 20)),
-                                ],
-                              ),
+                              // SizedBox(
+                              //   height:
+                              //       MediaQuery.of(context).size.height * 0.03,
+                              // ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceAround,
+                              //   crossAxisAlignment: CrossAxisAlignment.center,
+                              //   children: [
+                              //     Text(
+                              //         "${WinchRequestProvider.upcomingRequestResponseModel.firstName ?? "FName"} ${WinchRequestProvider.upcomingRequestResponseModel.lastName ?? "LName"}",
+                              //         style: TextStyle(
+                              //             color: Colors.black54,
+                              //             decoration: TextDecoration.none,
+                              //             fontSize: 18)),
+                              //     Stack(
+                              //       children: [
+                              //         SvgPicture.asset(
+                              //             "assets/icons/sport-car.svg",
+                              //             width: MediaQuery.of(context)
+                              //                     .size
+                              //                     .width *
+                              //                 0.12),
+                              //         Positioned(
+                              //           top: 20,
+                              //           // right: 25,
+                              //           child: SvgPicture.asset(
+                              //               "assets/icons/profile.svg",
+                              //               width: MediaQuery.of(context)
+                              //                       .size
+                              //                       .width *
+                              //                   0.07),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //     Text(
+                              //         "${WinchRequestProvider.upcomingRequestResponseModel.carPlates ?? "CarPlates"}",
+                              //         style: TextStyle(
+                              //             color: Colors.black54,
+                              //             decoration: TextDecoration.none,
+                              //             fontSize: 20)),
+                              //   ],
+                              // ),
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.02,
                               ),
-                              WinchRequestProvider.DriverARRIVED == false
-                                  ? SliderButton(
-                                      //dismissible: false,
-                                      action: () async {
-                                        await WinchRequestProvider
-                                            .arrivedToCustomerLocation(ctx);
-                                        if (WinchRequestProvider
-                                                .DriverARRIVED ==
-                                            true) {
-                                          await WinchRequestProvider
-                                              .startingWinchService(ctx);
-                                        }
-
-                                        ///Do something here
-                                        print("slided");
-                                        //Navigator.of(context).pop();
+                              SliderButton(
+                                //dismissible: false,
+                                action: () async {
+                                  await WinchRequestProvider
+                                      .endCurrentWinchService();
+                                  if (WinchRequestProvider.SERVICE_FINISHED ==
+                                      true) {
+                                    final _dialog = RatingDialog(
+                                      // your app's name?
+                                      title: '200 EGP',
+                                      // encourage your user to leave a high rating?
+                                      message:
+                                          'Tap a star to set your rating. Add more description here if you want.',
+                                      // your app's logo?
+                                      image: WinchRequestProvider.isLoading ==
+                                              false
+                                          ? SvgPicture.asset(
+                                              "assets/icons/cash.svg",
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.15,
+                                            )
+                                          : CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.green)),
+                                      submitButton: 'Submit',
+                                      // onCancelled: () => print('cancelled'),
+                                      onSubmitted: (response) async {
+                                        WinchRequestProvider
+                                            .ratingForCustomerRequestModel
+                                            .stars = response.rating.toString();
+                                        await WinchRequestProvider.rateCustomer(
+                                            ctx);
                                       },
-                                      label: Text(
-                                        "Slide To Start Trip",
-                                        style: TextStyle(
-                                            color: Color(0xff4a4a4a),
-                                            fontWeight: FontWeight.w500,
-                                            decoration: TextDecoration.none,
-                                            fontSize: 17),
-                                      ),
-                                      icon: Icon(
-                                        Icons.arrow_right_alt_rounded,
-                                        color: Colors.white,
-                                        size: 60,
-                                      ),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      radius: 20,
-                                      buttonColor: Colors.green.withOpacity(
-                                          0.9), //Color(0xffd60000),
-                                      backgroundColor: Colors.grey.withOpacity(
-                                          0.2), //Color(0xff534bae),
-                                      highlightedColor: Colors.greenAccent,
-                                      baseColor: Colors.green,
-                                    )
-                                  : CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.red,
-                                      ),
-                                    )
+                                    );
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => _dialog,
+                                    );
+                                  }
+
+                                  ///Do something here
+                                  print("slided");
+                                  //Navigator.of(context).pop();
+                                },
+                                label: Text(
+                                  "Get Fare In Cash",
+                                  style: TextStyle(
+                                      color: Colors.blue, //Color(0xff4a4a4a),
+                                      fontWeight: FontWeight.w800,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 17),
+                                ),
+                                icon: Icon(
+                                  Icons.arrow_right_alt_rounded,
+                                  color: Colors.white,
+                                  size: 60,
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                radius: 20,
+                                buttonColor: Colors.blueAccent
+                                    .withOpacity(0.9), //Color(0xffd60000),
+                                backgroundColor: Colors.grey
+                                    .withOpacity(0.2), //Color(0xff534bae),
+                                highlightedColor: Colors.blue,
+                                baseColor: Colors.blueAccent,
+                              )
                             ],
                           ),
                         ),

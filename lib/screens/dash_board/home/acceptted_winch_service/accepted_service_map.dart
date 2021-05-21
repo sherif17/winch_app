@@ -15,6 +15,7 @@ import 'package:winch_app/models/maps/direction_details.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
+import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/started_service_sheet.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 
 import 'acceptted_serivce_sheet.dart';
@@ -60,8 +61,10 @@ class _AcceptedServiceScreenState extends State<AcceptedServiceScreen> {
       zoom: 15.4746,
     );
 
-    return Consumer2<PolyLineProvider, MapsProvider>(
-      builder: (context, PolyLineProvider, MapsProvider, child) => Stack(
+    return Consumer3<PolyLineProvider, MapsProvider, WinchRequestProvider>(
+      builder: (context, PolyLineProvider, MapsProvider, WinchRequestProvider,
+              child) =>
+          Stack(
         children: [
           Scaffold(
             key: scaffoldKey,
@@ -92,96 +95,118 @@ class _AcceptedServiceScreenState extends State<AcceptedServiceScreen> {
                                 MapsProvider.googleMapController);
                             //getPlaceDirection(context);
                           }),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: size.height * 0.01),
-                          child: Container(
-                            height: size.height * 0.17,
-                            width: size.width * 0.95,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF4F5266),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                    flex: 2,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
+                      WinchRequestProvider.SERVICE_FINISHED == false
+                          ? Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding:
+                                    EdgeInsets.only(top: size.height * 0.01),
+                                child: Container(
+                                  height: size.height * 0.17,
+                                  width: size.width * 0.95,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF4F5266),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                          flex: 2,
+                                          child: Row(
                                             children: [
-                                              Icon(
-                                                Icons.trending_up_rounded,
-                                                color: Colors.white,
-                                                size: 50,
+                                              Expanded(
+                                                flex: 1,
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.trending_up_rounded,
+                                                      color: Colors.white,
+                                                      size: 50,
+                                                    ),
+                                                    Text(
+                                                      PolyLineProvider
+                                                          .tripDirectionDetails
+                                                          .distanceText,
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                              Text(
-                                                PolyLineProvider
-                                                    .tripDirectionDetails
-                                                    .distanceText,
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                              Expanded(
+                                                flex: 4,
+                                                child: WinchRequestProvider
+                                                            .SERVICE_STARTTED ==
+                                                        false
+                                                    ? Text(
+                                                        "${MapsProvider.customerPickUpLocation.placeName ?? "Customer Pick Up Location Place Name"}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white))
+                                                    : Text(
+                                                        "${MapsProvider.customerDropOffLocation.placeName ?? "Customer Drop Off Location Place Name"}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white)),
                                               )
                                             ],
-                                          ),
+                                          )),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.width * 0.03),
+                                        child: Divider(
+                                          color: Colors.white,
+                                          thickness: 2,
                                         ),
-                                        Expanded(
-                                          flex: 4,
-                                          child: Text(
-                                              "${MapsProvider.customerPickUpLocation.placeName ?? "Customer Pick Up Location Place Name"}",
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        )
-                                      ],
-                                    )),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.width * 0.03),
-                                  child: Divider(
-                                    color: Colors.white,
-                                    thickness: 2,
+                                      ),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: size.width * 0.07),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: size.height * 0.01,
+                                                  width: size.width * 0.02,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors
+                                                        .green, //Color(0xFF4F5266),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            25),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: size.width * 0.03,
+                                                ),
+                                                Expanded(
+                                                  flex: 25,
+                                                  child: WinchRequestProvider
+                                                              .SERVICE_STARTTED ==
+                                                          false
+                                                      ? Text(
+                                                          "Detailed Pickup Location Location",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white))
+                                                      : Text(
+                                                          "Detailed Drop Off Location Location",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                    ],
                                   ),
                                 ),
-                                Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.width * 0.07),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            height: size.height * 0.01,
-                                            width: size.width * 0.02,
-                                            decoration: BoxDecoration(
-                                              color: Colors
-                                                  .green, //Color(0xFF4F5266),
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: size.width * 0.03,
-                                          ),
-                                          Expanded(
-                                            flex: 25,
-                                            child: Text(
-                                                "Detailed Pickup Location Location",
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 ],
@@ -227,7 +252,11 @@ class _AcceptedServiceScreenState extends State<AcceptedServiceScreen> {
                   )
                 ]),
           ),
-          AcceptedServiceSheet(),
+          WinchRequestProvider.SERVICE_FINISHED != true
+              ? WinchRequestProvider.SERVICE_STARTTED != true
+                  ? AcceptedServiceSheet(context)
+                  : StartedServiceSheet(context)
+              : Container(),
         ],
       ),
     );
