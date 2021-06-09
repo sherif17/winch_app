@@ -2,12 +2,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:winch_app/models/maps/address.dart';
 import 'package:winch_app/models/maps/direction_details.dart';
-import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/screens/dash_board/profile/profile_body.dart';
 import 'package:winch_app/services/Maps_Assistants/maps_services.dart';
 import 'package:winch_app/widgets/progress_Dialog.dart';
@@ -139,6 +136,101 @@ class PolyLineProvider extends ChangeNotifier {
       print("polyline");
       notifyListeners();
 
+  }
+
+
+  Future<void> getPlaceDirectionWithCustomMarker(context, Address initialPosition, Address finalPosition, GoogleMapController _googleMapController, BitmapDescriptor startMapMarker, BitmapDescriptor destinationMapMarker) async {
+    var winchLatLng = LatLng(initialPosition.latitude, initialPosition.longitude);
+    var pickUpLatLng = LatLng(finalPosition.latitude, finalPosition.longitude);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(
+            message:
+            currentLang == "en" ? "Please wait.." :  "انتظر قليلا...."));
+    var details = await MapsApiService.obtainPlaceDirectionDetails(
+        winchLatLng, pickUpLatLng);
+    tripDirectionDetails = details;
+    Navigator.pop(context);
+    print("This is Encoded Points ::");
+    print(details.encodedPoints);
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> decodedPolylinePointsResult =
+    polylinePoints.decodePolyline(details.encodedPoints);
+    pLineCoordinates.clear();
+    if (decodedPolylinePointsResult.isNotEmpty) {
+      decodedPolylinePointsResult.forEach((PointLatLng pointLatLng) {
+        pLineCoordinates
+            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+      });
+    }
+    polylineSet.clear();
+    Polyline polyline = Polyline(
+      color: Theme.of(context).primaryColor,
+      polylineId: PolylineId("PolylineID"),
+      jointType: JointType.round,
+      points: pLineCoordinates,
+      width: 5,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      geodesic: true,
+    );
+    polylineSet.add(polyline);
+    LatLngBounds latLngBounds;
+    if (winchLatLng.latitude > pickUpLatLng.latitude &&
+        winchLatLng.longitude > pickUpLatLng.longitude) {
+      latLngBounds =
+          LatLngBounds(southwest: pickUpLatLng, northeast: winchLatLng);
+    } else if (winchLatLng.longitude > pickUpLatLng.longitude) {
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(winchLatLng.latitude, pickUpLatLng.longitude),
+          northeast: LatLng(pickUpLatLng.latitude, winchLatLng.longitude));
+    } else if (winchLatLng.latitude > pickUpLatLng.latitude) {
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(pickUpLatLng.latitude, winchLatLng.longitude),
+          northeast: LatLng(winchLatLng.latitude, pickUpLatLng.longitude));
+    } else {
+      latLngBounds =
+          LatLngBounds(southwest: winchLatLng, northeast: pickUpLatLng);
+    }
+    _googleMapController
+        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    String initialSnippet = initialPosition.descriptor + " location";
+    Marker winchLocMarker = Marker(
+      //icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+        icon: startMapMarker,
+        infoWindow:
+        InfoWindow(title: initialPosition.placeName, snippet: initialSnippet),
+        position: winchLatLng,
+        markerId: MarkerId("winchId"));
+    Marker pickUpLocMarker = Marker(
+      //icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        icon: destinationMapMarker,
+        infoWindow:
+        InfoWindow(title: finalPosition.placeName, snippet: "PickUp location"),
+        position: pickUpLatLng,
+        markerId: MarkerId("pickUpId"));
+    markersSet.add(winchLocMarker);
+    markersSet.add(pickUpLocMarker);
+    Circle winchLocCircle = Circle(
+      fillColor: Colors.blue,
+      center: winchLatLng,
+      radius: 12.0,
+      strokeWidth: 4,
+      strokeColor: Colors.blue,
+      circleId: CircleId("winchId"),
+    );
+    Circle pickUpLocCircle = Circle(
+      fillColor: Theme.of(context).hintColor,
+      center: pickUpLatLng,
+      radius: 12.0,
+      strokeWidth: 4,
+      strokeColor: Theme.of(context).hintColor,
+      circleId: CircleId("pickUpId"),
+    );
+    circlesSet.add(winchLocCircle);
+    circlesSet.add(pickUpLocCircle);
+    print("polyline");
+    notifyListeners();
   }
 
   Future<void> getPlaceDirectionWithNav(context, Address initialPosition, Address finalPosition, GoogleMapController _googleMapController ) async {
