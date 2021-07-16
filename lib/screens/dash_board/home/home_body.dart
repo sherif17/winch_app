@@ -577,6 +577,8 @@ class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  Timer timer;
+
   @override
   Widget build(BuildContext ctx) {
     Size size = MediaQuery.of(ctx).size;
@@ -604,6 +606,10 @@ class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
                   _completerGoogleMap.complete(controller);
                   MapsProvider.googleMapController = controller;
                   MapsProvider.locatePosition(context);
+                  timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+                    //val.locatePosition2(context,startMapMarker);
+                    MapsProvider.locatePosition(context);
+                  });
                   // WinchRequestProvider.getNearestClientRequestModel =
                   //     GetNearestClientRequestModel(
                   //         locationLat:

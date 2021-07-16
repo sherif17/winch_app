@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:fswitch/fswitch.dart';
 import 'package:provider/provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/models/maps/address.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
@@ -22,6 +23,24 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
   void initState() {
     super.initState();
     print(loadJwtTokenFromDB());
+    setCustomMarker();
+  }
+
+  BitmapDescriptor winchMapMarker;
+  BitmapDescriptor customerPickUpLocMarker;
+  BitmapDescriptor dropOffLocMarker;
+  BitmapDescriptor winchWithCarMapMarker;
+  void setCustomMarker() async {
+    winchMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.1, 0.1)),
+        'assets/icons/empty_winch.png');
+    customerPickUpLocMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/Car.png');
+    dropOffLocMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
+    winchWithCarMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.1, 0.1)),
+        'assets/icons/winch_with_car.png');
   }
 
   Timer z;
@@ -36,6 +55,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
             backgroundColor: val.SEARCHING_FOR_CUSTOMER == true
                 ? Colors.greenAccent
                 : Colors.white,
+            color: Colors.white,
           ),
           buildDriverInfo(context)
         ],
@@ -127,13 +147,16 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                                 .currentLocation;
                         await Provider.of<PolyLineProvider>(context,
                                 listen: false)
-                            .getPlaceDirection(
+                            .getPlaceDirectionWithCustomMarker(
                                 context,
                                 initial,
                                 finalPos,
                                 Provider.of<MapsProvider>(context,
                                         listen: false)
-                                    .googleMapController);
+                                    .googleMapController,
+                                winchMapMarker,
+                                customerPickUpLocMarker);
+
                         val.isPopRequestDataReady = true;
                       } else if (val.ALREADY_HAVE_RIDE == true) {
                         z.cancel();

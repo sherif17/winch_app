@@ -5,19 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:winch_app/local_db/winch_driver_info_db.dart';
-import 'package:winch_app/models/maps/direction_details.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/started_service_sheet.dart';
-import 'package:winch_app/shared_prefrences/winch_user_model.dart';
-
 import 'acceptted_serivce_sheet.dart';
 
 class AcceptedServiceScreen extends StatefulWidget {
@@ -36,6 +31,25 @@ class _AcceptedServiceScreenState extends State<AcceptedServiceScreen> {
         .trackWinchDriver(context);
     super.initState();
     //getCurrentPrefData();
+    setCustomMarker();
+  }
+
+  BitmapDescriptor winchMapMarker;
+  BitmapDescriptor customerPickUpLocMarker;
+  BitmapDescriptor dropOffLocMarker;
+  BitmapDescriptor winchWithCarMapMarker;
+
+  void setCustomMarker() async {
+    winchMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.1, 0.1)),
+        'assets/icons/empty_winch.png');
+    customerPickUpLocMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/Car.png');
+    dropOffLocMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/icons/google-maps-car-icon.png');
+    winchWithCarMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.1, 0.1)),
+        'assets/icons/winch_with_car.png');
   }
 
   @override
@@ -88,11 +102,16 @@ class _AcceptedServiceScreenState extends State<AcceptedServiceScreen> {
                           onMapCreated: (GoogleMapController controller) {
                             _completerGoogleMap.complete(controller);
                             MapsProvider.googleMapController = controller;
-                            PolyLineProvider.getPlaceDirection(
-                                context,
-                                MapsProvider.currentLocation,
-                                MapsProvider.customerPickUpLocation,
-                                MapsProvider.googleMapController);
+                            PolyLineProvider.getPlaceDirectionCustomerApp(
+                              context: context,
+                              initialPosition: MapsProvider.currentLocation,
+                              finalPosition:
+                                  MapsProvider.customerPickUpLocation,
+                              googleMapController:
+                                  MapsProvider.googleMapController,
+                              startMapMarker: winchMapMarker,
+                              destinationMapMarker: customerPickUpLocMarker,
+                            );
                             //getPlaceDirection(context);
                           }),
                       WinchRequestProvider.SERVICE_FINISHED == false

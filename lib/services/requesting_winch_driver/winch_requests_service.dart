@@ -40,8 +40,7 @@ class WinchRequestService {
         body: acceptingWinchServiceRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
       print("response.body:${response.body}");
-      return UpcomingRequestResponseModel.fromJson(
-          json.decode(response.body));
+      return UpcomingRequestResponseModel.fromJson(json.decode(response.body));
     } else {
       throw Exception("failed to load Data");
     }
