@@ -88,8 +88,9 @@ class WinchRequestProvider extends ChangeNotifier {
   }
 
   getNearestClientToMe(context) async {
-    await getWinchDriverCurrentLocation(context);
-
+    if (CUSTOMER_FOUNDED == false) {
+      await getWinchDriverCurrentLocation(context);
+    }
     getNearestClientRequestModel.locationLat =
         Provider.of<MapsProvider>(context, listen: false)
             .currentLocation
@@ -128,11 +129,13 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool acceptUpcomingRequestIsLoading = false;
   acceptUpcomingRequest(context) async {
-    isLoading = true;
+    acceptUpcomingRequestIsLoading = true;
+    notifyListeners();
     upcomingRequestResponseModel = await requestService.acceptCustomerRequest(
         upcomingRequestAcceptRequestModel, loadJwtTokenFromDB());
-    isLoading = false;
+    acceptUpcomingRequestIsLoading = false;
     if (upcomingRequestResponseModel != null) {
       RIDE_ACCEPTED = true;
       SEARCHING_FOR_CUSTOMER = false;
@@ -151,18 +154,19 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool cancelUpcomingRequestIsLoading = false;
   cancelUpcomingRequest(context) async {
-    isLoading = true;
+    cancelUpcomingRequestIsLoading = true;
     upcomingRequestResponseModel = await requestService.acceptCustomerRequest(
         upcomingRequestDenyRequestModel, loadJwtTokenFromDB());
-    isLoading = false;
+    cancelUpcomingRequestIsLoading = false;
     if (upcomingRequestResponseModel.msg == "Check For Another Request") {
       Provider.of<MapsProvider>(context, listen: false).locatePosition(context);
       SEARCHING_FOR_CUSTOMER = true;
       CUSTOMER_FOUNDED = false;
       Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
       searchingForCustomerTimer =
-          Timer.periodic(Duration(seconds: 10), (z) async {
+          Timer.periodic(Duration(seconds: 3), (z) async {
         print("start");
         await getNearestClientToMe(context);
         if (CUSTOMER_FOUNDED == true) {
@@ -202,15 +206,17 @@ class WinchRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool endCurrentWinchServiceIsLoading = false;
   endCurrentWinchService() async {
     endingWinchServiceRequestModel.finalLocationLat =
         winchDriverCurrentPosition.latitude.toString();
     endingWinchServiceRequestModel.finalLocationLong =
         winchDriverCurrentPosition.longitude.toString();
-    isLoading = true;
+    endCurrentWinchServiceIsLoading = true;
+    notifyListeners();
     endingWinchServiceResponseModel = await requestService.endCustomerTrip(
         endingWinchServiceRequestModel, loadJwtTokenFromDB());
-    isLoading = false;
+    endCurrentWinchServiceIsLoading = false;
     print("live tracker stopped");
     liveTrackerTimer.cancel();
     SERVICE_FINISHED = true;
@@ -230,7 +236,7 @@ class WinchRequestProvider extends ChangeNotifier {
     isLoading = true;
     ratingForCustomerResponseModel = await requestService.ratingForCustomer(
         ratingForCustomerRequestModel, loadJwtTokenFromDB());
-    if (ratingForCustomerResponseModel.msg == null) // to be changed
+    if (ratingForCustomerResponseModel.msg != null) // to be changed
     {
       await returnToDashBoard(context);
       isLoading = false;
@@ -239,12 +245,12 @@ class WinchRequestProvider extends ChangeNotifier {
   }
 
   returnToDashBoard(context) {
+    Navigator.pushNamedAndRemoveUntil(
+        context, DashBoard.routeName, (route) => false);
     Provider.of<MapsProvider>(context, listen: false).locatePosition(context);
     SEARCHING_FOR_CUSTOMER = true;
     CUSTOMER_FOUNDED = false;
     Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
-    Navigator.pushNamedAndRemoveUntil(
-        context, DashBoard.routeName, (route) => false);
   }
 
   trackWinchDriver(context) async {
@@ -307,8 +313,7 @@ class WinchRequestProvider extends ChangeNotifier {
         await requestService.arrivalToCustomerLocation(
             arrivalOfWinchDriverRequestModel, loadJwtTokenFromDB());
     isLoading = false;
-    if (arrivalOfWinchDriverResponseModel.msg ==
-        "You haven't arrived yet!" /*arrivalOfWinchDriverResponseModel.msg == "Alright!"*/) {
+    if (arrivalOfWinchDriverResponseModel.msg == "Alright!") {
       DriverARRIVED = true;
       Provider.of<PolyLineProvider>(context, listen: false).resetPolyLine();
     }
@@ -321,8 +326,9 @@ class WinchRequestProvider extends ChangeNotifier {
     startingOfWinchTripResponseModel = await requestService.startingWinchTrip(
         startingOfWinchTripRequestModel, loadJwtTokenFromDB());
     isLoading = false;
-    if (startingOfWinchTripResponseModel.error != null) {
+    if (startingOfWinchTripResponseModel.error == null) {
       SERVICE_STARTTED = true;
+      notifyListeners();
       Provider.of<PolyLineProvider>(context, listen: false).getPlaceDirection(
           context,
           Provider.of<MapsProvider>(context, listen: false)

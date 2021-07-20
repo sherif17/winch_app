@@ -59,8 +59,7 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       PolyLineProvider.tripDirectionDetails.distanceText != null
-                          ? Text(PolyLineProvider
-                              .tripDirectionDetails.distanceText)
+                          ? Text(PolyLineProvider.tripDirectionDetails.distanceText)
                           : CircularProgressIndicator(),
                       SvgPicture.asset("assets/icons/car.svg",
                           width: widget.size.width * 0.08),
@@ -91,8 +90,14 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            child: Text("accept".toUpperCase(),
-                                style: TextStyle(fontSize: 18)),
+                            child: WinchRequestProvider
+                                        .acceptUpcomingRequestIsLoading ==
+                                    false
+                                ? Text("accept".toUpperCase(),
+                                    style: TextStyle(fontSize: 18))
+                                : CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
                             style: ButtonStyle(
                                 padding: MaterialStateProperty.all<EdgeInsets>(
                                     EdgeInsets.all(15)),
@@ -141,22 +146,28 @@ class _buildUpCommingRequestState extends State<buildUpCommingRequest> {
                           ),
                           SizedBox(width: widget.size.width * 0.1),
                           TextButton(
-                              child: Text("Decline".toUpperCase(),
-                                  style: TextStyle(fontSize: 17.5)),
+                              child: WinchRequestProvider
+                                          .cancelUpcomingRequestIsLoading ==
+                                      false
+                                  ? Text("Decline".toUpperCase(),
+                                      style: TextStyle(fontSize: 17.5))
+                                  : CircularProgressIndicator(
+                                      color: Colors.red,
+                                    ),
                               style: ButtonStyle(
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.all(15)),
+                                  padding: MaterialStateProperty.all<EdgeInsets>(
+                                      EdgeInsets.all(15)),
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
                                           Colors.red),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          side: BorderSide(
-                                              width: 0.7, color: Colors.red)))),
+                                  shape:
+                                      MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              side: BorderSide(
+                                                  width: 0.7,
+                                                  color: Colors.red)))),
                               onPressed: () {
                                 WinchRequestProvider.cancelUpcomingRequest(
                                     widget.context);

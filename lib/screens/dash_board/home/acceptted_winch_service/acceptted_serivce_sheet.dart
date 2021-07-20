@@ -240,21 +240,22 @@ class AcceptedServiceSheet extends StatelessWidget {
                                         if (WinchRequestProvider
                                                 .DriverARRIVED ==
                                             true) {
+                                          print("slided");
                                           await WinchRequestProvider
                                               .startingWinchService(ctx);
+                                          // WinchRequestProvider.returnToDashBoard(context);
                                         }
 
                                         ///Do something here
-                                        print("slided");
                                         //Navigator.of(context).pop();
                                       },
                                       label: Text(
-                                        "Slide To Start Trip",
+                                        "Slide When Arrive To Start Trip",
                                         style: TextStyle(
                                             color: Color(0xff4a4a4a),
                                             fontWeight: FontWeight.w500,
                                             decoration: TextDecoration.none,
-                                            fontSize: 17),
+                                            fontSize: 15),
                                       ),
                                       icon: Icon(
                                         Icons.arrow_right_alt_rounded,
@@ -273,7 +274,7 @@ class AcceptedServiceSheet extends StatelessWidget {
                                     )
                                   : CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.red,
+                                        Colors.green,
                                       ),
                                     )
                             ],

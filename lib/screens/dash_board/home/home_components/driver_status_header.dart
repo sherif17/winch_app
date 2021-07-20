@@ -121,7 +121,7 @@ class _DriverStatusHeaderState extends State<DriverStatusHeader> {
                 onChanged: (bool v) async {
                   val.getWinchDriverCurrentState(v);
                   if (v == true) {
-                    z = Timer.periodic(Duration(seconds: 20), (z) async {
+                    z = Timer.periodic(Duration(seconds: 3), (z) async {
                       print("start");
                       await val.getNearestClientToMe(context);
                       if (val.CUSTOMER_FOUNDED == true) {

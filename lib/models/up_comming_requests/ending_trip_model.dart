@@ -52,7 +52,7 @@ class EndingWinchServiceResponseModel {
   });
 
   String status;
-  int fare;
+  double fare;
   TotalTimeForTrip totalTimeForTrip;
 
   factory EndingWinchServiceResponseModel.fromJson(Map<String, dynamic> json) =>

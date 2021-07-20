@@ -6,6 +6,7 @@ import 'package:rating_dialog/rating_dialog.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
 import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
+import 'package:winch_app/screens/dash_board/dash_board.dart';
 
 class StartedServiceSheet extends StatelessWidget {
   BuildContext ctx;
@@ -96,7 +97,7 @@ class StartedServiceSheet extends StatelessWidget {
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            "22Km",
+                                            " 14 Km",
                                             style: TextStyle(
                                                 fontSize: 19,
                                                 decoration: TextDecoration.none,
@@ -161,7 +162,7 @@ class StartedServiceSheet extends StatelessWidget {
                                           child: Align(
                                             alignment: Alignment.center,
                                             child: Text(
-                                              "30min",
+                                              "15 min",
                                               style: TextStyle(
                                                   fontSize: 17,
                                                   decoration:
@@ -239,75 +240,95 @@ class StartedServiceSheet extends StatelessWidget {
                                 height:
                                     MediaQuery.of(context).size.height * 0.02,
                               ),
-                              SliderButton(
-                                //dismissible: false,
-                                action: () async {
-                                  await WinchRequestProvider
-                                      .endCurrentWinchService();
-                                  if (WinchRequestProvider.SERVICE_FINISHED ==
-                                      true) {
-                                    final _dialog = RatingDialog(
-                                      // your app's name?
-                                      title: '200 EGP',
-                                      // encourage your user to leave a high rating?
-                                      message:
-                                          'Tap a star to set your rating. Add more description here if you want.',
-                                      // your app's logo?
-                                      image: WinchRequestProvider.isLoading ==
-                                              false
-                                          ? SvgPicture.asset(
-                                              "assets/icons/cash.svg",
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.15,
-                                            )
-                                          : CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      Colors.green)),
-                                      submitButton: 'Submit',
-                                      // onCancelled: () => print('cancelled'),
-                                      onSubmitted: (response) async {
-                                        WinchRequestProvider
-                                            .ratingForCustomerRequestModel
-                                            .stars = response.rating.toString();
-                                        await WinchRequestProvider.rateCustomer(
-                                            ctx);
-                                      },
-                                    );
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => _dialog,
-                                    );
-                                  }
+                              WinchRequestProvider
+                                          .endCurrentWinchServiceIsLoading ==
+                                      false
+                                  ? SliderButton(
+                                      //dismissible: false,
+                                      action: () async {
+                                        await WinchRequestProvider
+                                            .endCurrentWinchService();
+                                        if (WinchRequestProvider
+                                                .SERVICE_FINISHED ==
+                                            true) {
+                                          final _dialog = RatingDialog(
+                                            // your app's name?
+                                            title:
+                                                '${WinchRequestProvider.endingWinchServiceResponseModel.fare.ceil()} EGP',
+                                            // encourage your user to leave a high rating?
+                                            message:
+                                                'Tap a star to set rating your customer. Add more description here if you want.',
+                                            // your app's logo?
+                                            image: WinchRequestProvider
+                                                        .isLoading ==
+                                                    false
+                                                ? SvgPicture.asset(
+                                                    "assets/icons/cash.svg",
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.15,
+                                                  )
+                                                : CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            Colors.green)),
+                                            submitButton:
+                                                'Submit Rating For Customer',
+                                            // onCancelled: () => print('cancelled'),
+                                            onSubmitted: (response) async {
+                                              WinchRequestProvider
+                                                      .ratingForCustomerRequestModel
+                                                      .stars =
+                                                  response.rating.toString();
+                                              await WinchRequestProvider
+                                                  .rateCustomer(ctx);
+                                              // Navigator.pushNamedAndRemoveUntil(
+                                              //     ctx,
+                                              //     DashBoard.routeName,
+                                              //     (route) => false);
+                                            },
+                                          );
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => _dialog,
+                                          );
+                                        }
 
-                                  ///Do something here
-                                  print("slided");
-                                  //Navigator.of(context).pop();
-                                },
-                                label: Text(
-                                  "Get Fare In Cash",
-                                  style: TextStyle(
-                                      color: Colors.blue, //Color(0xff4a4a4a),
-                                      fontWeight: FontWeight.w800,
-                                      decoration: TextDecoration.none,
-                                      fontSize: 17),
-                                ),
-                                icon: Icon(
-                                  Icons.arrow_right_alt_rounded,
-                                  color: Colors.white,
-                                  size: 60,
-                                ),
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                radius: 20,
-                                buttonColor: Colors.blueAccent
-                                    .withOpacity(0.9), //Color(0xffd60000),
-                                backgroundColor: Colors.grey
-                                    .withOpacity(0.2), //Color(0xff534bae),
-                                highlightedColor: Colors.blue,
-                                baseColor: Colors.blueAccent,
-                              )
+                                        ///Do something here
+                                        print("slided");
+                                        //Navigator.of(context).pop();
+                                      },
+                                      label: Text(
+                                        "Get Fare In Cash",
+                                        style: TextStyle(
+                                            color: Colors
+                                                .blue, //Color(0xff4a4a4a),
+                                            fontWeight: FontWeight.w800,
+                                            decoration: TextDecoration.none,
+                                            fontSize: 17),
+                                      ),
+                                      icon: Icon(
+                                        Icons.arrow_right_alt_rounded,
+                                        color: Colors.white,
+                                        size: 60,
+                                      ),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      radius: 20,
+                                      buttonColor: Colors.blueAccent
+                                          .withOpacity(
+                                              0.9), //Color(0xffd60000),
+                                      backgroundColor: Colors.grey.withOpacity(
+                                          0.2), //Color(0xff534bae),
+                                      highlightedColor: Colors.blue,
+                                      baseColor: Colors.blueAccent,
+                                    )
+                                  : CircularProgressIndicator(
+                                      color: Colors.green,
+                                    ),
                             ],
                           ),
                         ),
