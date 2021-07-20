@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/models/winch_driver_register/user_register_model.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
-import 'package:winch_app/services/api_services.dart';
+import 'package:winch_app/services/winch_driver_register/api_services.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/form_error.dart';
@@ -50,6 +52,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
   int responseIat;
   String responseWinchPlates;
   String responseGovernorate;
+  bool status;
 
   bool FName_Changed = false;
   bool LName_changed = false;
@@ -106,6 +109,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 SizedBox(
                     height: size.height * 0.1,
@@ -122,6 +126,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 Expanded(
                   child: BuildCharPlateTextFormField(),
@@ -145,8 +150,10 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                         LName_changed == true ||
                         WinchPlateChar_changed == true ||
                         WinchPlateNum_changed == true) {
-                      String part1 = await getPrefWinchPlatesNum();
-                      String part2 = await getPrefWinchPlatesChars();
+                      String part1 =
+                          loadWinchPlatesNumFromDB(); //await getPrefWinchPlatesNum();
+                      String part2 =
+                          loadWinchPlatesCharFromDB(); //await getPrefWinchPlatesChars();
                       String newWinchPlates = part1 + part2;
                       winchRegisterRequestModel.governorate =
                           widget.workingCity;
@@ -167,24 +174,37 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
                             jwtToken = value.token;
                             print(jwtToken);
                             setPrefJwtToken(jwtToken);
+                            saveJwtTokenInDB(jwtToken);
                             Map<String, dynamic> decodedToken =
                                 JwtDecoder.decode(jwtToken);
                             responseID = decodedToken["_id"];
                             setPrefBackendID(responseID);
-                            responseFName = decodedToken["firstName"];
-                            setPrefFirstName(responseFName);
-                            responseLName = decodedToken["lastName"];
-                            setPrefLastName(responseLName);
-                            responseWinchPlates = decodedToken["winchPlates"];
-                            setPrefWinchPlates(responseWinchPlates);
-                            responseGovernorate = decodedToken["governorate"];
-                            setPrefWorkingCity(responseGovernorate);
+                            saveBackendIBInDB(responseID);
+                            setPrefFirstName(
+                                winchRegisterRequestModel.firstName);
+                            saveFirstNameInDB(
+                                winchRegisterRequestModel.firstName);
+                            setPrefLastName(winchRegisterRequestModel.lastName);
+                            saveLastNameInDB(
+                                winchRegisterRequestModel.lastName);
+                            setPrefWinchPlates(
+                                winchRegisterRequestModel.winchPlates);
+                            saveWinchPlatesInDB(
+                                winchRegisterRequestModel.winchPlates);
+                            setPrefWorkingCity(
+                                winchRegisterRequestModel.governorate);
+                            saveWorkingCityInDB(
+                                winchRegisterRequestModel.governorate);
                             responseIat = decodedToken["iat"];
                             setPrefIAT(responseIat.toString());
+                            saveIATInDB(responseIat.toString());
+                            status = decodedToken["verified"];
+                            saveVerificationStateInDB(status.toString());
                             setState(() {
                               isApiCallProcess = false;
                             });
                             printAllWinchUserCurrentData();
+                            printAllWinchDriverSavedInfoInDB();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, DashBoard.routeName, (route) => false);
                           } else
@@ -350,6 +370,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
         }
 
         setPrefWinchPlatesChars(newValue);
+        saveWinchPlatesCharInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -437,6 +458,7 @@ class _ConfirmUserFormState extends State<ConfirmUserForm> {
           print("four");
         }
         setPrefWinchPlatesNum(newValue);
+        saveWinchPlatesNumInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {

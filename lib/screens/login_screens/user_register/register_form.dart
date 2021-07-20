@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
-import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/models/winch_driver_register/user_register_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/lang_model.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/progress_bar.dart';
 import 'package:winch_app/screens/login_screens/user_register/register_body.dart';
-import 'package:winch_app/services/api_services.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/constants.dart';
 import 'package:winch_app/widgets/rounded_button.dart';
@@ -78,6 +79,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(
                 child: Column(
@@ -104,8 +106,8 @@ class _RegisterFormState extends State<RegisterForm> {
           press: () async {
             if (registerValidateAndSave()) {
               print("Request body: ${winchRegisterRequestModel.toJson()}.");
-              setPrefSocialImage(null);
-              setPrefSocialImage(null);
+              setPrefSocialImage("");
+              setPrefSocialImage("");
               Navigator.pushReplacementNamed(context, MainStepper.routeName,
                   arguments: LangModel(language: widget.currentLang));
               // print(await getPrefJwtToken());
@@ -113,6 +115,7 @@ class _RegisterFormState extends State<RegisterForm> {
               // print(await getPrefLastName());
               // print(await getPrefFirstName());
               // print(await getPrefFirebaseID());
+              printAllWinchUserCurrentData();
               printAllWinchUserCurrentData();
               /* setState(() {
                 isApiCallProcess = true;
@@ -176,6 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
         //firstName = newValue;
         winchRegisterRequestModel.firstName = newValue;
         setPrefFirstName(newValue);
+        saveFirstNameInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -214,6 +218,7 @@ class _RegisterFormState extends State<RegisterForm> {
         //lastName = newValue;
         winchRegisterRequestModel.lastName = newValue;
         setPrefLastName(newValue);
+        saveLastNameInDB(newValue);
       },
       onChanged: (value) {
         if (value.isNotEmpty) {

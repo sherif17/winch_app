@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:winch_app/models/files_upload_model.dart';
+import 'package:winch_app/models/winch_driver_register/files_upload_model.dart';
 import 'dart:convert';
 
-import 'package:winch_app/models/phone_num_model.dart';
-import 'package:winch_app/models/user_register_model.dart';
+import 'package:winch_app/models/winch_driver_register/phone_num_model.dart';
+import 'package:winch_app/models/winch_driver_register/user_register_model.dart';
 
 class ApiService {
   static const String baseUrl = 'http://161.97.155.244/api/';
 
   Future<PhoneResponseModel> phoneCheck(
       PhoneRequestModel phoneRequestModel) async {
-    String url = baseUrl + 'registeration/winchUser';
+    var url = Uri.parse(baseUrl + 'registeration/winchUser');
     final response = await http.post(url,
         headers: {'charset': 'utf-8'}, body: phoneRequestModel.toJson());
     if (response.statusCode == 200 || response.statusCode == 400) {
@@ -24,7 +24,7 @@ class ApiService {
 
   Future<WinchRegisterResponseModel> registerUser(
       WinchRegisterRequestModel userRegisterRequestModel, token, lang) async {
-    String url = baseUrl + 'winchDriver/me/updateprofile';
+    var url = Uri.parse(baseUrl + 'winchDriver/me/updateprofile');
     final response = await http.post(url,
         headers: {"x-auth-token": "$token", 'language': "$lang"},
         body: userRegisterRequestModel.toJson());

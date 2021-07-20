@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/confirm_user/confirm_body.dart';
 import 'package:winch_app/screens/login_screens/otp/componants/navigation_args.dart';
@@ -12,24 +13,24 @@ class ProfileBody extends StatefulWidget {
   _ProfileBodyState createState() => _ProfileBodyState();
 }
 
-String token;
-String ID;
-String Fname = " ";
-String Lname = " ";
-String Phone = " ";
-String WinchPlates = " ";
-String currentLang = " ";
-String WorkingCity = " ";
-String profilePhoto = " ";
-String email = " ";
-String iat = " ";
+String token = loadJwtTokenFromDB();
+String ID = loadBackendIDFromDB();
+String Fname = loadFirstNameFromDB();
+String Lname = loadLastNameFromDB();
+String Phone = loadPhoneNumberFromDB();
+String WinchPlates = loadWinchPlatesFromDB();
+String currentLang = loadCurrentLangFromDB();
+String WorkingCity = loadWorkingCityFromDB();
+String profilePhoto = loadSocialImageFromDB();
+String email = loadSocialEmailFromDB();
+String iat = loadIATFromDB();
 
 class _ProfileBodyState extends State<ProfileBody> {
   @override
   void initState() {
     // getCurrentPrefData();
     super.initState();
-    loadAllWinchUserData();
+    //loadAllWinchUserData();
   }
 
   Widget _greenColors() {
@@ -45,7 +46,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   Widget _getInfo(ID, Fname, Lname, Phone, iat, token, profilePhoto, email) {
     bool exist;
-    if (profilePhoto != null)
+    if (profilePhoto != "")
       exist = true;
     else
       exist = false;
@@ -126,7 +127,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   SizedBox(
                     width: 10,
                   ),
-                  Text(workingCity)
+                  Text(workingCity ?? "")
                 ],
               ),
               SizedBox(

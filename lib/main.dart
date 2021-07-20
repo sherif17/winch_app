@@ -1,9 +1,18 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
+import 'package:winch_app/provider/maps_prepration/maps_provider.dart';
+import 'package:winch_app/provider/maps_prepration/polyLineProvider.dart';
+import 'package:winch_app/provider/upcomming_winch_service/winch_request_provider.dart';
 import 'package:winch_app/screens/dash_board/dash_board.dart';
+import 'package:winch_app/screens/dash_board/home/acceptted_winch_service/accepted_service_map.dart';
 import 'package:winch_app/screens/dash_board/home/home_body.dart';
 import 'package:winch_app/screens/login_screens/file_upload/main_stepper.dart';
 import 'package:winch_app/screens/onboarding_screens/intro_screens/intro.dart';
@@ -11,12 +20,22 @@ import 'package:winch_app/shared_prefrences/winch_user_model.dart';
 import 'package:winch_app/utils/routes.dart';
 import 'localization/demo_localization.dart';
 import 'themes/light_theme.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //SharedPreferences.setMockInitialValues({});
-  //Firebase.initializeApp();
-  runApp(App());
+  Firebase.initializeApp();
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  await Hive.openBox<String>("winchDriverInfoDBBox"); // for customer info
+  bool devicePreview = false;
+  if (devicePreview == false)
+    return runApp(App());
+  else
+    runApp(DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => App(),
+    ));
 }
 
 class App extends StatelessWidget {
@@ -56,8 +75,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
-  String TOKEN;
-  String BACKEND_ID;
+  String TOKEN = loadJwtTokenFromDB();
+  String BACKEND_ID = loadBackendIDFromDB();
+  String verificationStatus = loadVerificationStateFromDB();
 
   void setLocale(Locale locale) {
     setState(() {
@@ -72,16 +92,16 @@ class _MyAppState extends State<MyApp> {
             _locale = local;
           })
         });
-    getPrefJwtToken().then((value) {
-      setState(() {
-        TOKEN = value;
-      });
-    });
-    getPrefBackendID().then((value) {
-      setState(() {
-        BACKEND_ID = value;
-      });
-    });
+    // getPrefJwtToken().then((value) {
+    //   setState(() {
+    //     TOKEN = value;
+    //   });
+    // });
+    // getPrefBackendID().then((value) {
+    //   setState(() {
+    //     BACKEND_ID = value;
+    //   });
+    // });
     super.didChangeDependencies();
   }
 
@@ -96,34 +116,44 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       // TODO: implement build
-      return new MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme(),
-        initialRoute: //MainStepper.routeName,
-            TOKEN == null || BACKEND_ID == null
-                ? Intro.routeName
-                : DashBoard.routeName,
-        routes: routes,
-        locale: _locale,
-        supportedLocales: [
-          Locale("en", "US"),
-          Locale("ar", "EG"),
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<WinchRequestProvider>(
+              create: (_) => WinchRequestProvider()),
+          ChangeNotifierProvider<MapsProvider>(create: (_) => MapsProvider()),
+          ChangeNotifierProvider<PolyLineProvider>(
+              create: (_) => PolyLineProvider()),
         ],
-        localizationsDelegates: [
-          DemoLocalization.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (deviceLocal, supportedLocales) {
-          for (var local in supportedLocales) {
-            if (local.languageCode == deviceLocal.languageCode &&
-                local.countryCode == deviceLocal.countryCode) {
-              return deviceLocal;
+        child: new MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme(),
+          initialRoute: //MainStepper.routeName,
+              // TOKEN == "" || BACKEND_ID == ""
+              verificationStatus == "true"
+                  ? DashBoard.routeName
+                  : Intro.routeName,
+          routes: routes,
+          locale: _locale,
+          supportedLocales: [
+            Locale("en", "US"),
+            Locale("ar", "EG"),
+          ],
+          localizationsDelegates: [
+            DemoLocalization.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (deviceLocal, supportedLocales) {
+            for (var local in supportedLocales) {
+              if (local.languageCode == deviceLocal.languageCode &&
+                  local.countryCode == deviceLocal.countryCode) {
+                return deviceLocal;
+              }
             }
-          }
-          return supportedLocales.first;
-        },
+            return supportedLocales.first;
+          },
+        ),
       );
     }
   }

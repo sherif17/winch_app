@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/phone_number/phone_form.dart';
 import 'package:winch_app/shared_prefrences/winch_user_model.dart';
@@ -14,20 +15,12 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   String phoneNumber = "";
-  String currentLang;
+  String currentLang = loadCurrentLangFromDB();
 
   @override
   void initState() {
     super.initState();
-    getCurrentPrefData();
-  }
-
-  void getCurrentPrefData() {
-    getPrefCurrentLang().then((value) {
-      setState(() {
-        currentLang = value;
-      });
-    });
+    // getCurrentPrefData();
   }
 
   @override
@@ -80,7 +73,7 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.05,
           ),
-          PhoneForm(currentLang),
+          PhoneForm(),
         ],
       ),
     );

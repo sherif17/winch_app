@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:winch_app/local_db/winch_driver_info_db.dart';
 import 'package:winch_app/localization/localization_constants.dart';
 import 'package:winch_app/screens/login_screens/phone_number/enter_phone_number.dart';
 import 'package:winch_app/utils/constants.dart';
@@ -89,6 +90,7 @@ class _IntroBodyState extends State<IntroBody> {
                       text: getTranslated(context, "GET STARTED"),
                       color: Theme.of(context).primaryColor,
                       press: () {
+                        printAllWinchDriverSavedInfoInDB();
                         Navigator.pushReplacementNamed(
                             context, EnterPhoneNumber.routeName);
                       },

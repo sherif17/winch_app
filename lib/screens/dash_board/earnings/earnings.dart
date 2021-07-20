@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+
 class Earnings extends StatefulWidget {
   @override
   _EarningsState createState() => _EarningsState();
@@ -12,7 +13,7 @@ class _EarningsState extends State<Earnings> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Earnnings',
+        title: Text('Earnings',
             style: TextStyle(
                 color: Colors.indigoAccent,
                 fontWeight: FontWeight.bold,
@@ -20,10 +21,10 @@ class _EarningsState extends State<Earnings> {
       ),
       body: Align(
         alignment: Alignment.center,
-        child: SvgPicture.asset(
-          "assets/illustrations/Money-back guarantee (1).svg",
-          height: size.height * 0.35,
-        ),
+            child: SvgPicture.asset(
+              "assets/illustrations/Money-back guarantee (1).svg",
+              height: size.height * 0.35,
+            ),
       ),
     );
   }
